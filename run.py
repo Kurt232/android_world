@@ -22,6 +22,7 @@ command-line flags.
 
 from collections.abc import Sequence
 import os
+import sys
 
 from absl import app
 from absl import flags
@@ -120,6 +121,11 @@ _OUTPUT_PATH = flags.DEFINE_string(
     'The path to save results to if not resuming from a checkpoint is not'
     ' provided.',
 )
+_SAVE_PATH = flags.DEFINE_string(
+  'save_path',
+  None,
+  'The path to save marked information',
+)
 
 # Agent specific.
 _AGENT_NAME = flags.DEFINE_string('agent_name', 'm3a_gpt4v', help='Agent name.')
@@ -152,7 +158,7 @@ def _get_agent(
   print('Initializing agent...')
   agent = None
   if _AGENT_NAME.value == 'human_agent':
-    agent = human_agent.HumanAgent(env)
+    agent = human_agent.HumanAgent(env, save_path=_SAVE_PATH.value)
   elif _AGENT_NAME.value == 'random_agent':
     agent = random_agent.RandomAgent(env)
   # Gemini.
@@ -220,6 +226,15 @@ def _main() -> None:
     checkpoint_dir = _CHECKPOINT_DIR.value
   else:
     checkpoint_dir = checkpointer_lib.create_run_directory(_OUTPUT_PATH.value)
+    
+  if _SAVE_PATH.value:
+    save_path = _SAVE_PATH.value
+    if os.path.exists(save_path):
+      print('Output directory already exists. Please provide a new one.')
+      env.close()
+      sys.exit()
+    else:
+      os.makedirs(save_path)
 
   print(
       f'Starting eval with agent {_AGENT_NAME.value} and writing to'
