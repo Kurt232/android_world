@@ -105,13 +105,6 @@ def execute_adb_action(
           min(screen_elements[action.index].bbox_pixels.x_max, screen_width),
           min(screen_elements[action.index].bbox_pixels.y_max, screen_height),
       )
-    elif action.bbox_pixels and isinstance(action.bbox_pixels, representation_utils.BoundingBox):
-      x_min, y_min, x_max, y_max = (
-          max(action.bbox_pixels.x_min, 0),
-          max(action.bbox_pixels.y_min, 0),
-          min(action.bbox_pixels.x_max, screen_width),
-          min(action.bbox_pixels.y_max, screen_height),
-      )
     else:
       x_min, y_min, x_max, y_max = (0, 0, screen_width, screen_height)
 

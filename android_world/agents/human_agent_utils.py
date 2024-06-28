@@ -34,6 +34,7 @@ def forest_to_element_tree(forest: Any,
   id2element: dict[int, UIElement] = {}
   valid_ele_ids: list[int] = []
   ele_id = 0
+
   for window in forest.windows:
     # each node has unique id in a window
     for node in window.tree.nodes:
@@ -78,9 +79,11 @@ def forest_to_element_tree(forest: Any,
 
       ele_attr.action.extend(allowed_actions)
       ele_attr.status = status
-      id2element[ele_id] = ele_attr
+      ele_attr.local_id = len(valid_ele_ids)
 
+      id2element[ele_id] = ele_attr
       valid_ele_ids.append(ele_id)
+
       ele_id += 1
 
   element_tree = ElementTree(ele_attrs=id2element, valid_ele_ids=valid_ele_ids)
@@ -337,8 +340,8 @@ class ElementTree(object):
 
 
 def save_to_yaml(save_path: str, html_view: str, tag: str, action_type: str,
-                 action_details: dict, input_text: str, width: int,
-                 height: int):
+                 action_details: dict, choice: int | None, input_text: str,
+                 width: int, height: int):
   if not save_path:
     return
 
@@ -356,6 +359,7 @@ def save_to_yaml(save_path: str, html_view: str, tag: str, action_type: str,
       'State': html_view,
       'Action': action_type,
       'ActionDetails': action_details,
+      'Choice': choice,
       'Input': input_text,
       'tag': tag,
       'width': width,
