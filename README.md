@@ -67,7 +67,7 @@ See demo videos on our [website](https://google-research.github.io/android_world
     # Typically it's located in ~/Android/Sdk/emulator/emulator or
     # ~/Library/Android/sdk/emulator/emulator
     EMULATOR_NAME=AndroidWorldAvd # From previous step
-    ~/Library/Android/sdk/emulator/emulator -avd $EMULATOR_NAME -no-snapshot -grpc 8554
+    ~/Android/Sdk/emulator/emulator -avd AndroidWorldAvd -no-snapshot -grpc 8554
     ```
 
 1. [Optional] It's recommended to use `conda`, which you can download [here](https://docs.anaconda.com/free/miniconda/miniconda-install/).
