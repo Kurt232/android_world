@@ -62,22 +62,29 @@ def forest_to_element_tree(forest: Any,
       else:
         ele_attr.set_type('p')
 
-      allowed_actions = ['click']
+      allowed_actions = ['touch']
+      allowed_actions_aw = ['click']
       status = []
       if element.is_editable:
-        allowed_actions.append('input_text')
+        allowed_actions.append('set_text')
+        allowed_actions_aw.append('input_text')
       if element.is_checkable:
         allowed_actions.extend(['select', 'unselect'])
         allowed_actions.remove('touch')
       if element.is_scrollable:
         allowed_actions.extend(['scroll up', 'scroll down'])
-        allowed_actions.remove('click')
+        allowed_actions.remove('touch')
+        allowed_actions_aw.extend(['scroll'])
+        allowed_actions_aw.remove('click')
       if element.is_long_clickable:
-        allowed_actions.append('long_press')
+        allowed_actions.append('long_touch')
+        allowed_actions_aw.append('long_press')
       if element.is_checked or element.is_selected:
         status.append('selected')
 
       ele_attr.action.extend(allowed_actions)
+      ele_attr.action_aw.extend(allowed_actions_aw)
+
       ele_attr.status = status
       ele_attr.local_id = len(valid_ele_ids)
 
@@ -128,6 +135,7 @@ class EleAttr(object):
     self.bound_box = ele.bbox
 
     self.action = []
+    self.action_aw = []
     # element representation
     self.local_id = None
     self.type = None
@@ -137,20 +145,6 @@ class EleAttr(object):
 
     self.type_ = self.class_name.split(
         '.')[-1] if self.class_name else 'div'  # only existing init
-
-  def set_type(self, typ: str):
-    self.type = typ
-    if typ in ['button', 'checkbox', 'input', 'scrollbar', 'p']:
-      self.type_ = self.type
-
-  def is_match(self, value: str):
-    if value == self.alt:
-      return True
-    if value == self.content:
-      return True
-    if value == self.text:
-      return True
-    return False
 
   # compatible with the old version
   @property
@@ -212,6 +206,23 @@ class EleAttr(object):
   @property
   def desc_html_end(self) -> str:
     return f'</{_escape_xml_chars(self.type_)}>'
+
+  def set_type(self, typ: str):
+    self.type = typ
+    if typ in ['button', 'checkbox', 'input', 'scrollbar', 'p']:
+      self.type_ = self.type
+
+  def is_match(self, value: str):
+    if value == self.alt:
+      return True
+    if value == self.content:
+      return True
+    if value == self.text:
+      return True
+    return False
+
+  def check_action(self, action_type: str):
+    return action_type in self.action_aw
 
 
 class ElementTree(object):
