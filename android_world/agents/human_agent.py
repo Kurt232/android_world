@@ -61,23 +61,29 @@ class HumanAgent(base_agent.EnvironmentInteractingAgent):
     element_tree = human_agent_utils.forest_to_element_tree(state.forest)
 
     action_details, ele_id = self.get_action_and_id(action_type, element_tree)
-    self.env.execute_action(json_action.JSONAction(**action_details))
+
+    done = False
+    if action_details['action_type'] == 'status':
+      done = True
+    else:
+      self.env.execute_action(json_action.JSONAction(**action_details))
 
     result = {}
     result['elements'] = state.ui_elements
 
     timestamp = datetime.datetime.now().strftime('%Y-%m-%d_T%H%M%S')
 
-    human_agent_utils.save_to_yaml(self.save_path, element_tree.str, timestamp,
-                                   action_type, action_details, ele_id,
-                                   action_details.get('text', None),
-                                   self.env.device_screen_size[0],
-                                   self.env.device_screen_size[1])
+    if action_type != "wait":
+      human_agent_utils.save_to_yaml(self.save_path, element_tree.str,
+                                     timestamp, action_type, action_details,
+                                     ele_id, action_details.get('text', None),
+                                     self.env.device_screen_size[0],
+                                     self.env.device_screen_size[1])
 
-    human_agent_utils.save_screenshot(self.save_path, timestamp,
-                                      state.pixels.copy())
+      human_agent_utils.save_screenshot(self.save_path, timestamp,
+                                        state.pixels.copy())
 
-    return base_agent.AgentInteractionResult(False, result)
+    return base_agent.AgentInteractionResult(done, result)
 
   def get_post_transition_state(self) -> interface.State:
     return self.env.get_state()
@@ -103,7 +109,7 @@ class HumanAgent(base_agent.EnvironmentInteractingAgent):
     elif action_type in ["click", "long_press", "input_text", "scroll"]:
       print('\033[0;32m', '-' * 40, 'State', '-' * 40, '\033[0m')
       print(element_tree.get_str(is_color=True))
-      ele_id = input('Please input the element id:')
+      ele_id = input(f'Please input the element id with {action_type}:')
       try:
         ele_id = int(ele_id)
         ele = element_tree.ele_map[ele_id]
@@ -118,14 +124,18 @@ class HumanAgent(base_agent.EnvironmentInteractingAgent):
             + '\033[0m')
         return wait_action, None
 
-      x, y = ele.ele.bbox_pixels.center
-      x, y = int(x), int(y)
-      action_details['x'] = x
-      action_details['y'] = y
-      if action_type in ["click", "long_press"]:
-        pass
-      elif action_type == "input_text":
-        action_details['text'] = input('Please input the text:')
+      if ele.check_action(action_type) is False:
+        print('\033[1;31m' + 'Invalid action, replaced by wait action.' +
+              '\033[0m')
+        return wait_action, None
+
+      if action_type in ["click", "long_press", "input_text"]:
+        x, y = ele.ele.bbox_pixels.center
+        x, y = int(x), int(y)
+        action_details['x'] = x
+        action_details['y'] = y
+        if action_type == "input_text":
+          action_details['text'] = input('Please input the text:')
       elif action_type == "scroll":
         action_details['index'] = ele.local_id
         direction_list = ['up', 'down', 'left', 'right']
