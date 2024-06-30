@@ -36,12 +36,14 @@ class HumanAgent(base_agent.EnvironmentInteractingAgent):
     self.save_path = save_path
 
   def step(self, goal: str) -> base_agent.AgentInteractionResult:
-    del goal
+    state = self.get_post_transition_state()
+    element_tree = human_agent_utils.forest_to_element_tree(state.forest)
+    
     action_list = [
         "wait", "click", "long_press", "scroll", "input_text", "navigate_home",
         "navigate_back", "open_app", "answer", "keyboard_enter", "status"
     ]
-
+    print('\033[0;32m', 'goal: ', goal, '\033[0m')
     print('\033[0;32m', '-' * 40, 'Actions', '-' * 40, '\033[0m')
     print('\n'.join(
         [f'{index}: {action}' for index, action in enumerate(action_list)]))
@@ -56,9 +58,6 @@ class HumanAgent(base_agent.EnvironmentInteractingAgent):
 
     action_type = action_list[response]
     print(f'Action: {action_type}')
-
-    state = self.get_post_transition_state()
-    element_tree = human_agent_utils.forest_to_element_tree(state.forest)
 
     action_details, ele_id = self.get_action_and_id(action_type, element_tree)
 
