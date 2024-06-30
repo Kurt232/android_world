@@ -1,4 +1,27 @@
-# AndroidWorld
+# New doc
+## manual mode
+start command line
+```bash
+python run.py \
+  --suite_family=android_world \
+  --agent_name=human_agent \
+  --tasks=ContactsAddContact, \  # Optional: Just run on a subset.
+  --save_path=output/test # Optional: it will scotch running when existing this save_path
+```
+```bash
+python run.py \
+  --suite_family=android_world \
+  --agent_name=human_agent \
+  --perform_emulator_setup \ # Optional: Add this when first run, can be ignored on 3090.
+  --tasks=ContactsAddContact,ClockStopWatchRunning \  # Optional: Just run on a subset.
+  --save_path=output/test \ # Optional: it will scotch running when path has already existed.
+  -v=-2 \
+
+# my example
+python run.py --suite_family=android_world --agent_name=human_agent --tasks=ContactsAddContact
+```
+
+# AndroidWorld(origin doc)
 
 [![Unittests](https://github.com/google-research/android_world/actions/workflows/pytest.yml/badge.svg)](https://github.com/google-research/android_world/actions/workflows/pytest.yml)
 
@@ -73,6 +96,7 @@ See demo videos on our [website](https://google-research.github.io/android_world
     ```bash
     # Add to .bashrc.
     export OPENAI_API_KEY=your-key
+    export OPENAI_API_URL=your-key
     export GCP_API_KEY=your-key
     ```
 
