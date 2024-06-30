@@ -27,10 +27,10 @@ from android_world.agents.human_agent_utils import ElementTree
 
 class HumanAgent(base_agent.EnvironmentInteractingAgent):
   """Human agent; wait for user to indicate they are done."""
-  
+
   # Wait a few seconds for the screen to stabilize after executing an action.
   WAIT_AFTER_ACTION_SECONDS = 2.0
-  
+
   def __init__(self,
                env: interface.AsyncEnv,
                save_path: str,
@@ -42,9 +42,9 @@ class HumanAgent(base_agent.EnvironmentInteractingAgent):
   def step(self, goal: str) -> base_agent.AgentInteractionResult:
     state = self.get_post_transition_state()
     element_tree = human_agent_utils.forest_to_element_tree(state.forest)
-    
+
     action_list = [
-        "wait", "click", "long_press", "scroll", "input_text", "navigate_home",
+        "wait", "click", "input_text", "scroll", "long_press", "navigate_home",
         "navigate_back", "open_app", "answer", "keyboard_enter", "status"
     ]
     print('\033[0;32m', 'goal: ', goal, '\033[0m')
@@ -65,14 +65,17 @@ class HumanAgent(base_agent.EnvironmentInteractingAgent):
 
     action_details, ele_id = self.get_action_and_id(action_type, element_tree)
 
+    if action_details['action_type'] == 'answer':
+      print('Agent answered with: ' + action_details['text'])
+
     done = False
     if action_details['action_type'] == 'status':
       done = True
     else:
       self.env.execute_action(json_action.JSONAction(**action_details))
-    
+
     time.sleep(self.WAIT_AFTER_ACTION_SECONDS)
-    
+
     result = {}
     result['elements'] = state.ui_elements
 
