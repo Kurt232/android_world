@@ -60,6 +60,9 @@ class DroidbotAgent(base_agent.EnvironmentInteractingAgent):
     step_data['before_element_list'] = state.ui_elements
     
     self.env.execute_action(json_action.JSONAction(**{'action_type': 'open_app', 'app_name': self.app_name}))
+    
+    time.sleep(self.WAIT_AFTER_ACTION_SECONDS)
+    
     step_data['summary'] = f'Start the {self.app_name} app.'
     self.history.append(step_data)
     
