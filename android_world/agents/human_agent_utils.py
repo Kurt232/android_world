@@ -35,7 +35,7 @@ def forest_to_element_tree(forest: Any,
   valid_ele_ids: list[int] = []
   if len(forest.windows) == 0:
     return ElementTree(ele_attrs=id2element, valid_ele_ids=valid_ele_ids)
-  
+
   # only windows[0] is showing the main activity
   for node in forest.windows[0].tree.nodes:
     node_id: int = node.unique_id
@@ -91,15 +91,6 @@ def forest_to_element_tree(forest: Any,
 
     valid_ele_ids.append(node_id)
 
-  # flush the forest
-  for window in forest.windows[1: ]:
-    for node in window.tree.nodes:
-      if not node.child_ids or node.content_description or node.is_scrollable:
-        if not node.is_visible_to_user:
-          continue
-        else:
-          _accessibility_node_to_ui_element(node, screen_size)
-  
   return ElementTree(ele_attrs=id2element, valid_ele_ids=valid_ele_ids)
 
 
@@ -230,7 +221,8 @@ class ElementTree(object):
 
   def __init__(self, ele_attrs: dict[int, EleAttr], valid_ele_ids: list[int]):
     # tree
-    self.root, self.ele_map, self.valid_ele_ids = self._build_tree(ele_attrs, valid_ele_ids)
+    self.root, self.ele_map, self.valid_ele_ids = self._build_tree(
+        ele_attrs, valid_ele_ids)
     self.size = len(self.ele_map)
     # result
     self.str = self.get_str()
@@ -290,8 +282,9 @@ class ElementTree(object):
     while stack:
       node = stack.pop()
       dfs_order.append(node)
-      stack.extend(reversed(node.children))  # Reverse to maintain the original order in a DFS
-    
+      stack.extend(reversed(
+          node.children))  # Reverse to maintain the original order in a DFS
+
     # convert bfs order id to dfs order id
     idx_map = {node.id: idx for idx, node in enumerate(dfs_order)}
     # update the ele_map
