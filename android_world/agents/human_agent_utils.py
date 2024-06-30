@@ -299,13 +299,14 @@ class ElementTree(object):
     for idx, node in enumerate(dfs_order):
       ele = ele_map[node.id]
       ele.id = idx
+      for i, child in enumerate(ele.children):
+        ele.children[i] = idx_map[child]
       _ele_map[idx] = ele
     # update the valid_ele_ids
     _valid_ele_ids = set([idx_map[idx] for idx in valid_ele_ids])
     # update the node
     for node in dfs_order:
       node.id = idx_map[node.id]
-      
       if node.parent != -1:
         node.parent = idx_map.get(node.parent, -1)
 
