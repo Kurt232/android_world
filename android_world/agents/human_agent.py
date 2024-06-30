@@ -15,6 +15,7 @@
 
 import datetime
 import sys
+import time
 
 from android_world.agents import base_agent
 from android_world.agents import human_agent_utils
@@ -26,7 +27,10 @@ from android_world.agents.human_agent_utils import ElementTree
 
 class HumanAgent(base_agent.EnvironmentInteractingAgent):
   """Human agent; wait for user to indicate they are done."""
-
+  
+  # Wait a few seconds for the screen to stabilize after executing an action.
+  WAIT_AFTER_ACTION_SECONDS = 2.0
+  
   def __init__(self,
                env: interface.AsyncEnv,
                save_path: str,
@@ -66,7 +70,9 @@ class HumanAgent(base_agent.EnvironmentInteractingAgent):
       done = True
     else:
       self.env.execute_action(json_action.JSONAction(**action_details))
-
+    
+    time.sleep(self.WAIT_AFTER_ACTION_SECONDS)
+    
     result = {}
     result['elements'] = state.ui_elements
 
