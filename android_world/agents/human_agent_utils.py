@@ -33,69 +33,74 @@ def forest_to_element_tree(forest: Any,
 
   id2element: dict[int, UIElement] = {}
   valid_ele_ids: list[int] = []
-  ele_id = 0
+  if len(forest.windows) == 0:
+    return ElementTree(ele_attrs=id2element, valid_ele_ids=valid_ele_ids)
+  
+  # only windows[0] is showing the main activity
+  for node in forest.windows[0].tree.nodes:
+    node_id: int = node.unique_id
+    element: UIElement = _accessibility_node_to_ui_element(node, screen_size)
+    ele_attr = EleAttr(node_id, node.child_ids, element)
+    id2element[node_id] = ele_attr
+    ele_attr.set_type('div')
+    # TODO:: add the element type for image
+    if not element.content_description and not element.text and not element.is_scrollable:
+      continue
 
-  for window in forest.windows:
-    # each node has unique id in a window
+    text = element.text if element.text else ''
+    text = text.replace('\n', ' \\ ')
+    text = text[:50] if len(text) > 50 else text
+    ele_attr.content = text
+    ele_attr.alt = element.content_description
+    if element.is_editable:
+      ele_attr.set_type('input')
+    elif element.is_checkable:
+      ele_attr.set_type('checkbox')
+    elif element.is_clickable or element.is_long_clickable:
+      ele_attr.set_type('button')
+    elif element.is_scrollable:
+      ele_attr.set_type('scrollbar')
+    else:
+      ele_attr.set_type('p')
+
+    allowed_actions = ['touch']
+    allowed_actions_aw = ['click']
+    status = []
+    if element.is_editable:
+      allowed_actions.append('set_text')
+      allowed_actions_aw.append('input_text')
+    if element.is_checkable:
+      allowed_actions.extend(['select', 'unselect'])
+      allowed_actions.remove('touch')
+    if element.is_scrollable:
+      allowed_actions.extend(['scroll up', 'scroll down'])
+      allowed_actions.remove('touch')
+      allowed_actions_aw.extend(['scroll'])
+      allowed_actions_aw.remove('click')
+    if element.is_long_clickable:
+      allowed_actions.append('long_touch')
+      allowed_actions_aw.append('long_press')
+    if element.is_checked or element.is_selected:
+      status.append('selected')
+
+    ele_attr.action.extend(allowed_actions)
+    ele_attr.action_aw.extend(allowed_actions_aw)
+
+    ele_attr.status = status
+    ele_attr.local_id = len(valid_ele_ids)
+
+    valid_ele_ids.append(node_id)
+
+  # flush the forest
+  for window in forest.windows[1: ]:
     for node in window.tree.nodes:
-      element: UIElement = _accessibility_node_to_ui_element(node, screen_size)
-      ele_attr = EleAttr(ele_id, node.child_ids, element)
-      id2element[ele_id] = ele_attr
-      ele_attr.set_type('div')
-      if not element.content_description and not element.text and not element.is_scrollable:
-        ele_id += 1
-        continue
-
-      text = element.text if element.text else ''
-      text = text.replace('\n', ' \\ ')
-      text = text[:50] if len(text) > 50 else text
-      ele_attr.content = text
-      ele_attr.alt = element.content_description
-      if element.is_editable:
-        ele_attr.set_type('input')
-      elif element.is_checkable:
-        ele_attr.set_type('checkbox')
-      elif element.is_clickable or element.is_long_clickable:
-        ele_attr.set_type('button')
-      elif element.is_scrollable:
-        ele_attr.set_type('scrollbar')
-      else:
-        ele_attr.set_type('p')
-
-      allowed_actions = ['touch']
-      allowed_actions_aw = ['click']
-      status = []
-      if element.is_editable:
-        allowed_actions.append('set_text')
-        allowed_actions_aw.append('input_text')
-      if element.is_checkable:
-        allowed_actions.extend(['select', 'unselect'])
-        allowed_actions.remove('touch')
-      if element.is_scrollable:
-        allowed_actions.extend(['scroll up', 'scroll down'])
-        allowed_actions.remove('touch')
-        allowed_actions_aw.extend(['scroll'])
-        allowed_actions_aw.remove('click')
-      if element.is_long_clickable:
-        allowed_actions.append('long_touch')
-        allowed_actions_aw.append('long_press')
-      if element.is_checked or element.is_selected:
-        status.append('selected')
-
-      ele_attr.action.extend(allowed_actions)
-      ele_attr.action_aw.extend(allowed_actions_aw)
-
-      ele_attr.status = status
-      ele_attr.local_id = len(valid_ele_ids)
-
-      id2element[ele_id] = ele_attr
-      valid_ele_ids.append(ele_id)
-
-      ele_id += 1
-
-  element_tree = ElementTree(ele_attrs=id2element, valid_ele_ids=valid_ele_ids)
-
-  return element_tree
+      if not node.child_ids or node.content_description or node.is_scrollable:
+        if not node.is_visible_to_user:
+          continue
+        else:
+          _accessibility_node_to_ui_element(node, screen_size)
+  
+  return ElementTree(ele_attrs=id2element, valid_ele_ids=valid_ele_ids)
 
 
 def _escape_xml_chars(input_str: str):
@@ -116,11 +121,7 @@ def _escape_xml_chars(input_str: str):
 
 class EleAttr(object):
 
-  def __init__(self,
-               idx: int,
-               child_ids: list[int],
-               ele: UIElement,
-               use_class_name=True):
+  def __init__(self, idx: int, child_ids: list[int], ele: UIElement):
     '''
         @use_class_name: if True, use class name as the type of the element, otherwise use the <div>
         '''
@@ -227,21 +228,23 @@ class EleAttr(object):
 
 class ElementTree(object):
 
-  def __init__(self, ele_attrs: dict, valid_ele_ids: list[int]):
-    self.valid_ele_ids = set(valid_ele_ids)
+  def __init__(self, ele_attrs: dict[int, EleAttr], valid_ele_ids: list[int]):
     # tree
-    self.ele_map: dict[int, EleAttr] = ele_attrs
-    self.root = self._build_tree()
+    self.root, self.ele_map, self.valid_ele_ids = self._build_tree(ele_attrs, valid_ele_ids)
+    self.size = len(self.ele_map)
     # result
     self.str = self.get_str()
 
   def get_ele_by_id(self, index: int):
     return self.ele_map.get(index, None)
 
+  def __len__(self):
+    return self.size
+
   class node(object):
 
     def __init__(self, nid: int, pid: int):
-      self.children = []
+      self.children: list = []
       self.id = nid
       self.parent = pid
       self.leaves = set()
@@ -266,25 +269,51 @@ class ElementTree(object):
         self.children.clear()
         self.leaves.clear()
 
-  def _build_tree(self):
+  def _build_tree(self, ele_map: dict[int, EleAttr], valid_ele_ids: list[int]):
     root = self.node(0, -1)
     queue = [root]
     while queue:
       node = queue.pop(0)
-      for child_id in self.ele_map[node.id].children:
+      for child_id in ele_map[node.id].children:
         # some views are not in the enable views
-        attr = self.ele_map.get(child_id, None)
+        attr = ele_map.get(child_id, None)
         if not attr:
           continue
-        idx = self.ele_map[child_id].id
+        idx = ele_map[child_id].id
         child = self.node(idx, node.id)
         node.children.append(child)
         queue.append(child)
 
-    root.get_leaves()
-    root.drop_invalid_nodes(self.valid_ele_ids)
+    # get dfs order
+    dfs_order = []
+    stack = [root]
+    while stack:
+      node = stack.pop()
+      dfs_order.append(node)
+      stack.extend(reversed(node.children))  # Reverse to maintain the original order in a DFS
+    
+    # convert bfs order id to dfs order id
+    idx_map = {node.id: idx for idx, node in enumerate(dfs_order)}
+    # update the ele_map
+    _ele_map = {}
+    for idx, node in enumerate(dfs_order):
+      ele = ele_map[node.id]
+      ele.id = idx
+      _ele_map[idx] = ele
+    # update the valid_ele_ids
+    _valid_ele_ids = set([idx_map[idx] for idx in valid_ele_ids])
+    # update the node
+    for node in dfs_order:
+      node.id = idx_map[node.id]
+      
+      if node.parent != -1:
+        node.parent = idx_map.get(node.parent, -1)
 
-    return root
+    # get the leaves
+    root.get_leaves()
+    root.drop_invalid_nodes(_valid_ele_ids)
+
+    return root, _ele_map, _valid_ele_ids
 
   def get_str(self, is_color=False) -> str:
     '''
