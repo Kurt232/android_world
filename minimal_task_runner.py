@@ -21,6 +21,7 @@ selected.
 
 from collections.abc import Sequence
 import os
+import sys
 import random
 from typing import Type
 
@@ -76,6 +77,11 @@ _TASK = flags.DEFINE_string(
     None,
     'A specific task to run.',
 )
+_SAVE_PATH = flags.DEFINE_string(
+  'save_path',
+  None,
+  'The path to save marked information',
+)
 
 
 def _main() -> None:
@@ -97,11 +103,21 @@ def _main() -> None:
     task_type: Type[task_eval.TaskEval] = random.choice(
         list(aw_registry.values())
     )
+      
+  if _SAVE_PATH.value:
+    save_path = _SAVE_PATH.value
+    if os.path.exists(save_path):
+      print('Output directory already exists. Please provide a new one.')
+      env.close()
+      sys.exit()
+    else:
+      os.makedirs(save_path)
+      print(f'Saving marked information to {save_path}')
   params = task_type.generate_random_params()
   task = task_type(params)
   task.initialize_task(env)
   # agent = t3a.T3A(env, infer.Gpt4Wrapper('gpt-4-turbo-2024-04-09'))
-  agent = droidbot.DroidbotAgent(env, infer.Gpt4Wrapper('gpt-4o'), task.app_names[0])
+  agent = droidbot.DroidbotAgent(env, infer.Gpt4Wrapper('gpt-4o'), task.app_names[0], _SAVE_PATH.value)
 
   print('Goal: ' + str(task.goal))
   is_done = False

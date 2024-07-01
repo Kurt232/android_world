@@ -14,30 +14,35 @@ from android_world.agents.droidbot_utils import ElementTree, EleAttr, Utils
 class DroidbotAgent(base_agent.EnvironmentInteractingAgent):
   """DroidbotAgent"""
 
-  def __init__(self,
-               env: interface.AsyncEnv,
-               llm: infer.Gpt4Wrapper,
-               app_name: str,
-               name: str = 'droidbot',
-               ):
+  def __init__(
+      self,
+      env: interface.AsyncEnv,
+      llm: infer.Gpt4Wrapper,
+      save_path: str,
+      app_name: str,
+      name: str = 'droidbot',
+  ):
     """Initializes a DroidbotAgent.
 
     Args:
       env: The environment.
       llm: The text only LLM.
+      save_path: The dir to save the logs
+      app_name: The app will be opened before running
       name: The agent name.
     """
     super().__init__(env, name)
     self.llm = llm
+    self.save_path = save_path
     self.app_name = app_name
-    
+
     self.history = []
     self.former_steps = [f'Start the {self.app_name} app.']
 
   def reset(self, go_home_on_reset: bool = False):
     super().reset(go_home_on_reset)
     self.env.hide_automation_ui()
-    
+
     self.history = []
     self.former_steps = [f'Start the {self.app_name} app.']
 
@@ -54,33 +59,37 @@ class DroidbotAgent(base_agent.EnvironmentInteractingAgent):
         'summary': None,
         'summary_raw_response': None,
     }
-    
+
     state = self.get_post_transition_state()
     step_data['before_screenshot'] = state.pixels.copy()
     step_data['before_element_list'] = state.ui_elements
-    
-    self.env.execute_action(json_action.JSONAction(**{'action_type': 'open_app', 'app_name': self.app_name}))
-    
+
+    self.env.execute_action(
+        json_action.JSONAction(**{
+            'action_type': 'open_app',
+            'app_name': self.app_name
+        }))
+
     time.sleep(self.WAIT_AFTER_ACTION_SECONDS)
-    
+
     step_data['summary'] = f'Start the {self.app_name} app.'
     self.history.append(step_data)
-    
+
     state = self.env.get_state()
     step_data['after_screenshot'] = state.pixels.copy()
     step_data['after_element_list'] = state.ui_elements
 
     self.history.append(step_data)
-    
+
     return base_agent.AgentInteractionResult(
         False,
         step_data,
-    ) 
+    )
 
   def step(self, goal: str) -> base_agent.AgentInteractionResult:
     if len(self.history) == 0:
       return self.start_app()
-    
+
     # it could be defined by ourselves
     step_data = {
         'before_screenshot': None,
@@ -96,7 +105,6 @@ class DroidbotAgent(base_agent.EnvironmentInteractingAgent):
     }
     print('----------step ' + str(len(self.history) + 1))
 
-    
     # 1. acquiring the state description, using HTML
     state = self.get_post_transition_state()
     element_tree = droidbot_utils.forest_to_element_tree(state.forest)
@@ -165,6 +173,19 @@ class DroidbotAgent(base_agent.EnvironmentInteractingAgent):
       )
 
     # 5. execute the action
+    if converted_action.action_type == 'status':
+      if converted_action.goal_status == 'infeasible':
+        print('Agent stopped since it thinks mission impossible.')
+      step_data['summary'] = 'Agent thinks the request has been completed.'
+      self.history.append(step_data)
+      return base_agent.AgentInteractionResult(
+          True,
+          step_data,
+      )
+
+    if converted_action.action_type == 'answer':
+      print('Agent answered with: ' + converted_action.text)
+
     try:
       self.env.execute_action(converted_action)
     except Exception as e:  # pylint: disable=broad-exception-caught
@@ -300,14 +321,14 @@ class DroidbotAgent(base_agent.EnvironmentInteractingAgent):
       print("task is infeasible")
       return {"action_type": "status", "goal_status": "infeasible"}
 
-    action_desc = get_action_desc(action_type,
-                                    element_map[id].full_desc, input_text)
+    action_desc = get_action_desc(action_type, element_map[id].full_desc,
+                                  input_text)
     self.former_steps.append({'UI': ui_function, 'action': action_desc})
     try:
-      return Utils.pack_action(action_type, id, input_text)
+      return Utils.pack_action(element_map, action_type, id, input_text)
     except:
       print("Unexpected error")
-      return None
+      return {'action_type': 'wait'}
 
   def convert_gpt_answer_to_json(self,
                                  answer,

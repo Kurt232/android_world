@@ -1,3 +1,4 @@
+import re
 import os
 import yaml
 import numpy as np
@@ -453,7 +454,8 @@ class Utils:
       return view_desc
 
   @staticmethod
-  def pack_action(action: str, index: int, input_text: str):
+  def pack_action(element_map: dict[int, EleAttr], action: str, index: int,
+                  input_text: str):
     '''
       pack the action and convert it to the format of the droidbot
       see action types from prompt:
@@ -463,28 +465,113 @@ class Utils:
         "click", "long_press",           "scroll", "input_text", "wait", "navigate_home", "navigate_back", "open_app"*, "answer"*, "keyboard_enter"*, "status"*
       using * to mark means we do not support in this function
     '''
-    action_details = {'action_type': 'wait'}
+
+    action_type = 'wait'
     if action == 'wait':
-      action_details['action_type'] = 'wait'
-    elif action == 'navigate_home':
-      action_details['action_type'] = 'navigate_home'
-    elif action == 'navigate_back':
-      action_details['action_type'] = 'navigate_back'
+      action_type = 'wait'
+    # elif action == 'navigate_home':
+    #   action_type = 'navigate_home'
+    # elif action == 'navigate_back':
+    #   action_type = 'navigate_back'
+    # elif action == 'open_app':
+    #   action_type = 'open_app'
+    # elif action == 'answer':
+    #   action_type = 'answer'
+    # elif action == 'keyboard_enter':
+    #   action_type = 'keyboard_enter'
     # ----------------------
-    elif action in ['touch', 'select']:
-      action_details['action_type'] = 'click'
-      action_details['index'] = index
-    elif 'sroll' in action:
-      direction = action.split(' ')[-1]
-      action_details['action_type'] = 'scroll'
-      action_details['direction'] = direction
-      action_details['index'] = index
-    elif action == 'set_text':
-      action_details['action_type'] = 'input_text'
-      action_details['index'] = index
-      action_details['input_text'] = input_text
+    elif action in ['touch', 'select', 'unselect']:
+      action_type = 'click'
     elif action == 'long_touch':
-      action_details['action_type'] = 'long_press'
-      action_details['index'] = index
+      action_type = 'long_press'
+    elif 'sroll' in action:
+      action_type = 'scroll'
+    elif action == 'set_text':
+      action_type = 'input_text'
+    #else: wait # invalid action
+
+    action_details = {'action_type': action_type}
+    wait_action = {'action_type': 'wait'}
+    if action_type in ["click", "long_press", "input_text", "scroll"]:
+      try:
+        ele = element_map[index]
+      except:
+        print('\033[1;31m' + 'Invalid id, replaced by wait action.' + '\033[0m')
+        return wait_action
+
+      if ele.local_id is None:
+        print(
+            '\033[1;31m' +
+            f'Element: {index} is NOT interacted with, replaced by wait action.'
+            + '\033[0m')
+        return wait_action
+
+      if ele.check_action(action_type) is False:
+        print('\033[1;31m' + 'Invalid action, replaced by wait action.' +
+              '\033[0m')
+        return wait_action
+
+      if action_type in ["click", "long_press", "input_text"]:
+        x, y = ele.ele.bbox_pixels.center
+        x, y = int(x), int(y)
+        action_details['x'] = x
+        action_details['y'] = y
+        if action_type == "input_text":
+          action_details['text'] = input_text
+        elif action in ['select', 'unselect']:
+          if action == 'select' and 'selected' in ele.status:
+            return wait_action
+          if action == 'unselect' and 'selected' not in ele.status:
+            return wait_action
+      elif action_type == "scroll":
+        action_details['index'] = ele.local_id
+        direction = action.split(' ')[-1]
+        action_details['direction'] = direction
 
     return action_details
+
+
+def save_to_yaml(save_path: str, html_view: str, tag: str, action_type: str,
+                 action_details: dict, choice: int | None, input_text: str,
+                 width: int, height: int):
+  if not save_path:
+    return
+
+  file_name = os.path.join(save_path, 'log.yaml')
+
+  if not os.path.exists(file_name):
+    tmp_data = {'step_num': 0, 'records': []}
+    with open(file_name, 'w', encoding='utf-8') as f:
+      yaml.dump(tmp_data, f)
+
+  with open(file_name, 'r', encoding='utf-8') as f:
+    old_yaml_data = yaml.safe_load(f)
+  new_records = old_yaml_data['records']
+  new_records.append({
+      'State': html_view,
+      'Action': action_type,
+      'ActionDetails': action_details,
+      'Choice': choice,
+      'Input': input_text,
+      'tag': tag,
+      'width': width,
+      'height': height
+  })
+  data = {
+      'step_num': len(list(old_yaml_data['records'])),
+      'records': new_records
+  }
+  with open(file_name, 'w', encoding='utf-8') as f:
+    yaml.dump(data, f)
+
+
+def save_screenshot(save_path: str, tag: str, pixels: np.ndarray):
+  if not save_path:
+    return
+
+  output_dir = os.path.join(save_path, 'views')
+  if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
+  file_path = os.path.join(output_dir, f"views_{tag}.jpg")
+  image = Image.fromarray(pixels)
+  image.save(file_path, format='JPEG')

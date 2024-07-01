@@ -181,7 +181,7 @@ def _get_agent(
     agent = seeact.SeeAct(env)
   # droidbot
   elif _AGENT_NAME.value == 'droidbot':
-    agent = droidbot.DroidbotAgent(env)
+    agent = droidbot.DroidbotAgent(env, infer.Gpt4Wrapper('gpt-4o'), save_path=_SAVE_PATH.value, app_name=None)
 
   if not agent:
     raise ValueError(f'Unknown agent: {_AGENT_NAME.value}')
@@ -240,6 +240,15 @@ def _main() -> None:
     else:
       os.makedirs(save_path)
 
+  if _SAVE_PATH.value:
+    save_path = _SAVE_PATH.value
+    if os.path.exists(save_path):
+      print('Output directory already exists. Please provide a new one.')
+      env.close()
+      sys.exit()
+    else:
+      os.makedirs(save_path)
+  
   print(
       f'Starting eval with agent {_AGENT_NAME.value} and writing to'
       f' {checkpoint_dir}'
