@@ -90,6 +90,8 @@ class HumanAgent(base_agent.EnvironmentInteractingAgent):
 
       agent_utils.save_screenshot(self.save_path, timestamp,
                                         state.pixels.copy())
+      
+      agent_utils.save_raw_state(self.save_path, timestamp, state.forest)
 
     return base_agent.AgentInteractionResult(done, result)
 
