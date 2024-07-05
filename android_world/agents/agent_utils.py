@@ -161,7 +161,7 @@ class EleAttr(object):
     self.ele = ele
     self.children = child_ids
 
-    self.resource_id = ele.resource_id
+    self.resource_id = ele.resource_name
     self.class_name = ele.class_name
     self.text = ele.text
     self.content_description = ele.content_description
