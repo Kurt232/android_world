@@ -18,11 +18,11 @@ import sys
 import time
 
 from android_world.agents import base_agent
-from android_world.agents import human_agent_utils
+from android_world.agents import agent_utils
 from android_world.env import interface
 from android_world.env import json_action
 
-from android_world.agents.human_agent_utils import ElementTree
+from android_world.agents.agent_utils import ElementTree
 
 
 class HumanAgent(base_agent.EnvironmentInteractingAgent):
@@ -41,7 +41,7 @@ class HumanAgent(base_agent.EnvironmentInteractingAgent):
 
   def step(self, goal: str) -> base_agent.AgentInteractionResult:
     state = self.get_post_transition_state()
-    element_tree = human_agent_utils.forest_to_element_tree(state.forest)
+    element_tree = agent_utils.forest_to_element_tree(state.forest)
 
     action_list = [
         "wait", "click", "input_text", "scroll", "long_press", "navigate_home",
@@ -82,13 +82,13 @@ class HumanAgent(base_agent.EnvironmentInteractingAgent):
     timestamp = datetime.datetime.now().strftime('%Y-%m-%d_T%H%M%S')
 
     if action_type != "wait":
-      human_agent_utils.save_to_yaml(self.save_path, element_tree.str,
+      agent_utils.save_to_yaml(self.save_path, element_tree.str,
                                      timestamp, action_type, action_details,
                                      ele_id, action_details.get('text', None),
                                      self.env.device_screen_size[0],
                                      self.env.device_screen_size[1])
 
-      human_agent_utils.save_screenshot(self.save_path, timestamp,
+      agent_utils.save_screenshot(self.save_path, timestamp,
                                         state.pixels.copy())
 
     return base_agent.AgentInteractionResult(done, result)
