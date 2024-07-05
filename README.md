@@ -1,13 +1,10 @@
 # New doc
 ## manual mode
-start command line
-```bash
-python run.py \
-  --suite_family=android_world \
-  --agent_name=human_agent \
-  --tasks=ContactsAddContact, \  # Optional: Just run on a subset.
-  --save_path=output/test # Optional: it will scotch running when existing this save_path
-```
+### QuickStart
+arguments description:
+`--tasks` can set the multi tasks.  
+`--save_path` is used to support action logs and screenshots.  
+`--v=-2` is used to open DEBUG log level, so ignoring it.  
 ```bash
 python run.py \
   --suite_family=android_world \
@@ -20,7 +17,13 @@ python run.py \
 # my example
 python run.py --suite_family=android_world --agent_name=human_agent --tasks=ContactsAddContact
 ```
-
+### app name
+those apps are inbuilt in android_world
+```python
+app_names = [Simple Calendar Pro, Settings, Markor, Broccoli, Pro Expense, Simple SMS Messenger, OpenTracks, Tasks, Clock, Joplin, Retro Music, Simple Gallery Pro, Camera, Chrome, Contacts, OsmAnd, VLC, Audio Recorder, Files, Simple Draw Pro]
+```
+### tasks nickname list
+[link](https://google-research.github.io/android_world/task_list.html)
 # AndroidWorld(origin doc)
 
 [![Unittests](https://github.com/google-research/android_world/actions/workflows/pytest.yml/badge.svg)](https://github.com/google-research/android_world/actions/workflows/pytest.yml)
