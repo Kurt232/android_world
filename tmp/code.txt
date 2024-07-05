@@ -1,0 +1,5 @@
+scroll($scroll_settings_page, "up")
+tap($set_colors)
+tap($set_theme_color)
+tap($theme_color_types.match("White"))
+tap($save_set_colors)

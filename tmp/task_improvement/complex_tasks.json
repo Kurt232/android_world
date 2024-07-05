@@ -1,0 +1,2098 @@
+[
+  {
+    "task": "Create a new note titled \"Grocery List\", add \"Buy milk and bread for breakfast\", center-align the text, and save the note.",
+    "solution": "First, create a new note with the title \"Grocery List\". Then, edit the content to add \"Buy milk and bread for breakfast\". Next, adjust the text alignment to center. Finally, save the changes made to the note."
+  },
+  {
+    "task": "Search for the word \"meeting\" within the current note, highlight the next match, then the previous match, and close the search box.",
+    "solution": "Start by opening the search box and searching for the word \"meeting\". Highlight the next matched text first, then highlight the previous matched text. Finally, close the search box."
+  },
+  {
+    "task": "Customize the widget colors to blue and yellow, change the theme color of the Notes app to light, and enable line wrapping.",
+    "solution": "Begin by customizing the widget colors to blue and yellow. Then, change the theme color of the Notes app to light. Lastly, enable line wrapping in the app settings."
+  },
+  {
+    "task": "Create a new checklist item \"Office supplies\", sort the checklist items by date created, and ensure auto-save is enabled.",
+    "solution": "Create a new checklist item titled \"Office supplies\". Then, sort the checklist items by date created. Finally, check the settings to ensure that auto-save notes is enabled."
+  },
+  {
+    "task": "Use incognito mode for typing, use monospaced font, set the cursor to the end of the note, and show the word count on the screen.",
+    "solution": "Enable incognito mode on the keyboard for typing. Then, set the Notes app to use a monospaced font. After that, set the cursor to appear at the end of the note when opened. Finally, enable the word count display on the screen."
+  },
+  {
+    "task": "Create a new text note called \"Meeting Notes\" and include a checklist with items \"Agenda\", \"Minutes\", and \"Follow-up Tasks\".",
+    "solution": "1. Create a new text note titled \"Meeting Notes\". 2. Add a new checklist item \"Agenda\". 3. Add a new checklist item \"Minutes\". 4. Add a new checklist item \"Follow-up Tasks\"."
+  },
+  {
+    "task": "Edit the content of the current note to include \"Prepare slides for presentation\", then search for the next matching \"slides\" text within the note and show word count.",
+    "solution": "1. Edit the content of the current note to \"Prepare slides for presentation\". 2. Search for the next matching \"slides\" text within the current note. 3. Show the word count of the app."
+  },
+  {
+    "task": "Switch to the previous item in my checklist titled \"Daily Tasks\", then change the theme color of the app to dark red.",
+    "solution": "1. Switch to the previous item in the checklist titled \"Daily Tasks\". 2. Change the theme color of the app to dark red."
+  },
+  {
+    "task": "Set the app to use Incognito mode of keyboards and also enable line wrap from the settings.",
+    "solution": "1. Set the app to use Incognito mode of keyboards. 2. Enable line wrap from the settings."
+  },
+  {
+    "task": "Edit the content of the current note to \"Tomorrow meeting at 10:00\" and save the edited note.",
+    "solution": "1. Edit the content of the current note to \"Tomorrow meeting at 10:00\". 2. Save the edited note."
+  },
+  {
+    "task": "Create a new text note called \"Project Plan\", set the font size of the app to 125%, and change the theme color to light.",
+    "solution": "1. Create a new text note titled \"Project Plan\". 2. Set the font size of the app to 125%. 3. Change the theme color of the app to light."
+  },
+  {
+    "task": "Search for the previous matching \"deadline\" text within the current note and then close the search box in the note.",
+    "solution": "1. Search for the previous matching \"deadline\" text within the current note. 2. Close the search box in the note."
+  },
+  {
+    "task": "Set the app to show keyboard on startup from settings and change the note type to text for the new note titled \"Book Ideas\".",
+    "solution": "1. Set the app to show keyboard on startup from settings. 2. Change the note type to text for the new note titled \"Book Ideas\"."
+  },
+  {
+    "task": "Create a new checklist note titled \"Weekend Trip\", add the items \"Pack clothes\", \"Book hotel\", and \"Rent a car\", then save and close the note.",
+    "solution": "Create a new note named \"Weekend Trip\", set its type to checklist, add items \"Pack clothes\", \"Book hotel\", and \"Rent a car\" to the checklist, save and close the note."
+  },
+  {
+    "task": "Change the primary color of the app to teal, create a new text note titled \"Grocery List\", add the content \"1. Eggs, 2. Butter, 3. Bread\", then save the note.",
+    "solution": "Change the app primary color to teal, create a new text note titled \"Grocery List\", edit its content to \"1. Eggs, 2. Butter, 3. Bread\", and save the note."
+  },
+  {
+    "task": "Open the note titled \"Travel Details\", switch it to text note type, confirm the changes, and then search for the word \"hotel\" and highlight the next instance.",
+    "solution": "Open the \"Travel Details\" note, change its type to text, confirm the changes, search for the term \"hotel\" and highlight the next instance."
+  },
+  {
+    "task": "Create a new checklist note titled \"Meeting Preparation\", add items \"Prepare slides\" and \"Print agenda\", search for the term \"slides\" and highlight the first instance, then save and close the note.",
+    "solution": "Create a new checklist note titled \"Meeting Preparation\", add items \"Prepare slides\" and \"Print agenda\", search for \"slides\" and highlight the first instance, then save and close the note."
+  },
+  {
+    "task": "Open the note \"Travel Details\", navigate through the titles of existing notes to find \"Work Checklist\", switch to this note, rename it to \"Updated Work Checklist\", and save.",
+    "solution": "Open \"Travel Details\", navigate through the note titles to find \"Work Checklist\", switch to this note, rename it to \"Updated Work Checklist\", and save."
+  },
+  {
+    "task": "Create a new text note titled \"Project Plan\", add the content \"1. Research, 2. Development\", then reduce the app font size to 60%, save, and close the note.",
+    "solution": "Create a new text note titled \"Project Plan\", edit the content to \"1. Research, 2. Development\", adjust the font size to 60%, save, and close the note."
+  },
+  {
+    "task": "Search for the word \"deadline\" in the current note and highlight the next instance, then save and rename the note to \"Project Deadlines\".",
+    "solution": "Search for \"deadline\" in the current note, highlight the next instance, save, and rename the note to \"Project Deadlines\"."
+  },
+  {
+    "task": "Create a new text note titled \"Fitness Goals\", add the content \"1. Run 5km, 2. Gym 3 times a week\", save the note, turn off the setting for displaying save success messages, and close the note.",
+    "solution": "Create a new text note titled \"Fitness Goals\", edit the content to \"1. Run 5km, 2. Gym 3 times a week\", save the note, disable the save success messages, and close the note."
+  },
+  {
+    "task": "Switch to the note titled 'Grocery List', sort the checklist items by title, and then export the note as a file.",
+    "solution": "First, open the note titled 'Grocery List', use the sort feature to arrange the checklist items alphabetically by title, and then use the export function to save the note as a file."
+  },
+  {
+    "task": "Rename the current note to 'Meeting Minutes', switch to the next checklist item, and set the font size of the app to 200%.",
+    "solution": "Start by renaming the note to 'Meeting Minutes', then move to the next checklist item, and finally, set the font size of the app to 200%."
+  },
+  {
+    "task": "Add a new checklist item to the current note, search for the term 'budget' within the note, and then remove all completed items from the checklist.",
+    "solution": "Add the new checklist item, use the search feature to find the term 'budget', and afterward, remove all completed items from the checklist."
+  },
+  {
+    "task": "Search the next matching text 'appointment' within the current note, close the search box, and save the current note.",
+    "solution": "Use the search function to find the next occurrence of 'appointment', close the search box afterward, and then save the current note."
+  },
+  {
+    "task": "Set the primary color of the app to dark blue, set the font size of the app to 100%, and save the current color settings.",
+    "solution": "Change the primary color setting to dark blue, adjust the font size to 100%, and then save the new color settings."
+  },
+  {
+    "task": "Open the note titled 'Vacation Plans', create a shortcut for this note on my home screen, and set the font size of the app to 150%.",
+    "solution": "Navigate to the 'Vacation Plans' note, create a home screen shortcut for quick access, and change the font size of the app to 150%."
+  },
+  {
+    "task": "Remove all completed items from the current checklist, sort the checklist items by title, and then export the note to my Dropbox account.",
+    "solution": "First, clear all completed checklist items, sort the remaining items by title, and export the updated note to your Dropbox account."
+  },
+  {
+    "task": "Rename the current note to 'Project Plan', set the font size of the app to 60%, and confirm the deletion of the note titled 'Old Project'.",
+    "solution": "Rename the current note to 'Project Plan', change the font size to 60%, and confirm the deletion of the 'Old Project' note."
+  },
+  {
+    "task": "Switch to the previous note, add a new item to the checklist, and then search the previous matching text 'meeting' within that note.",
+    "solution": "Navigate to the previous note, add a new item to its checklist, and use the search function to find the previous 'meeting' text match within the note."
+  },
+  {
+    "task": "Export all my notes to my Dropbox account, then set the display to show save success messages in settings and save the current note.",
+    "solution": "Export your notes to Dropbox first, update the settings to display save success messages, and save the current note."
+  },
+  {
+    "task": "Create a new note titled 'Grocery List' and then add a new checklist item titled 'Grocery Shopping'",
+    "solution": "First, create a new note with the title 'Grocery List'. After creating the note, add a new checklist item titled 'Grocery Shopping'."
+  },
+  {
+    "task": "Rename the note titled 'Old Title' to 'New Title' and then lock it with a password",
+    "solution": "First, rename the note titled 'Old Title' to 'New Title'. After renaming the note, lock it with a password."
+  },
+  {
+    "task": "Delete the note titled 'Unwanted Note' and then close the search box",
+    "solution": "First, delete the note titled 'Unwanted Note'. After deleting the note, close the search box."
+  },
+  {
+    "task": "Set the font size of the note to 175% and then print it",
+    "solution": "First, set the font size of the note to 175%. After setting the font size, print the note."
+  },
+  {
+    "task": "Search for the word 'meeting' in the current note and then save the edits made",
+    "solution": "First, search for the word 'meeting' in the current note. After finding the word, save the edits made to the note."
+  },
+  {
+    "task": "Create a shortcut for the note titled 'Frequently Used' and then exit the settings page",
+    "solution": "First, create a shortcut for the note titled 'Frequently Used'. After creating the shortcut, exit the settings page."
+  },
+  {
+    "task": "Edit the content of the current note to 'Discuss budget allocations' and then export it as a file",
+    "solution": "First, edit the content of the current note to 'Discuss budget allocations'. After editing the content, export the note as a file."
+  },
+  {
+    "task": "Remove done items from the checklist titled 'To Do' and then create a new note titled 'Meeting Agenda'",
+    "solution": "First, remove done items from the checklist titled 'To Do'. After removing the done items, create a new note titled 'Meeting Agenda'."
+  },
+  {
+    "task": "Make links and emails clickable in the settings and then scroll down the settings page to ensure changes",
+    "solution": "First, make links and emails clickable in the settings. After making the changes, scroll down the settings page to ensure that the changes are saved."
+  },
+  {
+    "task": "Lock the note titled 'Private Note' and then create a shortcut for the current note",
+    "solution": "First, lock the note titled 'Private Note'. After locking the note, create a shortcut for the current note."
+  },
+  {
+    "task": "Create a new text note titled 'Grocery List', add 'Milk' as a checklist item, save and close the note.",
+    "solution": "Create a new text note titled 'Grocery List'. Switch the note type to checklist. Add a new checklist item titled 'Milk'. Save and close the note."
+  },
+  {
+    "task": "Set the app theme color to Dark, then create a checklist titled 'Weekend Tasks' with checkboxes for 'Laundry', 'Cleaning', and 'Grocery Shopping'.",
+    "solution": "Set the theme color of the app to Dark. Create a new checklist note titled 'Weekend Tasks'. Add items: 'Laundry', 'Cleaning', and 'Grocery Shopping'."
+  },
+  {
+    "task": "Open the file associated with the note 'Project Proposal', set the font size to 125%, search for the text 'deadline', and highlight the next matching text.",
+    "solution": "Open the file associated with the note 'Project Proposal'. Set the font size to 125%. Search for the text 'deadline'. Highlight the next matching text."
+  },
+  {
+    "task": "Create a new note with the title 'Meeting Agenda' of type text, add the text 'Discuss project milestones', increase the font size to 200%, and save the note.",
+    "solution": "Create a new note with the title 'Meeting Agenda' of type text. Add the text 'Discuss project milestones'. Set the font size to 200%. Save the note."
+  },
+  {
+    "task": "Set the theme color to auto light/dark, create a new checklist titled 'Daily Routine', add 'Workout' and 'Breakfast' as items, and confirm it.",
+    "solution": "Set the theme color of the app to auto light/dark. Create a new checklist note titled 'Daily Routine'. Add items 'Workout' and 'Breakfast'. Confirm the note."
+  },
+  {
+    "task": "Create a new note titled 'Client Call' with the note type as checklist, add 'Confirm appointment' and 'Prepare presentation' as items, and save it.",
+    "solution": "Create a new note titled 'Client Call' with the note type as checklist. Add items 'Confirm appointment' and 'Prepare presentation'. Save the note."
+  },
+  {
+    "task": "Set the theme color to Black & White, create a checklist titled 'House Renovation' with items 'Paint walls' and 'Install new lights'.",
+    "solution": "Set the theme color of the app to Black & White. Create a checklist titled 'House Renovation'. Add items 'Paint walls' and 'Install new lights'."
+  },
+  {
+    "task": "Open the note titled 'Grocery List', add the item 'Eggs' to the checklist, and save and close the note.",
+    "solution": "Open the note titled 'Grocery List'. Add the item 'Eggs' to the checklist. Save and close the note."
+  },
+  {
+    "task": "Set the theme color to Light, create a new text note titled 'Travel Itinerary', set the font size to 175%, and add 'Flight details' as content.",
+    "solution": "Set the theme color of the app to Light. Create a new text note titled 'Travel Itinerary'. Set the font size to 175%. Add 'Flight details' as content."
+  },
+  {
+    "task": "Scroll through the settings page to view advanced options, then set the app theme color to dark red.",
+    "solution": "Scroll through the settings page to view advanced options. Set the theme color of the app to Dark Red."
+  },
+  {
+    "task": "Increase the font size to 250%, then add a new checklist item titled \"Grocery Shopping\" to the top of the checklist in the Notes app, and finally set the primary color of the app to teal.",
+    "solution": "First, change the font size to 250%. Next, create a new checklist item titled \"Grocery Shopping\" at the top of the current checklist. Lastly, set the primary color of the Notes app to teal."
+  },
+  {
+    "task": "Export all notes to my Dropbox folder after setting the font size of the app to 150% and changing the text color of the note to blue.",
+    "solution": "Begin by changing the font size of the app to 150%. Then change the text color of the current note to blue. Finally, export all notes to the designated Dropbox folder."
+  },
+  {
+    "task": "Create a new text-type note titled \"Meeting Minutes\", set its font size to 90%, highlight the next instance of the word \"meeting\" within the note, and save the changes.",
+    "solution": "Create a text-type note called \"Meeting Minutes\". Then set the font size of the new note to 90%. Search for the word \"meeting\" and highlight the next instance found. Lastly, save the changes made to this note."
+  },
+  {
+    "task": "Switch to the next note in the Notes app, change its background color to light grey, and decrease the font size to 50%.",
+    "solution": "First, switch to the next note available in the Notes app. Then change the background color of that note to light grey. Finally, decrease the font size within this note to 50%."
+  },
+  {
+    "task": "Set the theme color to auto light/dark mode, change the font size to 175%, and then create a new checklist note titled \"Travel Essentials\" with the first item as \"Passport\".",
+    "solution": "First, change the theme color setting to auto light/dark mode. Then set the font size to 175%. Finally, create a new checklist note titled \"Travel Essentials\" and add \"Passport\" as the first item."
+  },
+  {
+    "task": "Open the note titled \"Meeting Notes\", edit it to add \"Remember to call John tomorrow,\" and then change the font size to 150% in the Notes app.",
+    "solution": "Open the note named \"Meeting Notes\". Edit it to include the text \"Remember to call John tomorrow.\" Finally, adjust the font size in the Notes app to 150%."
+  },
+  {
+    "task": "Switch the theme color setting from auto light/dark to Black & White, then import notes from my email account and change the font size of the app to 90%.",
+    "solution": "First, toggle the theme color to Black & White. Next, import notes from the specified email account. Lastly, change the font size of the entire app to 90%."
+  },
+  {
+    "task": "Create a new checklist type note titled 'Grocery List', add a new item 'Buy milk', and set the font size of the note to 150%.",
+    "solution": "First, create the checklist note with the title 'Grocery List'. Then, add a checklist item 'Buy milk'. Finally, change the font size of the note to 150%."
+  },
+  {
+    "task": "Open the note titled 'Meeting Notes', change the background color to light gray, input 'strategy' to search within the note, and highlight the next matching text 'dinner'.",
+    "solution": "Open the 'Meeting Notes' note, change its background color to light gray. Then, use the search function to enter 'strategy' and highlight the next occurrence of the word 'dinner'."
+  },
+  {
+    "task": "Switch to the next note, edit its content to 'Buy groceries after work.', and save the note.",
+    "solution": "First, switch to the next note. Then, change its content to 'Buy groceries after work.' and save the note."
+  },
+  {
+    "task": "Create a new text note type with the title 'Vacation Ideas', input 'beach' to search within the note and show the word count.",
+    "solution": "Create a new text note named 'Vacation Ideas'. Then, search within the note for the word 'beach' and display the word count."
+  },
+  {
+    "task": "Open the note titled 'Workout Plan', adjust the font size to 90%, and set the text color to blue.",
+    "solution": "Open the 'Workout Plan' note, change its font size to 90%, and set the text color to blue."
+  },
+  {
+    "task": "Create a new note titled 'Grocery List', add items to it, and save it with autosave enabled.",
+    "solution": "Choose to autosave notes in settings, create a new note with the title 'Grocery List', add items to the note, and the note will be saved automatically."
+  },
+  {
+    "task": "Create a note titled 'Vacation Packing', set the font size to 150%, and export it as a PDF.",
+    "solution": "Create a new note with the title 'Vacation Packing', toggle the font size to 150%, and export the note as a PDF file."
+  },
+  {
+    "task": "Enable automatic backups, create a note titled 'Gift Ideas', and then scroll down to view more notes in the title list.",
+    "solution": "Enable automatic backups in settings, create a new note with the title 'Gift Ideas', and scroll down to view more notes in the title list."
+  },
+  {
+    "task": "Change the alignment of the app in settings, then create a shortcut for the note titled 'Grocery List' on the home screen.",
+    "solution": "Change the alignment of the app in the settings, then create a shortcut on the home screen for the note titled 'Grocery List'."
+  },
+  {
+    "task": "Open the note titled 'Project Timeline', rename it to 'Project Plan 2024', and save it.",
+    "solution": "Open the note titled 'Project Timeline', rename the current note to 'Project Plan 2024', and save the current note after editing."
+  },
+  {
+    "task": "Select the 'Checklist' type for a new note, name it 'Weekend Tasks', and set the font size to 125%.",
+    "solution": "Select the 'Checklist' type for a new note, create a new note with the title 'Weekend Tasks', and set the font size to 125%."
+  },
+  {
+    "task": "Open the note titled 'Workout Plan', change the font size to 200%, and save the changes.",
+    "solution": "Open the note titled 'Workout Plan', toggle the font size to 200%, and save the current note after editing."
+  },
+  {
+    "task": "Scroll down in settings to enable automatic backups, then scroll up to navigate back to the previous screen.",
+    "solution": "Scroll down to see more settings, enable automatic backups in settings, then click back to exit settings and scroll up to view previous notes in the title list."
+  },
+  {
+    "task": "Create a new checklist titled 'Project Tasks', add items 'Research', 'Outline', 'Draft', and move 'Research' to the top of the list.",
+    "solution": "Create a new checklist note titled 'Project Tasks', add 'Research', 'Outline', 'Draft', and then move 'Research' to the top."
+  },
+  {
+    "task": "Open the note titled 'Grocery List', add the items 'Milk' and 'Bread', and export it as a PDF file.",
+    "solution": "Open the note titled 'Grocery List', add 'Milk' and 'Bread' to the checklist, and export it as a PDF file."
+  },
+  {
+    "task": "Switch to the previous note in the list, rename it to 'Meeting Notes April 27', and set the font size to 50% for easier reading.",
+    "solution": "Switch to the previous note, rename it to 'Meeting Notes April 27', and set the font size to 50%."
+  },
+  {
+    "task": "Import notes from local storage, then open the note titled 'Read Later' and show the word count.",
+    "solution": "Import notes from local storage, open the note titled 'Read Later', and enable word count display in settings."
+  },
+  {
+    "task": "Create a new note titled 'Workspace Setup', enable monospaced font, and add 'Desk', 'Chair', 'Monitor' as checklist items.",
+    "solution": "Create a new text note titled 'Workspace Setup', enable monospaced font in settings, and add the checklist items 'Desk', 'Chair', and 'Monitor'."
+  },
+  {
+    "task": "Open the note titled 'Grocery List', sort the items using custom sorting, and save the changes made to the note.",
+    "solution": "Open the note titled 'Grocery List', apply custom sorting to the checklist items, and save the changes."
+  },
+  {
+    "task": "Scroll down the settings page, enable autosave notes, and then set the alignment of the app.",
+    "solution": "Scroll down the settings page, enable autosave notes, and set the preferred alignment of the app."
+  },
+  {
+    "task": "Create a new note titled 'Daily Goals', set the app to show the keyboard on startup, and enable line wrap in the settings.",
+    "solution": "Create a new note titled 'Daily Goals', set the app to show the keyboard on startup, and enable line wrap in the settings."
+  },
+  {
+    "task": "Create a new note titled 'Packing List' and edit the content to include 'Don't forget to bring passport', then swipe down to switch to the next note.",
+    "solution": "Create a new note with the title 'Packing List', edit its content with 'Don't forget to bring passport', and swipe down on the scrollbar to switch to the next note."
+  },
+  {
+    "task": "Export the note titled 'Work Presentation' as a file, then open the file associated with it.",
+    "solution": "Export the note titled 'Work Presentation' as a file and then open the file associated with it."
+  },
+  {
+    "task": "Create a new note with the title 'Shopping List', set the checklist type for the note, and confirm the sort type as date created.",
+    "solution": "Create a new note with the title 'Shopping List', select the checklist type, and confirm the sort type of the checklist as date created."
+  },
+  {
+    "task": "Print the note titled 'Recipe' and then lock the note titled 'Personal Diary', confirming the lock with 'OK'.",
+    "solution": "Print the note titled 'Recipe' and then lock the note titled 'Personal Diary' by confirming the action with 'OK'."
+  },
+  {
+    "task": "Create a new note titled 'ToDo List', then create a shortcut for this note.",
+    "solution": "Create a new note with the title 'ToDo List' and create a shortcut for this note."
+  },
+  {
+    "task": "Delete the note titled 'Old Notes' and confirm the deletion with 'Delete', then export all notes to an external location.",
+    "solution": "Delete the note titled 'Old Notes' and confirm the action with 'Delete', then export all notes to an external location."
+  },
+  {
+    "task": "Change the theme color of the Notes app to dark red and then set the font size to 175%.",
+    "solution": "Change the theme color of the Notes app to dark red and set the font size to 175%."
+  },
+  {
+    "task": "Enable clickable links and emails in the Notes app settings and then scroll down through the settings page to view more options.",
+    "solution": "Enable clickable links and emails in the Notes app settings and scroll down through the settings page."
+  },
+  {
+    "task": "Create a new note titled 'Books to Read', export it as a file, and then open the exported file.",
+    "solution": "Create a new note with the title 'Books to Read', export it as a file, and open the exported file."
+  },
+  {
+    "task": "Lock the note titled 'Personal Diary' and confirm, then show the about page of the app.",
+    "solution": "Lock the note titled 'Personal Diary', confirm the action, and show the about page of the app."
+  },
+  {
+    "task": "Create a new note titled 'Shopping List', add the items 'Apples', 'Bananas', and 'Milk', then set the font size to 50% and export it as a PDF file.",
+    "solution": "Create a new note titled 'Shopping List' -> Add items 'Apples', 'Bananas', and 'Milk' -> Set the font size to 50% -> Export the note as a PDF file."
+  },
+  {
+    "task": "Open the note titled 'Project Plan', search for the term 'deadline', and then save the changes to the note.",
+    "solution": "Open the note titled 'Project Plan' -> Search for the term 'deadline' -> Save the changes made to the note."
+  },
+  {
+    "task": "Modify the note 'Weekly Goals' to say 'Complete the report by Thursday', set the alignment to center, and lock the note.",
+    "solution": "Open the note 'Weekly Goals' -> Modify the content to say 'Complete the report by Thursday' -> Set the text alignment to center -> Lock the note."
+  },
+  {
+    "task": "Remove all completed items from the checklist 'Daily Tasks', then enable automatic backups in the app.",
+    "solution": "Open the checklist 'Daily Tasks' -> Remove all completed items -> Enable automatic backups in the app settings."
+  },
+  {
+    "task": "Create a shortcut on the home screen for the note 'Travel Checklist', then enable clickable links and emails in notes.",
+    "solution": "Create a shortcut on the home screen for the note 'Travel Checklist' -> Enable clickable links and emails in notes in the app settings."
+  },
+  {
+    "task": "Change the primary color of the app to blue, customize the widget colors to green and white, and enable line wrap in the notes app.",
+    "solution": "Open color settings -> Change primary color to blue -> Customize widget colors to green and white -> Enable line wrap in app settings."
+  },
+  {
+    "task": "Open the note 'Meeting Minutes', set the font to monospaced, display the word count for the note, and then save the changes.",
+    "solution": "Open the note 'Meeting Minutes' -> Set font to monospaced -> Display word count -> Save the changes."
+  },
+  {
+    "task": "Search the current note for the term 'invoice', set the cursor to the end of the note, and then enable keyboard incognito mode.",
+    "solution": "Search the current note for the term 'invoice' -> Set the cursor to the end of the note -> Enable keyboard incognito mode."
+  },
+  {
+    "task": "Modify the note content to say 'Draft email to client by Wednesday', set text alignment to center, and set the font size to 80%.",
+    "solution": "Open the note -> Modify the content to 'Draft email to client by Wednesday' -> Set text alignment to center -> Set font size to 80%."
+  },
+  {
+    "task": "Create a checklist for 'Conference Prep', add items 'Book venue', 'Send invites', and 'Prepare slides', then enable automatic backups.",
+    "solution": "Create a checklist titled 'Conference Prep' -> Add items 'Book venue', 'Send invites', and 'Prepare slides' -> Enable automatic backups."
+  },
+  {
+    "task": "Create a new checklist titled \"Road Trip Essentials\", add items \"Map\", \"Snacks\", \"Water\", enable the setting to show a note picker on startup, and then switch to the \"Workout Plan\" note.",
+    "solution": "Create a new checklist note titled \"Road Trip Essentials\", add checklist items \"Map\", \"Snacks\", and \"Water\". Then, go to settings to enable the note picker on startup. Finally, switch to the note titled \"Workout Plan\"."
+  },
+  {
+    "task": "Open the \"Meeting Minutes\" note, search for the word \"Decision\", go to the next match, close the search box, then change the theme color of the app to dark.",
+    "solution": "Open the note titled \"Meeting Minutes\", search for \"Decision\", navigate to the next matching instance, close the search box, and change the app theme to dark."
+  },
+  {
+    "task": "Create a new note titled \"Books to Read\", list the first book title, then set the app to show the keyboard on startup and make links and emails clickable.",
+    "solution": "Create a new note titled \"Books to Read\", add the first book title, then go to settings to enable the keyboard on startup and make links and emails clickable."
+  },
+  {
+    "task": "Change the font size to 150%, create a new checklist titled \"Household Chores\", add a new item \"Vacuuming\", then exit the settings menu.",
+    "solution": "Adjust the font size to 150%, create a checklist named \"Household Chores\", add the item \"Vacuuming\", and then exit the settings menu."
+  },
+  {
+    "task": "Create a new note, unselect the text note mode, select the checklist mode, name it \"Holiday Plans\", and add three checklist items: \"Book flights\", \"Reserve hotel\", and \"Pack luggage\".",
+    "solution": "Begin creating a new note, deselect text note mode, select checklist mode, name the note \"Holiday Plans\", and add items \"Book flights\", \"Reserve hotel\", and \"Pack luggage\"."
+  },
+  {
+    "task": "Change the theme color of the app to black and white, create a new note titled \"Daily Affirmations\", write your affirmation, make sure the cursor is placed at the end after writing, and enable line wrapping.",
+    "solution": "Switch the theme color to black and white, create a note called \"Daily Affirmations\", write your affirmation ensuring the cursor is at the end, and enable line wrapping."
+  },
+  {
+    "task": "Create a note titled \"Recipe Ideas\", switch to the next item, and then enable incognito mode of keyboards in the settings.",
+    "solution": "Make a note called \"Recipe Ideas\", navigate to the next item, and then enable keyboard incognito mode in settings."
+  },
+  {
+    "task": "Set to show a note picker on startup, switch to the previous item in the note, and then change the widget colors in the settings.",
+    "solution": "Enable the note picker on startup setting, navigate to the previous item in the note, and alter the widget colors in the settings."
+  },
+  {
+    "task": "Create a new note titled 'Meeting Notes', set the font size to 150%, and switch the theme color to dark red in the Notes app",
+    "solution": "First, create a new note titled 'Meeting Notes'. Then, adjust the font size to 150%. Finally, switch the theme color to dark red."
+  },
+  {
+    "task": "Open the note titled 'Recipes', change the font size to 200%, and set the text color to blue",
+    "solution": "Open the note titled 'Recipes', adjust the font size to 200%, then change the text color to blue."
+  },
+  {
+    "task": "Open the note titled 'Grocery List', decrease the font size to 75%, and set the app background color to white",
+    "solution": "Open the note titled 'Grocery List', set the font size to 75%, and then change the background color to white."
+  },
+  {
+    "task": "Create a new checklist type note titled 'Books to Read', set the font size to 175%, and change the app icon color to green",
+    "solution": "First, create a new checklist type note titled 'Books to Read'. Then, set the font size to 175% and change the app icon color to green."
+  },
+  {
+    "task": "Open the note titled 'Workout Routine', change the font size to 90%, and navigate to the next note in the list",
+    "solution": "Open the note titled 'Workout Routine', adjust the font size to 90%, and then navigate to the next note in the list."
+  },
+  {
+    "task": "Create a new note titled 'Birthday Party Ideas' with font size set to 125% and ensure the note is saved with success messages displayed",
+    "solution": "Create a new note titled 'Birthday Party Ideas', set the font size to 125%, and ensure display of save success messages is enabled before saving the note."
+  },
+  {
+    "task": "Adjust the font size of the 'Holiday Plans' note to 300%, change the background color to white, and save the color settings",
+    "solution": "Open the note titled 'Holiday Plans', adjust the font size to 300%, change the background color to white, and save the color settings."
+  },
+  {
+    "task": "Set automatic backups to enabled and then import notes from your previously saved file",
+    "solution": "Enable automatic backups and then import notes from your previously saved file."
+  },
+  {
+    "task": "Open the note titled 'Project Ideas', set the font size to 100%, and then switch to the previous item in the checklist within the same note",
+    "solution": "Open the note titled 'Project Ideas', set the font size to 100%, and then navigate to the previous item in the checklist within that note."
+  },
+  {
+    "task": "Create a new checklist type note titled 'Travel Checklist', set the font size to 150%, and access color settings to set the text color to blue",
+    "solution": "First, create a new checklist type note titled 'Travel Checklist'. Then, set the font size to 150% and access the color settings to set the text color to blue."
+  },
+  {
+    "task": "Add an item titled 'Milk' to the 'Grocery List' note, then delete the 'Eggs' item.",
+    "solution": "First, open the note titled 'Grocery List'. Next, add a new checklist item with the title 'Milk'. Then, find the checklist item 'Eggs' and delete it."
+  },
+  {
+    "task": "Create a new text note titled 'Conference Schedule', add the text 'Keynote at 10 AM', and then lock the note.",
+    "solution": "First, create a new text note titled 'Conference Schedule'. Then, add the text 'Keynote at 10 AM' to the note. Finally, lock the note and confirm."
+  },
+  {
+    "task": "Edit the note titled 'Meeting Notes' to add the text 'Discussed project timelines and budget.', then highlight the next occurrence of 'project' in the note.",
+    "solution": "Open the note titled 'Meeting Notes' and add the text 'Discussed project timelines and budget.'. Then, search for the word 'project' and highlight the next occurrence in the note."
+  },
+  {
+    "task": "Switch to the previous note and save any changes made, then switch back to the original note and search for the word 'appointment'.",
+    "solution": "First, save any changes and switch to the previous note. Then, switch back to the original note and search for the word 'appointment'."
+  },
+  {
+    "task": "Create a new checklist for 'House Renovation Tasks', add an item titled 'Paint Bedroom', and then scroll down to view the next item.",
+    "solution": "First, create a new checklist titled 'House Renovation Tasks'. Next, add a checklist item titled 'Paint Bedroom'. Finally, scroll down to view the next item in the checklist."
+  },
+  {
+    "task": "Find the next occurrence of the word 'budget' in the current note and highlight it, then close the search box.",
+    "solution": "Search for the word 'budget' in the current note and highlight the next occurrence. After that, close the search box."
+  },
+  {
+    "task": "Switch to the next note in the list and add the title 'Work Meeting Notes' to it.",
+    "solution": "Switch to the next note in the list and then add the title 'Work Meeting Notes' to the note."
+  },
+  {
+    "task": "Edit the 'Home Repairs' note to move the checklist item 'Call plumber' to the bottom of the list, then save the changes.",
+    "solution": "Open the 'Home Repairs' note and move the checklist item 'Call plumber' to the bottom of the list. Finally, save the changes."
+  },
+  {
+    "task": "Set the theme color of the Notes app to Dark Red and then scroll through the settings page to find the option for data backup.",
+    "solution": "First, set the theme color of the Notes app to Dark Red. Then, navigate to the settings page and scroll to find the data backup option."
+  },
+  {
+    "task": "Create a new checklist for 'House Cleaning Tasks', add an item titled 'Vacuum Living Room', and highlight the previous occurrence of 'cleaning' in the current note.",
+    "solution": "First, create a new checklist for 'House Cleaning Tasks'. Then, add a checklist item titled 'Vacuum Living Room'. Finally, search for the word 'cleaning' in the current note and highlight the previous occurrence."
+  },
+  {
+    "task": "Open the file associated with the note 'Work Report', set the font size to 125%, and enable line wrap.",
+    "solution": "Access the 'Work Report' note, adjust the font size to 125%, and modify the editing settings to enable line wrap."
+  },
+  {
+    "task": "Create a new text note titled 'Grocery List', set the cursor to appear at the end of the note, and make all links and emails clickable.",
+    "solution": "Create a new note titled 'Grocery List', adjust the cursor settings to always appear at the end, and ensure that the note settings allow links and emails to be clickable."
+  },
+  {
+    "task": "Set the font size of the app to 150%, lock the note 'Personal Diary' with a password, and show a picker for recent notes every time you launch the app.",
+    "solution": "Adjust the app's font size to 150%, password-protect the 'Personal Diary' note, and enable the feature that shows recent notes on startup."
+  },
+  {
+    "task": "Use monospaced font for easier code readability in the note 'Snippet Collection', enable incognito mode of keyboards, and set the app to automatically save notes every 5 minutes.",
+    "solution": "Change the font of 'Snippet Collection' to monospaced, enable the incognito mode for keyboards, and configure the app for auto-saving every 5 minutes."
+  },
+  {
+    "task": "Display the keyboard immediately when starting a new note, create a new checklist note titled 'Weekend Tasks,' and remove all completed items from that checklist.",
+    "solution": "Enable the keyboard to show on startup, create a 'Weekend Tasks' checklist note, and remove any completed items within the checklist."
+  },
+  {
+    "task": "Access the 'About' section of the app to view version and copyright information, and scroll through the settings page for additional customization options.",
+    "solution": "Navigate to the 'About' section for app information, then explore the settings page for more customization options."
+  },
+  {
+    "task": "Print the note 'Vacation Itinerary,' and adjust the alignment to center in the note 'Poetry Collection.'",
+    "solution": "Print out the 'Vacation Itinerary' note, then access and adjust the text alignment of the 'Poetry Collection' note to center."
+  },
+  {
+    "task": "Set the font size of the app to 60%, and display the word count for the note 'Daily Journal.'",
+    "solution": "Change the font size of the app to 60%, and enable the word count display for the 'Daily Journal' note."
+  },
+  {
+    "task": "Enable line wrap, use the monospaced font for any notes containing code snippets, and make all links and emails clickable.",
+    "solution": "Adjust settings to enable line wrap and clickable links/emails globally, and set a monospaced font specifically for notes with code snippets."
+  },
+  {
+    "task": "Set the font size to 200%, create a new note titled 'Meeting Notes,' and ensure the keyboard is displayed immediately when the note is opened.",
+    "solution": "Adjust the app font size to 200%, create 'Meeting Notes' as a new note, and make sure the keyboard pops up when the note is accessed."
+  },
+  {
+    "task": "Create a new 'Party Checklist' note with a checklist and move the first item to the top, then lock the note.",
+    "solution": "First, create a new note with the title 'Party Checklist' and select the 'Checklist' type. Then, select the first checklist item and move it to the top of the list. Finally, lock the current note."
+  },
+  {
+    "task": "Create a 'Grocery List' checklist, sort its items by Title, and then export it to the 'Documents' folder.",
+    "solution": "Create a new note titled 'Grocery List' and select the 'Checklist' type. Then sort the items of the current checklist by Title. After that, export the note to the 'Documents' folder."
+  },
+  {
+    "task": "Create a text note titled 'Daily Journal', increase the font size to 250%, and change the theme color to Dark Red.",
+    "solution": "Create a new note titled 'Daily Journal' and select the 'Text Note' type. Then change the font size of the app to 250%. After that, set the theme color to Dark Red."
+  },
+  {
+    "task": "Add a 'Party Items' checklist, set font size to 125%, enable automatic backups, and disable save success messages.",
+    "solution": "Add a new note with the title 'Party Items' and select the 'Checklist' type. Then set the font size of the app to 125%. After that, enable automatic backups and set display save success messages to off."
+  },
+  {
+    "task": "Create a checklist named 'Packing List', move the first item to the bottom, and set the theme color to Light.",
+    "solution": "Create a new note with the title 'Packing List' and select the 'Checklist' type. Then select the first checklist item and move it to the bottom of the list. After that, set the theme color to Light."
+  },
+  {
+    "task": "Create a shortcut for a note titled 'Work Tasks', sort its items by Custom, and enable line wrap.",
+    "solution": "Create a new note titled 'Work Tasks' and select the 'Checklist' type. Then create a shortcut for the current note. After that, sort the items of the checklist by Custom and enable line wrap in the notes."
+  },
+  {
+    "task": "Import notes from the 'Backup' folder, set font size to 175%, and display note picker on startup.",
+    "solution": "Import notes from the 'Backup' folder. Then set the font size of the app to 175%. After that, show a note picker on startup."
+  },
+  {
+    "task": "Create a 'Shopping List', increase the font size to 250%, and adjust the theme color to white.",
+    "solution": "Open a new note and set its title to 'Shopping List', select the 'Checklist' type. Then increase the font size to 250%. After that, set the theme color to white."
+  },
+  {
+    "task": "Create a new note with the title 'Team Meeting' as a text note, set the font size to 150%, and export it as a PDF file.",
+    "solution": "Add a new note with the title 'Team Meeting' and select the text note type. Change the font size of the note to 150%. Export the current note as a PDF file."
+  },
+  {
+    "task": "Create a new checklist note titled 'Weekend Errands', add items 'Laundry', 'Grocery Shopping', and 'Car Wash', and move 'Car Wash' to the top of the list.",
+    "solution": "Add a new note with the title 'Weekend Errands' and select the checklist type. Add the checklist items 'Laundry', 'Grocery Shopping', and 'Car Wash'. Move the selected checklist item 'Car Wash' to the top of the list."
+  },
+  {
+    "task": "Rename the selected checklist item to 'Buy Milk', change its position to the top of the list, and lock the current note with confirmation.",
+    "solution": "Rename the selected checklist item to 'Buy Milk'. Move the selected checklist item to the top of the list. Lock the current note and confirm locking."
+  },
+  {
+    "task": "Create a new note with the title 'Daily Journal', justify the text alignment, set the theme to auto light/dark mode, and create a shortcut for the note on the home screen.",
+    "solution": "Add a new note with the title 'Daily Journal' and select the text note type. Set the text alignment in all notes to justified. Set the theme to auto light/dark mode. Create a shortcut for the current note on the home screen."
+  },
+  {
+    "task": "Delete the selected checklist item 'Wash car' from the note 'Cleaning Tasks', remove all completed items from the checklist, and print the current note.",
+    "solution": "Delete the selected checklist item 'Wash car'. Remove all completed items from the checklist. Print the current note."
+  },
+  {
+    "task": "Add a new note titled 'Weekend shopping list', select the checklist type, and move the item 'Buy milk' to the bottom of the list.",
+    "solution": "Add a new note with the title 'Weekend shopping list' and select the checklist type. Then move the selected item 'Buy milk' to the bottom of the checklist."
+  },
+  {
+    "task": "Create a new note titled 'Grocery Shopping', select the checklist type, then remove all completed items from the list and export it as a PDF.",
+    "solution": "Add a new note with the title 'Grocery Shopping' and select the checklist type. Remove all completed items from the current checklist and export the note as a PDF file."
+  },
+  {
+    "task": "Add a new note titled 'Project Ideas', set the font size to 150%, and enable automatic backups for notes.",
+    "solution": "Add a new note with the title 'Project Ideas' and select the text note type, set the font size of the current note to 150%, and enable automatic backups of notes."
+  },
+  {
+    "task": "Change the primary color of the app to green, customize the widget colors to blue and white, and confirm these changes.",
+    "solution": "Change the primary color of the app to green, customize the widget colors to blue and white, and exit the settings menu to confirm the changes."
+  },
+  {
+    "task": "Create a new note titled 'Meal Prep', select the checklist type, rename the selected checklist item to 'Weekly Menu', and move it to the top of the list.",
+    "solution": "Add a new note with the title 'Meal Prep' and select the checklist type, rename the selected checklist item to 'Weekly Menu', and move it to the top of the list."
+  },
+  {
+    "task": "Create a new note titled 'To-Do List', select the checklist type with items 'Call John' and 'Buy milk', then move 'Call John' to the top and 'Buy milk' to the bottom.",
+    "solution": "Add a new note with the title 'To-Do List' and select the checklist type. Add 'Call John' and 'Buy milk' to the checklist, then move 'Call John' to the top and 'Buy milk' to the bottom of the list."
+  },
+  {
+    "task": "Create a shortcut for the note titled 'Grocery List' on the home screen, export a different note titled 'Monthly report' as a file, and display a success message after saving notes.",
+    "solution": "Create a shortcut for the note titled 'Grocery List' on the home screen. Export the note 'Monthly report' as a file. Display a success message after saving notes."
+  },
+  {
+    "task": "Add a new note titled 'Shopping List', select the checklist type, and remove all done items from the checklist titled 'Grocery Shopping'.",
+    "solution": "Add a new note with the title 'Shopping List' and select the checklist type. Then remove all done items from the checklist titled 'Grocery Shopping'."
+  },
+  {
+    "task": "Change the primary color of the app to green, then exit the settings page and add a new note titled 'Errands' selecting the checklist type.",
+    "solution": "Change the primary color of the app to green, exit the settings page, and add a new note with the title 'Errands' and select the checklist type."
+  },
+  {
+    "task": "Enable automatic backups of notes, show a note picker every time the app starts, then close the color settings popup.",
+    "solution": "Enable automatic backups of notes, show a note picker every time the app starts, and close the color settings popup."
+  },
+  {
+    "task": "Sort the items of the current checklist by title, then move the checklist item named 'Notes' to the top of the list.",
+    "solution": "First, sort the checklist items by title, then locate and move the item named 'Notes' to the top of the list."
+  },
+  {
+    "task": "Check the word count of 'Annual Report' and set the font size to 150% in notes app.",
+    "solution": "Display the word count for the document titled 'Annual Report' and then change the font size setting in the app to 150%."
+  },
+  {
+    "task": "Enable autosave and automatic backups, then create a new note titled 'Project Summary' with type 'text note'.",
+    "solution": "Start by enabling both the autosave and automatic backups features, then proceed to add a new note titled 'Project Summary' and select the text note type."
+  },
+  {
+    "task": "Customize the widget colors to blue and green, then save the set colors of the app.",
+    "solution": "First, go to the widget color customization settings and set the colors to blue and green. Then, save these color settings."
+  },
+  {
+    "task": "Rename the checklist item 'To Buy' to 'Grocery List', then sort the items by title and move 'Grocery List' to the top.",
+    "solution": "First, rename the item 'To Buy' to 'Grocery List'. Then, sort all checklist items by title and move 'Grocery List' to the top of the list."
+  },
+  {
+    "task": "Create a new note titled 'Weekly Tasks' with type 'checklist', then disable the autosave notes feature.",
+    "solution": "Add a new note with the title 'Weekly Tasks' and select the checklist type. Afterward, disable the autosave notes feature."
+  },
+  {
+    "task": "Enable display save success messages, save the color settings, then close the popup window of setting colors.",
+    "solution": "First, enable the feature to display save success messages. Then save the current color settings and close the popup window for setting colors."
+  },
+  {
+    "task": "Rename the selected checklist item to 'Homework', move it to the bottom of the list, then sort the checklist items by date created.",
+    "solution": "Rename the selected checklist item to 'Homework'. Next, move it to the bottom of the list and afterward sort all checklist items by their date of creation."
+  },
+  {
+    "task": "Create a new note titled 'Daily Tasks', set the note type to checklist, add items 'Breakfast', 'Workout', and 'Work', then set the theme color of the app to Light.",
+    "solution": "Create a new note with the title 'Daily Tasks' and select the checklist type, add items 'Breakfast', 'Workout', and 'Work' to the checklist, and then set the theme color of the app to Light."
+  },
+  {
+    "task": "Add a new note with the title 'Travel Plan', set the note type to text, activate the use of monospaced font, and export the note as a PDF file.",
+    "solution": "Add a new note with the title 'Travel Plan' and select the text note type, activate the use of monospaced font, and export the current note as a PDF file."
+  },
+  {
+    "task": "Add a new note with the title 'Learning Goals', set the note type to checklist, add items 'Read Chapter 1', 'Practice Problems', and 'Review Notes', then scroll down the settings page to show word count in notes.",
+    "solution": "Create a new note titled 'Learning Goals' and select the checklist type, add items 'Read Chapter 1', 'Practice Problems', and 'Review Notes' to the checklist, then scroll down the settings page to activate the word count feature."
+  },
+  {
+    "task": "Add a new note titled 'Grocery List', set the note type to checklist, add items 'Milk', 'Bread', and 'Eggs', move the item 'Bread' to the top of the list, and then lock the note.",
+    "solution": "Create a new note with the title 'Grocery List' and set it to checklist type, add items 'Milk', 'Bread', and 'Eggs' to the checklist, move the item 'Bread' to the top of the list, and then lock the note."
+  },
+  {
+    "task": "Create a new note titled 'Work Notes', set the note type to text, change the background color to white, set the text color to blue, and then print the note.",
+    "solution": "Create a new note titled 'Work Notes' and select the text note type, change the background color to white, set the text color to blue, and then print the note."
+  },
+  {
+    "task": "Add a new note with the title 'Workout Plan', set the note type to checklist, add items 'Cardio', 'Strength Training', and 'Yoga', rename the item 'Strength Training' to 'Weights', and confirm the creation of the note.",
+    "solution": "Add a new note with the title 'Workout Plan' and select the checklist type, add items 'Cardio', 'Strength Training', and 'Yoga' to the checklist, rename 'Strength Training' to 'Weights', and confirm the creation of the note."
+  },
+  {
+    "task": "Import notes from the backup file, change the theme color of the app to Dark, then view information about the app.",
+    "solution": "Import notes from the backup file, set the theme color of the app to Dark, and then view information about the app."
+  },
+  {
+    "task": "Create a new note titled 'Project Ideas', set the note type to text, activate the use of monospaced font, set the text color to blue, and show word count in the notes.",
+    "solution": "Create a new note titled 'Project Ideas' and select the text note type, activate the use of monospaced font, set the text color to blue, and then show word count in the notes."
+  },
+  {
+    "task": "Add a new note with the title 'Meeting Agenda', set the note type to checklist, add items 'Introduction', 'Project Updates', and 'Q&A', move 'Q&A' to the bottom of the list, and create a shortcut for the note.",
+    "solution": "Create a new note with the title 'Meeting Agenda' and select the checklist type, add items 'Introduction', 'Project Updates', and 'Q&A' to the checklist, move 'Q&A' to the bottom of the list, and then create a shortcut for the note."
+  },
+  {
+    "task": "Create a new note titled 'Weekly Menu', set the note type to text, change the note name to 'Weekly Meal Plan', set the app icon color to red, and export the note as a PDF file.",
+    "solution": "Create a new note with the title 'Weekly Menu' and select the text note type, change the note name to 'Weekly Meal Plan', set the app icon color to red, and then export the note as a PDF file."
+  },
+  {
+    "task": "Delete the note 'Old Project Ideas' after confirming and then create a new note with the title 'New Project Ideas' and select the text note type.",
+    "solution": "First, delete the note 'Old Project Ideas' and confirm by tapping OK. Then, create a new note titled 'New Project Ideas' and set it to be a text note."
+  },
+  {
+    "task": "Open the file associated with the note 'Work Report' and then export it as a PDF file.",
+    "solution": "Open the 'Work Report' note to access the associated file. Once opened, use the export feature to save the file as a PDF."
+  },
+  {
+    "task": "Lock the note 'Personal Diary' with a password and then set the keyboard to automatically appear when the app starts.",
+    "solution": "First, go to the 'Personal Diary' note and apply a password lock. After locking the note, enable the setting for the keyboard to appear automatically when the app launches."
+  },
+  {
+    "task": "Add a new note with the title 'Weekend Plans' and select the checklist type, then move the selected checklist item to the top of the list.",
+    "solution": "Create a new note titled 'Weekend Plans' and select the checklist type. After creating the checklist, select an item and move it to the top of the list."
+  },
+  {
+    "task": "Sort the checklist items in 'Holiday Planning' by custom order and then remove all completed items from the 'To-Do List' checklist",
+    "solution": "First, navigate to the 'Holiday Planning' note and sort the checklist items by custom order. Next, go to the 'To-Do List' checklist and remove all completed items."
+  },
+  {
+    "task": "Enable automatic backups to occur every night at 2 AM, then import notes from the backup file located in the 'Backup' folder.",
+    "solution": "Activate the setting for automatic backups to occur every night at 2 AM. Once enabled, import notes from the backup file found in the 'Backup' folder."
+  },
+  {
+    "task": "Create a shortcut on the home screen for the note titled 'Workout Routines' and then switch to a monospaced font for the coding notes.",
+    "solution": "First, create a home screen shortcut for the 'Workout Routines' note. After creating the shortcut, change the font for the coding notes to a monospaced font."
+  },
+  {
+    "task": "Export the checklist titled 'Grocery List' as a PDF file and then rename the current note to 'Meeting Notes - April 2024'.",
+    "solution": "First, export the 'Grocery List' checklist as a PDF file. After exporting, rename the current note to 'Meeting Notes - April 2024'."
+  },
+  {
+    "task": "Set the text alignment to justified in the current editing note and then show the word count for the document 'Chapter 1 Draft'.",
+    "solution": "Adjust the text alignment to justified in the currently opened note. Once done, display the word count for the document 'Chapter 1 Draft'."
+  },
+  {
+    "task": "Show the 'About' page of the Notes app, then exit the settings menu after adjusting the theme colors.",
+    "solution": "First, navigate to and display the 'About' page of the Notes app. After viewing, go to the settings menu, adjust the theme colors, and then exit the settings menu."
+  },
+  {
+    "task": "Set the new name for the note to 'Project Launch Details' and confirm, then activate the setting to show a note picker on startup.",
+    "solution": "Rename the note to 'Project Launch Details' and confirm the change. After renaming the note, enable the setting for showing a note picker on startup."
+  },
+  {
+    "task": "Add a new note with the title 'Daily Journal' and select the text note type, then confirm the creation of a new note.",
+    "solution": "Create a new note titled 'Daily Journal' and select the text note type. Once added, confirm the creation of the note."
+  },
+  {
+    "task": "Move the selected checklist item to the bottom of the list, then delete the selected checklist item.",
+    "solution": "First, move the selected checklist item to the bottom of the list. After moving it, delete the selected checklist item."
+  },
+  {
+    "task": "Save the new color scheme for the app with light blue as the primary color and dark gray for the text, then close the color settings menu without making any changes.",
+    "solution": "Apply the new color scheme with light blue as the primary color and dark gray for text. After saving, close the color settings menu without additional changes."
+  },
+  {
+    "task": "Export all notes related to the project 'Website Redesign' to a zip file, then confirm locking the note by tapping OK.",
+    "solution": "Export all 'Website Redesign' project notes to a zip file. After exporting, lock the selected note and confirm by tapping OK."
+  },
+  {
+    "task": "Create a new text note titled 'Project Ideas', set its font size to 60%, and change the text color to blue.",
+    "solution": "First, add a new note with the title 'Project Ideas' and select the text note type. Then set the font size of the app to 60% and change the text color to blue."
+  },
+  {
+    "task": "Add a new checklist note named 'Study Plan', rename the first checklist item to 'Subjects to Cover', and move it to the top of the list.",
+    "solution": "First, add a new note with the title 'Study Plan' and select the checklist type. Next, rename the first checklist item to 'Subjects to Cover' and move it to the top of the list."
+  },
+  {
+    "task": "Add a new text note titled 'Travel Notes', set its font size to 150%, and set the app theme to a custom color.",
+    "solution": "First, add a new note with the title 'Travel Notes' and select the text note type. Then set the font size of the app to 150% and change the app theme to a custom color."
+  },
+  {
+    "task": "Create a new checklist note titled 'Shopping List', add an item named 'Groceries', and then remove all done items from the checklist.",
+    "solution": "First, add a new note with the title 'Shopping List' and select the checklist type. Add a checklist item named 'Groceries'. Then remove done items from the current checklist."
+  },
+  {
+    "task": "Delete the note named 'Old Recipes' and confirm the creation of a new note titled 'Work Report'.",
+    "solution": "First, delete the note named 'Old Recipes'. Then confirm the creation of a new note and name it 'Work Report'."
+  },
+  {
+    "task": "Set the theme color to dark red, create a shortcut for the current note, and print the note.",
+    "solution": "First, set the theme color to dark red. Then create a shortcut for the current note and print the current note."
+  },
+  {
+    "task": "Set the app theme to light, turn on the automatic backups feature, and open the file associated with the note 'Work Report'.",
+    "solution": "First, change the theme color to light. Then turn on the automatic backups feature in the notes app and open the file associated with the note 'Work Report'."
+  },
+  {
+    "task": "Set the font size of the app to 200%, add a new text note titled 'Meeting Notes', and change the text color to blue.",
+    "solution": "First, set the font size of the app to 200%. Then add a new note with the title 'Meeting Notes' and select the text note type. Finally, change the text color to blue."
+  },
+  {
+    "task": "Create a new checklist note titled 'Packing List', add an item named 'Toothbrush', and set the theme color of the app to Auto Light/Dark.",
+    "solution": "First, add a new note with the title 'Packing List' and select checklist type. Then, add an item to the checklist named 'Toothbrush'. Finally, set the theme color of the app to Auto Light/Dark."
+  },
+  {
+    "task": "Create a new text note titled 'Budget Plan', change the font size to 150%, and print the current note.",
+    "solution": "First, add a new note with the title 'Budget Plan' and select text note type. Then, change the font size of the app to 150%. Finally, print the current note."
+  },
+  {
+    "task": "Create a new checklist titled 'Weekly Tasks', add an item named 'Complete report', and move the item to the top of the list.",
+    "solution": "First, add a new note with the title 'Weekly Tasks' and select checklist type. Then, add an item named 'Complete report' to the checklist. Finally, move the created item to the top of the list."
+  },
+  {
+    "task": "Set the theme color of the app to Dark, create a new note titled 'Reading List' with text note type, and confirm the creation of the new note.",
+    "solution": "First, set the theme color of the app to Dark. Then, add a new note with the title 'Reading List' and select text note type. Finally, confirm the creation of the new note."
+  },
+  {
+    "task": "Create a new checklist titled 'Office Supplies', add an item named 'Pens', remove the done items from the current checklist, and move the item named 'Pens' to the bottom of the list.",
+    "solution": "First, add a new note with the title 'Office Supplies' and select checklist type. Then, add an item named 'Pens' to the checklist. Afterward, remove any done items from the current checklist and finally, move the item 'Pens' to the bottom of the list."
+  },
+  {
+    "task": "Create a new note titled 'Travel Itinerary' with text note type, adjust the font size to 125%, and set the theme color to White.",
+    "solution": "First, add a new note with the title 'Travel Itinerary' and select text note type. Then, change the font size of the app to 125%. Finally, set the theme color of the app to White."
+  },
+  {
+    "task": "Open the About section to view app information, create a new note titled 'Ideas for Blog', and change the font size to 200%.",
+    "solution": "First, open the About section to view the app information. Then, create a new note titled 'Ideas for Blog' and select text note type. Finally, change the font size of the app to 200%."
+  },
+  {
+    "task": "Create a new checklist titled 'Conference Checklist', add an item 'Book Hotel', and set the theme color of the app to Black and White.",
+    "solution": "First, add a new note with the title 'Conference Checklist' and select checklist type. Then, add an item named 'Book Hotel' to the checklist. Finally, set the theme color of the app to Black and White."
+  },
+  {
+    "task": "Create a new note titled 'Conference Itinerary', enable line wrapping, and display the word count.",
+    "solution": "Add a new note with the title 'Conference Itinerary' and select the text note type, enable line wrapping for easier reading of notes, and show the current word count of the note titled 'Conference Itinerary'."
+  },
+  {
+    "task": "Add a new checklist note titled 'Shopping List', rename the first item to 'Groceries', and then move this item to the bottom.",
+    "solution": "Add a new note with the title 'Shopping List' and select the checklist type, rename the selected checklist item to 'Groceries', and move the selected checklist item to the bottom of the list."
+  },
+  {
+    "task": "Confirm creation of a new note, set the keyboard to Incognito mode, and print the note titled 'Recipe Collection'.",
+    "solution": "Confirm the creation of a new note, set the keyboard to Incognito mode for private note-taking, and print the note titled 'Recipe Collection'."
+  },
+  {
+    "task": "Open a note titled 'Project Proposal', open the attached PDF file, and lock the note.",
+    "solution": "Open the PDF file associated with the note titled 'Project Proposal' and lock the note titled 'Project Proposal'."
+  },
+  {
+    "task": "Scroll down to the bottom of the settings page and learn more about the features of the Notes app.",
+    "solution": "Scroll down to the bottom of the settings page and learn more about the features of this Notes app."
+  },
+  {
+    "task": "Create a new checklist note titled 'Workout Plan', rename the first item to 'Exercise Routine', and add a note titled 'Diet Plan' with text note type.",
+    "solution": "Add a new note with the title 'Workout Plan' and select the checklist type, rename the selected checklist item to 'Exercise Routine', and add a new note with the title 'Diet Plan' and select the text note type."
+  },
+  {
+    "task": "Create a new note titled 'Travel Checklist' and select the checklist type, rename the first item to 'Packing List', and then lock the note.",
+    "solution": "Add a new note with the title 'Travel Checklist' and select the checklist type, rename the selected checklist item to 'Packing List', and lock the note titled 'Travel Checklist'."
+  },
+  {
+    "task": "Add a new note titled 'Meeting Notes', enable line wrapping, and set the keyboard to display automatically when opening the app.",
+    "solution": "Add a new note with the title 'Meeting Notes' and select the text note type, enable line wrapping for easier reading of notes, and display the keyboard automatically when opening the app."
+  },
+  {
+    "task": "Print the note titled 'Recipe Collection' and then lock the note titled 'Personal Diary'.",
+    "solution": "Print the note titled 'Recipe Collection' and lock the note titled 'Personal Diary'."
+  },
+  {
+    "task": "Rename the selected checklist item 'get groceries' to 'buy groceries' and move it to the top of the list.",
+    "solution": "Rename the selected checklist item 'get groceries' to 'buy groceries' and move the selected checklist item to the top of the list."
+  },
+  {
+    "task": "Create a new note titled 'Project Plan', set it as a text note, and change the theme color to dark red.",
+    "solution": "First, add a new note with the title 'Project Plan' and select the text note type. After confirming the creation of the note, change the theme color to dark red for better night visibility."
+  },
+  {
+    "task": "Create a new checklist note titled 'Weekend Tasks', add a checklist item 'Clean the house', and move this item to the top of the list.",
+    "solution": "Add a new note with the title 'Weekend Tasks' and select the checklist type. Rename the first checklist item to 'Clean the house' and then move this item to the top of the list."
+  },
+  {
+    "task": "Create a new note titled 'Work Notes', enable clickable links and emails in the content, and export this note as a PDF file.",
+    "solution": "Add a new note with the title 'Work Notes' and select the text note type. Enable clickable links and emails in the note content, then export the note as a PDF file."
+  },
+  {
+    "task": "Add a new note with the title 'Shopping List', set it as a checklist, add an item 'Buy Groceries', then immediately rename it to 'Buy Fruits and Vegetables'.",
+    "solution": "Add a new note with the title 'Shopping List' and select the checklist type. Add a new item 'Buy Groceries' to the checklist, and then rename it to 'Buy Fruits and Vegetables'."
+  },
+  {
+    "task": "Create a new checklist note titled 'Interview Preparation', add a checklist item 'Research company', move this item to the top of the list, and set the font size to 75%.",
+    "solution": "Add a new note with the title 'Interview Preparation' and select the checklist type. Rename the first checklist item to 'Research company' and move it to the top of the list. Finally, change the font size to 75%."
+  },
+  {
+    "task": "Create a new note titled 'Workout Plan', set it as a text note, scroll through the settings page to view more options, and set the cursor to automatically move to the end when opened.",
+    "solution": "Add a new note with the title 'Workout Plan' and select the text note type. Scroll through the settings page to view more options, and then set the cursor to automatically move to the end of the note when it is opened."
+  },
+  {
+    "task": "Create a note with title 'Reminder Notes', then change the font size to 75% and print the note named 'Vacation Itinerary'.",
+    "solution": "Add a new note with the title 'Reminder Notes'. After confirming the creation of the note, change the font size to 75%. Then, print the note titled 'Vacation Itinerary'."
+  },
+  {
+    "task": "Create a checklist note titled 'Groceries', add an item 'Buy Bread', rename it to 'Buy Whole Wheat Bread', and enable incognito mode for the keyboard.",
+    "solution": "Add a new note with the title 'Groceries' and select the checklist type. Add a new item 'Buy Bread' and rename it to 'Buy Whole Wheat Bread'. Then enable the incognito mode for the keyboard to avoid saving typing history."
+  },
+  {
+    "task": "Add a new text note titled 'Daily Reflection', set it to automatically move the cursor to the end when opened and enable line wrap.",
+    "solution": "Add a new note with the title 'Daily Reflection' and select the text note type. Set the cursor to automatically move to the end of the note when opened, and enable line wrap for easier reading of long paragraphs."
+  },
+  {
+    "task": "Create a checklist note 'Dinner Preparation', add item 'Buy Chicken', move it to the bottom, and customize the widget colors to blue and yellow.",
+    "solution": "Add a new note with the title 'Dinner Preparation' and select the checklist type. Add an item 'Buy Chicken' and move it to the bottom of the list. Finally, customize the widget colors to blue and yellow."
+  },
+  {
+    "task": "Delete both the notes titled 'Old Recipes' and 'Home Repairs', and confirm deletion of both.",
+    "solution": "Delete the note titled 'Old Recipes', confirm the deletion, then delete the note titled 'Home Repairs', and confirm that deletion too."
+  },
+  {
+    "task": "Add a new note titled 'Workout Plan' with text type, set the font size to 90%, and enable line wrap.",
+    "solution": "Add a new note with the title 'Workout Plan' and select the text note type. Then set the font size in the notes app to 90% and enable line wrap in the Notes app settings."
+  },
+  {
+    "task": "Lock the note 'Personal Diary' with a password, then open the PDF file associated with 'Business Plan 2024'.",
+    "solution": "Lock the note 'Personal Diary' and confirm with a password. After that, open the PDF file associated with the note 'Business Plan 2024'."
+  },
+  {
+    "task": "Enable line wrap in the Notes app settings, change the app icon color to blue, and display a success message after saving.",
+    "solution": "Enable line wrap in the Notes app settings, change the app icon color in the notes app to blue, and set the app to display a success message whenever settings are successfully saved."
+  },
+  {
+    "task": "Scroll down the settings page to access the advanced security options and show the details about the app version.",
+    "solution": "Scroll down the settings page to access the advanced security options and then show details about the app version and latest updates."
+  },
+  {
+    "task": "Sort the checklist items by title in the note 'Home Repairs' and move the selected checklist item to the top of the list.",
+    "solution": "Open the note 'Home Repairs', sort the items of the current checklist by title, and then move the selected checklist item to the top of the list."
+  },
+  {
+    "task": "Import notes into the notes app, then export all notes and display the success message for each action.",
+    "solution": "Import notes into the notes app, then proceed to export notes. Ensure the app displays a success message whenever a setting is successfully saved."
+  },
+  {
+    "task": "Create a new note with the title 'Meeting Agenda' as a text type, set the cursor to the end of the note when opened, and make all links clickable.",
+    "solution": "Add a new note with the title 'Meeting Agenda' and select the text note type. Set the cursor to the end of the note when it is opened and make all links and emails clickable in the notes."
+  },
+  {
+    "task": "Change the text color in the notes app to red, the background color to dark, and the font size to 125%.",
+    "solution": "Change the text color in the notes app to red, change the background color in the notes app to dark, and set the font size in the notes app to 125%."
+  },
+  {
+    "task": "Enable incognito mode of keyboards while typing, then show the keyboard automatically when opening the Notes app.",
+    "solution": "Use incognito mode of keyboards while typing in the Notes app, and set the app to show the keyboard automatically when opening the Notes app."
+  },
+  {
+    "task": "Optimize the appearance and readability of notes stored in the Notes App.",
+    "solution": "Enable line wrap, change the font size to 150%, use a monospaced font, and set the theme color to dark red."
+  },
+  {
+    "task": "Prepare the Notes App for a meeting by formatting the notes and configuring the interface.",
+    "solution": "Automatically align text to the center, enable line wrapping, and set the font size to 125%."
+  },
+  {
+    "task": "Set up the Notes App for efficient note-taking with privacy and access settings improved.",
+    "solution": "Enable Incognito mode for the keyboard, show the keyboard automatically on startup, enable clickable links and emails, and display save success messages after each note is saved."
+  },
+  {
+    "task": "Prepare the Notes App for exporting and organizing notes frequently used for documentation.",
+    "solution": "Export notes to the documents folder, use monospaced font, enable line wrap, and confirm the renaming of each note before exporting."
+  },
+  {
+    "task": "Configure the Notes App for better user experience and readability during nighttime without straining the eyes.",
+    "solution": "Set the theme color to dark red, adjust the font size to 175%, enable line wrapping, and set the cursor to the end of each note."
+  },
+  {
+    "task": "Set up the Notes App to provide quick note access and updates on startup and saving.",
+    "solution": "Enable the setting to show a note picker on startup, show the keyboard automatically on startup, and display save success messages after each note is saved."
+  },
+  {
+    "task": "Configure the Notes App to enhance note readability while coding and exporting for technical reviews.",
+    "solution": "Use monospaced font, enable line wrap, set the font size to 150%, and export current note as a file."
+  },
+  {
+    "task": "Prepare a well-organized to-do list by removing completed tasks and improving the checklist view.",
+    "solution": "Remove done items from the checklist titled 'To-Do Today', change the font size to 150%, and customize the widget colors."
+  },
+  {
+    "task": "Create a new note titled 'Meeting Notes', set its theme color to auto light/dark, and make links within it clickable.",
+    "solution": "First, create a new note and title it 'Meeting Notes.' Next, set the theme color of the app to auto light/dark. Finally, enable the option to make links and emails inside your note clickable."
+  },
+  {
+    "task": "Create a checklist type note titled 'Shopping List', add three items 'Milk', 'Eggs', 'Bread', move 'Bread' to the top of the list, and lock the note.",
+    "solution": "Create a new checklist type note and title it 'Shopping List.' Add the items 'Milk,' 'Eggs,' and 'Bread' to the checklist. Move 'Bread' to the top of the list and then lock the note."
+  },
+  {
+    "task": "Add a new note titled 'Work Notes', set the text alignment to center, search for the text 'meeting,' and close the search box.",
+    "solution": "Create a new note with the title 'Work Notes.' Set the text alignment in the note to center. Use the search function to find the text 'meeting' within the note, and then close the search box."
+  },
+  {
+    "task": "Rename the existing note titled 'Daily Tasks' to 'Activities List,' remove the done items from the checklist, and print the remaining items.",
+    "solution": "Select the note titled 'Daily Tasks' and rename it to 'Activities List.' Remove all done items from the checklist within the note, and then print the remaining items."
+  },
+  {
+    "task": "Scroll down the settings page, change the theme color to dark red, and then exit the settings page.",
+    "solution": "Open the settings page and scroll down. Change the theme color of the Notes app to dark red, and then exit the settings page."
+  },
+  {
+    "task": "Make a checklist note titled 'Daily Tasks,' add the item 'Exercise,' rename it to 'Exercise Routine,' and set the cursor to the end of the note.",
+    "solution": "Create a new checklist note and title it 'Daily Tasks.' Add an item titled 'Exercise.' Rename this item to 'Exercise Routine' and then place the cursor at the end of the note."
+  },
+  {
+    "task": "Create a note titled 'Project Plan,' change its font size to 175%, and customize the widget colors.",
+    "solution": "Create a new note with the title 'Project Plan.' Change the font size within this note to 175%. Finally, customize the widget colors in the Notes app."
+  },
+  {
+    "task": "Change the app theme to black and white, open the About section to view app information, and then exit the settings page.",
+    "solution": "In the settings page of the Notes app, change the theme to black and white. Open the About section to view information about the app and then exit the settings page."
+  },
+  {
+    "task": "Add a new note with the title 'Work Notes,' set the note picker to show on startup, and lock the note.",
+    "solution": "Create a new note titled 'Work Notes.' Change the settings in the Notes app to show a note picker on startup. Lastly, lock the newly created note."
+  },
+  {
+    "task": "Make a checklist note titled 'Groceries,' add the items 'Apples,' 'Bananas,' and 'Tomatoes,' move 'Tomatoes' to the bottom of the list, and delete 'Bananas.'",
+    "solution": "Create a new checklist note and title it 'Groceries.' Add the items 'Apples,' 'Bananas,' and 'Tomatoes' to the checklist. Move 'Tomatoes' to the bottom of the list and then delete 'Bananas.'"
+  },
+  {
+    "task": "Customize the app icon color to blue and then save the color settings.",
+    "solution": "First, navigate to the app icon customization settings, select blue as the icon color, and save the color settings."
+  },
+  {
+    "task": "Set the background color to light grey and enable clickable links and emails in notes.",
+    "solution": "Go to the background color settings, choose light grey, and then navigate to the settings to enable clickable links and emails in notes."
+  },
+  {
+    "task": "Import notes from the download folder and rename the current note to 'Task List'.",
+    "solution": "First, go to the option to import notes, select the download folder, import the notes, and then rename the current note to 'Task List'."
+  },
+  {
+    "task": "Set the font size of the app to 90% and lock the note titled 'Personal Diary'.",
+    "solution": "Navigate to the font size settings and set it to 90%, then go to your notes, find 'Personal Diary', and lock it."
+  },
+  {
+    "task": "Move the selected checklist item to the top of the list and then delete it.",
+    "solution": "Select the checklist item you wish to move, drag it to the top of the list, and then choose the option to delete it."
+  },
+  {
+    "task": "Scroll down through the settings page and then set the font size of the app to 60%.",
+    "solution": "Go to the settings page, scroll down to navigate through the options, and find the font size setting to set it to 60%."
+  },
+  {
+    "task": "Add a new note titled 'Meeting Agenda', select the text note type, and enable automatic backups to cloud storage.",
+    "solution": "Create a new note, set the title to 'Meeting Agenda', choose the text note type, and then enable the automatic backups feature in the settings."
+  },
+  {
+    "task": "Rename the current note to 'Weekly Summary' and export it as a file.",
+    "solution": "First rename the current note to 'Weekly Summary', then use the export option to save it as a file."
+  },
+  {
+    "task": "Enable clickable links and emails in notes and create a shortcut for the current note.",
+    "solution": "Go to the settings to enable clickable links and emails, then return to the current note and create a shortcut for it."
+  },
+  {
+    "task": "Set the font size of the app to 125% and show the note picker on startup.",
+    "solution": "Navigate to the font size settings and adjust it to 125%, then find the setting to show the note picker on startup and enable it."
+  },
+  {
+    "task": "Change the theme color of the app to dark, set the font size to 125%, and export the note titled 'Vacation Plan' as a PDF file.",
+    "solution": "First, navigate to the settings menu and change the theme color of the app to dark. Then, set the font size to 125%. Finally, locate the note titled 'Vacation Plan' and export it as a PDF file."
+  },
+  {
+    "task": "Create a new note with the title 'Grocery List', add a checklist item named 'Buy Milk', and then move this item to the top of the list.",
+    "solution": "Add a new note with the title 'Grocery List' and select the checklist type. Create a checklist item named 'Buy Milk' and then move this item to the top of the list."
+  },
+  {
+    "task": "Rename the current note to 'Important Meeting Notes', confirm the sorting type in the checklist, and enable the autosave notes feature.",
+    "solution": "Rename the current note to 'Important Meeting Notes'. Confirm the sorting type in the checklist of notes app. Lastly, enable the autosave notes feature in the app settings."
+  },
+  {
+    "task": "Change the primary color in the notes app, set the text alignment to center, and add a new note with the title 'Daily Journal' in text note type.",
+    "solution": "Navigate to the settings and change the primary color in the notes app. Then, set the text alignment to center. Add a new note with the title 'Daily Journal' and select the text note type."
+  },
+  {
+    "task": "Rename the selected checklist item to 'Party Supplies', move it to the bottom of the list, and sort the checklist items by date created.",
+    "solution": "Select the checklist item and rename it to 'Party Supplies'. Move this checklist item to the bottom of the list. Finally, sort all checklist items by date created within the notes app."
+  },
+  {
+    "task": "Export notes from the notes app, change the theme color to black and white, and set the font size in the notes app to 50%.",
+    "solution": "Export all notes from the notes app. Then, change the theme color to black and white. Afterwards, set the font size in the notes app to 50% in settings."
+  },
+  {
+    "task": "Delete the checklist item named 'Old Tasks' and move the new 'Party Supplies' item to the top of the list.",
+    "solution": "Locate and delete the checklist item named 'Old Tasks'. Next, rename a selected checklist item to 'Party Supplies' if it isn't already, and move this item to the top of the list."
+  },
+  {
+    "task": "Set the font size in the notes app to 75%, change the primary color, and create a shortcut for the note titled 'Grocery List'.",
+    "solution": "First, go to settings and set the font size in the notes app to 75%. Change the primary color of the app. Lastly, locate and create a shortcut for the note titled 'Grocery List'."
+  },
+  {
+    "task": "Rename the current note to 'Meeting Notes', confirm the creation of a new note, and export the current note as a file.",
+    "solution": "Rename the current note to 'Meeting Notes'. Then, confirm the creation of a new note. After that, export the current note as a file."
+  },
+  {
+    "task": "Set the theme color of the app to dark, enable the autosave notes feature, and add a new note with the title 'Birthday Party Checklist' in checklist type.",
+    "solution": "Change the theme color of the app to dark. Enable the autosave notes feature in settings. Add a new note with the title 'Birthday Party Checklist' and select the checklist type."
+  },
+  {
+    "task": "Create a new note with the title 'Startup Ideas', set the text note type, change the background color of the app to light gray, and set the font size to 150%.",
+    "solution": "Create a text note titled 'Startup Ideas', change the background color to light gray, and adjust the font size to 150%."
+  },
+  {
+    "task": "Change the theme color to auto light/dark, create a checklist note titled 'Home Renovation Tasks', and set cursor to place at the end of the note when opening.",
+    "solution": "Set the theme color to auto light/dark, create a checklist note titled 'Home Renovation Tasks', and enable cursor placement at the end of the note when opened."
+  },
+  {
+    "task": "Disable the option to display save success messages, import notes from Google Drive, and confirm the creation of a new text note titled 'Travel Plans'.",
+    "solution": "Turn off save success messages, import Google Drive notes, and create a new text note titled 'Travel Plans'."
+  },
+  {
+    "task": "Create a checklist note titled 'Daily Habits', move the selected checklist item to the top, and set the font size to 125%.",
+    "solution": "Create a checklist note titled 'Daily Habits', move the selected checklist item to the top, and adjust the font size to 125%."
+  },
+  {
+    "task": "Add a new note with the title 'Project Milestones', set text note type, rename it to 'Project Milestones Q4', and export the current note with its settings.",
+    "solution": "Create a text note titled 'Project Milestones', rename it to 'Project Milestones Q4', and export the note with its settings."
+  },
+  {
+    "task": "Change the app icon color to green, create a text note titled 'Reading List', and make all links and emails in the notes clickable.",
+    "solution": "Set the app icon color to green, create a text note titled 'Reading List', and enable clickable links and emails in the notes."
+  },
+  {
+    "task": "Create a new note with the title 'Event Schedule', set checklist type, set the theme color to dark red, and save the current color settings.",
+    "solution": "Create a checklist note titled 'Event Schedule', change the theme color to dark red, and save the color settings."
+  },
+  {
+    "task": "Move the selected checklist item to the bottom, change the background color to light gray, and disable the option to display save success messages.",
+    "solution": "Move the selected checklist item to the bottom, set the background color to light gray, and turn off save success messages."
+  },
+  {
+    "task": "Lock the current note, change the font size to 125%, and then confirm the lock.",
+    "solution": "First, lock the current note, then adjust the font size to 125%, and finally confirm the lock to ensure the note is secured."
+  },
+  {
+    "task": "Open the file attached to the current note, print the file, and then exit the settings page.",
+    "solution": "Begin by opening the file attached to the current note, use the print function to print the file, and then exit the settings page."
+  },
+  {
+    "task": "Set the app icon color to blue, enable the display of word count in the Notes app, and scroll down the settings page.",
+    "solution": "First, set the app icon color to blue, then navigate to the settings to enable word count display, and finally scroll down the settings page."
+  },
+  {
+    "task": "Change the font size to 75%, set the cursor to the end of the note, and make all links and emails clickable.",
+    "solution": "Adjust the font size to 75%, move the cursor to the end of the note, and finally enable the option to make all links and emails clickable."
+  },
+  {
+    "task": "Confirm the deletion of the current note, view the about page of the app, and exit the settings page.",
+    "solution": "First, confirm the deletion of the current note, then check the about page of the app for information, and finally exit the settings page."
+  },
+  {
+    "task": "Change the font size to 60%, set the primary color of the app to red, and use monospaced font in the Notes app.",
+    "solution": "Start by changing the font size to 60%, then set the primary color of the app to red, and switch to using a monospaced font."
+  },
+  {
+    "task": "Increase the font size to 300%, view the information about the app, and confirm the lock of the current note.",
+    "solution": "First, increase the font size to 300%, then navigate to view the app information, and finish by confirming the lock of the current note."
+  },
+  {
+    "task": "Decrease the font size to 200%, print the current note, and then enable the display of word count in the Notes app.",
+    "solution": "Reduce the font size to 200%, print the current note, and lastly enable the display of word count within the Notes app."
+  },
+  {
+    "task": "Change the font size to 100%, switch to using monospaced font, and then activate the word count display in notes.",
+    "solution": "First, set the font size of the app to 100%. Next, enable the use of monospaced font in notes. Finally, activate the word count display in notes."
+  },
+  {
+    "task": "Customize the widget colors, change the theme color to dark red, and set the application to show a note picker on startup.",
+    "solution": "First, customize the colors of the widget on the notes app. Then, change the application theme color to dark red. Lastly, set the application to show a note picker on startup."
+  },
+  {
+    "task": "Rename the current note to 'Meeting Notes', export the current checklist as a PDF file, and then turn off autosave for notes.",
+    "solution": "First, rename the current note to 'Meeting Notes'. Then, export the current checklist as a PDF file. Finally, turn off autosave for notes."
+  },
+  {
+    "task": "Set the font size of the app to 75%, change the text alignment to center, and scroll through the settings page.",
+    "solution": "First, set the font size of the app to 75%. Then, set the alignment of the text to center. Lastly, scroll through the settings page."
+  },
+  {
+    "task": "Enable custom sorting for checklist items, change the theme color to custom, and set the alignment of the text to left.",
+    "solution": "First, enable custom sorting for checklist items. Then, change the theme color to custom. Lastly, set the alignment of the text to left."
+  },
+  {
+    "task": "Change the font size to 90% and then set the app theme to dark mode, while also making all links and email addresses in the note clickable.",
+    "solution": "First, change the font size of the app to 90%. Next, navigate to the theme settings and set the theme to dark mode. Finally, go to the note settings and enable clickable links and email addresses."
+  },
+  {
+    "task": "Switch the theme to auto light/dark mode based on current lighting conditions, then adjust the font size to 175%, and finally sort the checklist items by date created.",
+    "solution": "First, go to the theme settings and enable auto light/dark mode. Next, adjust the font size to 175%. Finally, navigate to the checklist settings and sort the items by date created."
+  },
+  {
+    "task": "Import notes from the backup file located in the Downloads folder, set the font size to 125%, and customize the widget colors to match the blue theme of your phone.",
+    "solution": "Start by importing notes from the backup file in the Downloads folder. Then, go to the font settings and set the font size to 125%. Lastly, customize the widget colors to align with the blue theme of your phone."
+  },
+  {
+    "task": "Set the font size to 60% to view more text on the screen, change the app theme to dark red, and customize the widget colors to match the new theme.",
+    "solution": "First, change the font size to the smallest setting at 60%. Next, set the app theme color to dark red. Finally, customize the widget colors to match the dark red theme."
+  },
+  {
+    "task": "Set the app theme to white, adjust the font size to 250%, and then display a note picker on startup to quickly access recent notes.",
+    "solution": "Begin by setting the app theme color to white. Then, adjust the font size to 250%. Lastly, enable the note picker on startup to quickly access recent notes."
+  },
+  {
+    "task": "While using incognito mode, export my notes to a safe location and then sort my checklist items by the date they were created.",
+    "solution": "First, enable incognito mode. Then, export all notes to your chosen safe location. Finally, sort all checklist items by their creation date."
+  },
+  {
+    "task": "Change the font size to 150%, enable line wrapping, and then confirm the custom sorting of my checklist items.",
+    "solution": "Navigate to the settings to set the font size to 150%, then enable line wrapping, and lastly confirm the custom sorting of your checklist items."
+  },
+  {
+    "task": "Show the virtual keyboard automatically on startup, sort checklist items by title, and then export the notes to another application.",
+    "solution": "Set the app preferences to show the keyboard on startup, sort your checklist items by title, and finally export the notes to the desired application."
+  },
+  {
+    "task": "Customize the widget colors to green and set the font size to 200% before sorting checklist items by custom order.",
+    "solution": "Go to the widget settings and change the colors to green, adjust the font size to 200%, and then sort your checklist items by custom order."
+  },
+  {
+    "task": "After enabling the feature to show a note picker on startup, change the app icon color to black and then sort checklist items by date created.",
+    "solution": "Enable the note picker feature for startup, change the icon color to black, and sort the checklist items by their creation date."
+  },
+  {
+    "task": "Use Incognito mode for the keyboard, set the font size to 125%, and sort checklist items by custom order.",
+    "solution": "Enable incognito mode for the keyboard, adjust the font size to 125%, and finally sort the checklist items by your custom order."
+  },
+  {
+    "task": "Turn on the auto light/dark theme, enable line wrapping, and then export my notes to a safe location.",
+    "solution": "Activate the auto light/dark theme, enable line wrapping, and proceed to export all notes to your designated safe location."
+  },
+  {
+    "task": "Sort checklist items by date created, then scroll to the bottom of the settings page, and finally change the font size to 300%.",
+    "solution": "Sort your checklist by creation date, navigate to the bottom of the settings page, and change the font size to 300%."
+  },
+  {
+    "task": "Show the virtual keyboard on startup and confirm custom sort for the checklist items, then change the app icon color to black.",
+    "solution": "Set the virtual keyboard to appear on startup, confirm the custom sorting of checklist items, and change the app icon color to black."
+  },
+  {
+    "task": "Change the font size to 100%, turn on the auto light/dark theme, and customize the widget colors to green.",
+    "solution": "Adjust the font size to 100%, enable the auto light/dark theme, and change the widget colors to green."
+  },
+  {
+    "task": "Apply a dark theme to the Notes app, increase the font size to 200%, and change the text color to blue for better night reading.",
+    "solution": "First, set the theme color to dark. Next, adjust the font size to 200%. Finally, change the text color to blue."
+  },
+  {
+    "task": "Sort the checklist items by date created and turn off display save success messages for a cleaner interface.",
+    "solution": "Sort the items of the current checklist by date created. Then, disable the display save success messages option."
+  },
+  {
+    "task": "Set the primary color of the Notes app to red, adjust the app icon color to green, and enable autosave for all notes.",
+    "solution": "First, set the primary color in the Notes app to red. Then, adjust the app icon color to green. Finally, enable autosave notes in the app."
+  },
+  {
+    "task": "Sort all checklist items by title, confirm the sorting, and export all the notes for backup purposes.",
+    "solution": "Sort the checklist items by title, then confirm the sorting of the checklist items. After that, export all the notes."
+  },
+  {
+    "task": "Change the text color to blue, set the background color to light grey, and increase the font size to 175% for a visually appealing note-taking experience.",
+    "solution": "Change the text color in the Notes app to blue, then set the background color to light grey. Finally, increase the font size to 175%."
+  },
+  {
+    "task": "Set the theme color to Auto light/dark mode, change the primary color to purple, and increase the font size to 150% for better adaptability.",
+    "solution": "Change the theme color to Auto light/dark mode, then set the primary color of the Notes app to purple. Finally, increase the font size to 150%."
+  },
+  {
+    "task": "Import notes from external storage, set the font size to 125%, and adjust the font size to 175% for newly imported notes for better readability.",
+    "solution": "Import notes from external storage, then set the font size to 125%. Afterwards, adjust the font size to 175% for better readability."
+  },
+  {
+    "task": "Change the theme color to Black & White, adjust the font size to 150%, and ensure autosaving is enabled for all notes.",
+    "solution": "Change the theme color to Black & White, then adjust the font size to 150%. Finally, enable autosave notes in the app."
+  },
+  {
+    "task": "Adjust the text alignment to center, change the text color to blue, and set the font size to 90% in my current note.",
+    "solution": "First, change the alignment setting of the note to center. Then, change the text color to blue and finally, set the font size to 90%."
+  },
+  {
+    "task": "Import notes from another application, enable automatic backups for the notes, and display a message when a note is successfully saved.",
+    "solution": "Start by importing the notes from the specified application. Then, enable the automatic backup feature for the notes. Finally, enable the option to display a message when a note is successfully saved."
+  },
+  {
+    "task": "Set the cursor to be placed at the end of the note by default, enable line wrapping, and show save success messages when I edit notes.",
+    "solution": "Firstly, set the cursor to be placed at the end of the note by default. Next, enable line wrapping for notes. Finally, make sure the option to show save success messages when editing notes is turned on."
+  },
+  {
+    "task": "Customize the colors of the widget, save the custom color settings, and close the color settings window.",
+    "solution": "First, customize the colors of the widget as per your requirement. Then, save these custom color settings. Finally, close the color settings window."
+  },
+  {
+    "task": "Sort the checklist items by their titles and then custom sort the items in the current checklist.",
+    "solution": "Initially, sort the checklist items by their titles. After that, apply a custom sort order to the items in the current checklist."
+  },
+  {
+    "task": "Enable the option to make links and emails clickable, increase the font size to 125%, and change the background color of the app to pink.",
+    "solution": "Begin by enabling the option to make links and emails clickable. Then, increase the font size to 125%. Finally, change the background color of the app to pink."
+  },
+  {
+    "task": "Change the primary color of the app to teal and then increase the font size to 125%",
+    "solution": "First, change the primary color of the app to teal, and then navigate to the font settings to increase the font size to 125%"
+  },
+  {
+    "task": "Rename the current note to \"Project Plan\", enable autosave notes, and export the note as a PDF file",
+    "solution": "First, rename the current note to \"Project Plan\", then enable autosave notes in the settings, and finally export the note as a PDF file"
+  },
+  {
+    "task": "Customize the color of the widget to blue and set the font size of the app to 90%",
+    "solution": "First, customize the color of the widget to blue, then go to font settings and set the font size of the app to 90%"
+  },
+  {
+    "task": "Change the text color of the app to green, change the background color to yellow, and set the alignment of the text to center",
+    "solution": "Start by changing the text color to green, then change the background color to yellow, and finally set the text alignment to center in the settings"
+  },
+  {
+    "task": "Set the font size in the Notes app to 300% and show the word count for each note",
+    "solution": "Navigate to the font size settings to set the font size to 300%, then enable the option to show word count for each note in the settings"
+  },
+  {
+    "task": "Change the name of the current note to \"Travel Itinerary\", use a monospaced font, and enable autosave notes",
+    "solution": "First, change the name of the current note to \"Travel Itinerary\", then set the font type to monospaced, and finally enable autosave notes in the settings"
+  },
+  {
+    "task": "Scroll down the settings page, change the font size to 200%, and turn on the use of Incognito mode of keyboards",
+    "solution": "Scroll down the settings page to locate the font size option, set it to 200%, then enable the Incognito mode for keyboards in the settings"
+  },
+  {
+    "task": "Rename the current note to \"Daily To-Do\", set the primary color of the app to teal, and remove done items from the checklist",
+    "solution": "Rename the current note to \"Daily To-Do\", change the primary color to teal, and remove the completed items from the checklist in the note"
+  },
+  {
+    "task": "Create a shortcut of the current note after renaming it to \"Shopping List\" and set the Notes app to show the keyboard on startup",
+    "solution": "First, rename the current note to \"Shopping List\", create a shortcut for it, and then adjust the settings to show the keyboard on startup"
+  },
+  {
+    "task": "Change the primary color of the Notes App to teal and then set the font size to 150%",
+    "solution": "Change the primary color of the Notes app to teal and navigate to font settings to set the font size to 150%"
+  },
+  {
+    "task": "Change the primary color of the app to red, set the font size to 90%, then export the notes to the Downloads directory.",
+    "solution": "First, change the primary color of the app to red. Next, set the font size to 90%. Finally, export the notes to the Downloads directory."
+  },
+  {
+    "task": "Enable automatic backups for my notes and then create a shortcut of the current note on the home screen.",
+    "solution": "First, turn on automatic backups for your notes. Then, create a shortcut of the current note on the home screen."
+  },
+  {
+    "task": "Sort the checklist items by their date of creation and set the theme color of the app to light.",
+    "solution": "First, sort the checklist items by their date of creation. Then, set the theme color of the app to light."
+  },
+  {
+    "task": "Move the selected checklist item to the bottom of the list, then change the font size of the notes app to 125%, and finally customize the widget colors to purple.",
+    "solution": "First, move the selected checklist item to the bottom of the list. Next, change the font size of the notes app to 125%. Finally, customize the widget colors to purple."
+  },
+  {
+    "task": "Set the font size of the app to 200%, confirm and close the checklist sorting options, and then change the name of the current note to 'Meeting Notes'.",
+    "solution": "First, set the font size of the app to 200%. Then, confirm and close the checklist sorting options. Finally, change the name of the current note to 'Meeting Notes'."
+  },
+  {
+    "task": "Activate automatic backups in the app, sort the checklist items by custom order, and then set the font size of the notes app to 50%.",
+    "solution": "First, activate automatic backups in the app. Next, sort the checklist items by custom order. Finally, set the font size of the notes app to 50%."
+  },
+  {
+    "task": "Set the font size of the app to 300%, change the primary color of the app to red, and then enable the auto save option for the notes.",
+    "solution": "First, set the font size of the app to 300%. Next, change the primary color of the app to red. Finally, enable the auto save option for the notes."
+  },
+  {
+    "task": "Change the notes app font to size 250%, move the selected checklist item to the top of the list, then export the notes to the Downloads directory.",
+    "solution": "First, change the notes app font to size 250%. Next, move the selected checklist item to the top of the list. Finally, export the notes to the Downloads directory."
+  },
+  {
+    "task": "Change the font size to 125%, set the background color to yellow, and then save the changes.",
+    "solution": "First, change the font size to 125%. Next, change the background color to yellow. Lastly, save the changes made."
+  },
+  {
+    "task": "Enable automatic backups and the autosave notes feature, then sort checklist items by their titles.",
+    "solution": "Enable the automatic backups feature in the app. Then, enable the autosave notes feature. Finally, sort the checklist items by their titles."
+  },
+  {
+    "task": "Set the theme color to dark red, update the app icon color to green, and then close the setting colors pop-up window.",
+    "solution": "Set the theme color of the app to dark red. Next, update the app icon color to green. Finally, close the setting colors pop-up window."
+  },
+  {
+    "task": "Set the font size to 90%, change the text color to red, and then export the current note as a file.",
+    "solution": "Set the font size of the app to 90%. Then, change the text color to red. Lastly, export the current note as a file."
+  },
+  {
+    "task": "Import notes from the Download folder, sort the current checklist items on app custom, and enable the display of save success messages.",
+    "solution": "Import notes from the Download folder. Then, sort the current checklist items in the app by custom. Finally, enable the display of save success messages."
+  },
+  {
+    "task": "Rename the current note to 'Meeting Notes', increase the font size of the app text to 150%, and set the theme color to white.",
+    "solution": "Rename the current note to 'Meeting Notes'. Next, increase the font size of the app text to 150%. Lastly, set the theme color of the app to white."
+  },
+  {
+    "task": "Increase the font size to 300%, switch the theme color to Dark Red, and change the background color to light gray.",
+    "solution": "Increase the font size to 300% using the font settings, then switch the theme color to Dark Red, and finally change the background color to light gray."
+  },
+  {
+    "task": "Rename the checklist item 'Dentist Appointment' to 'Dental Checkup at 3 PM', then set the font size in the Notes app to 150%, and export all notes.",
+    "solution": "First, rename the checklist item 'Dentist Appointment' to 'Dental Checkup at 3 PM'. Next, set the font size to 150%, and finally, export all notes."
+  },
+  {
+    "task": "Change the app icon color to green, set the primary color to red, and choose the Black & White theme color for the Notes app.",
+    "solution": "Change the app icon color to green, set the primary color to red, and then choose the Black & White theme color option."
+  },
+  {
+    "task": "Delete the checklist item 'Old Task', then set the font size in the Notes app to 75%, and switch the theme color to Dark Red.",
+    "solution": "First, delete the checklist item 'Old Task'. Next, set the font size to 75% and switch the theme color to Dark Red."
+  },
+  {
+    "task": "Move the grocery list item 'Buy milk' to the top of the list, change the background color to yellow, and set the primary color to teal.",
+    "solution": "Move the grocery list item 'Buy milk' to the top, change the background color to yellow, and set the primary color to teal."
+  },
+  {
+    "task": "Set the app to show the note picker on startup and set the cursor to appear at the end of every note I open.",
+    "solution": "Enable the note picker feature to show on startup and adjust the cursor settings to always appear at the end of each note upon opening."
+  },
+  {
+    "task": "Change the font size of the app to 175% and then make all links and emails clickable in my notes.",
+    "solution": "First, go to settings to change the font size to 175%, then enable the feature to make links and emails clickable."
+  },
+  {
+    "task": "Enable line wrap feature, turn on automatic backups, and export notes to Dropbox.",
+    "solution": "Activate the line wrap feature, enable automatic backups, and then use the export feature to send notes to Dropbox."
+  },
+  {
+    "task": "Turn on the display save success messages and change the background color to light grey.",
+    "solution": "Go to settings to enable the display of save success messages and adjust the background color setting to light grey."
+  },
+  {
+    "task": "Set the font size to 150%, turn on the incognito mode of keyboards, and exit the settings menu after adjusting these preferences.",
+    "solution": "Change the font size to 150%, enable the incognito mode for keyboards, and then exit the settings menu."
+  },
+  {
+    "task": "Set the cursor to appear at the end of the note every time I open one, and decrease the font size to 75%.",
+    "solution": "Enable the cursor setting to appear at the end of each note upon opening and adjust the font size to 75%."
+  },
+  {
+    "task": "Reduce the font size to 60%, change the app icon color to red, and set the app to show keyboard on startup.",
+    "solution": "Adjust the font size to 60%, change the app icon color to red, and configure the app to show the keyboard on startup."
+  },
+  {
+    "task": "Increase font size to 300%, turn on automatic backups, and display save success messages.",
+    "solution": "Set the font size to 300%, enable automatic backups, and activate the display of save success messages."
+  },
+  {
+    "task": "Export all your notes, then disable the line wrap setting, and finally change the primary color of the app to red.",
+    "solution": "First, export all your notes. After that, turn off the line wrap setting, and then change the primary color of the app to red."
+  },
+  {
+    "task": "Import notes into the Notes app, set the cursor placement to the end of the note, and enable autosave for notes.",
+    "solution": "First, import your notes into the Notes app. Next, set the cursor placement to the end of the notes, and then enable the autosave function for notes."
+  },
+  {
+    "task": "Enable the word count feature, make links and emails within notes clickable, and change the application theme color to dark.",
+    "solution": "First, enable the word count feature. Next, make sure that links and emails within notes are clickable. Finally, change the application theme color to dark."
+  },
+  {
+    "task": "Activate incognito mode for keyboards, show the word count for each note, and save the current theme colors.",
+    "solution": "First, activate the incognito mode for keyboards. Then, show the word count for each note, and finally, save the current theme colors."
+  },
+  {
+    "task": "Set the application to show the keyboard on startup, confirm the sort type and close the sorting popup, and enable automatic backups for my notes.",
+    "solution": "First, set the application to display the keyboard on startup. Then, confirm the sort type and close the sorting popup. Finally, enable automatic backups for your notes."
+  },
+  {
+    "task": "Enable the use of monospaced font in notes, decrease the font size to 50%, and set text alignment in notes.",
+    "solution": "First, enable the use of monospaced font in notes. Then, decrease the font size to 50%, and finally, set the text alignment in notes."
+  },
+  {
+    "task": "Show the word count in my notes, enable the use of incognito mode for keyboards, and exit the settings page.",
+    "solution": "First, show the word count in your notes. Then, enable incognito mode for keyboards, and finally, exit the settings page."
+  },
+  {
+    "task": "Scroll through all available settings, change the application theme color to black and white, and enable automatic backups in the Notes app.",
+    "solution": "First, scroll through all the available settings. Next, change the application theme color to black and white. Finally, enable automatic backups in the Notes app."
+  },
+  {
+    "task": "Set the font size of the app to 150%, change the primary color, and then close the color setting popup window.",
+    "solution": "First, set the font size to 150%. Next, change the primary color as desired. Finally, close the color setting popup window."
+  },
+  {
+    "task": "Import notes, enable line wrap for better readability, and ensure automatic backups occur every night.",
+    "solution": "Start by importing notes into the app. Then, enable line wrap to avoid horizontal scrolling. Lastly, set up automatic backups to happen every night."
+  },
+  {
+    "task": "Set the font size to 250% for better viewing, enable incognito mode on the keyboard for privacy, and show the keyboard immediately on startup.",
+    "solution": "First, change the font size to 250%. Then, enable incognito mode on the keyboard. Finally, configure the keyboard to show immediately on startup."
+  },
+  {
+    "task": "Lock the note titled 'Personal Diary' and set up automatic backups to secure the information nightly.",
+    "solution": "Locate and lock the note titled 'Personal Diary'. Then, set up the app to perform automatic backups every night."
+  },
+  {
+    "task": "Export all notes to a zip file and save it to external storage, and then close the app.",
+    "solution": "First, export all notes to a zip file and save them to the external storage. After ensuring the export is complete, close the app."
+  },
+  {
+    "task": "Enable display of save success messages and show the word count permanently at the bottom of the app.",
+    "solution": "Enable the display of save success messages first. Then configure the app to show the word count permanently at the bottom."
+  },
+  {
+    "task": "Delete the note titled 'Old Receipts' and change the font size of the Notes APP to 100%.",
+    "solution": "First, delete the note titled 'Old Receipts'. After that, change the font size of the Notes APP to 100%."
+  },
+  {
+    "task": "Open the file associated with the note 'Work Presentation' and then export it from the app.",
+    "solution": "Start by opening the file associated with the note titled 'Work Presentation'. Once opened, export this note from the app."
+  },
+  {
+    "task": "Print the current note after changing the font size to 175% and setting the theme color to dark.",
+    "solution": "First, change the font size to 175%, then set the theme color to dark, and finally print the current note."
+  },
+  {
+    "task": "Scroll down the settings page, then enable automatic backups and set autosave notes.",
+    "solution": "Open the settings page, scroll down, enable automatic backups, and set autosave notes."
+  },
+  {
+    "task": "Lock the current note after renaming the selected checklist item to 'Urgent'.",
+    "solution": "Rename the selected checklist item to 'Urgent', then lock the current note."
+  },
+  {
+    "task": "Sort the checklist items in a custom type and move the selected item to the top of the list.",
+    "solution": "First, sort the checklist items in a custom type, then move the selected item to the top of the list."
+  },
+  {
+    "task": "Switch the theme color to black and white and then adjust the font size to 300%.",
+    "solution": "Set the theme color to black and white, then change the font size to 300%."
+  },
+  {
+    "task": "Change the text color in the Notes app and save the colors chosen for the app.",
+    "solution": "First, change the text color, then save the colors that have been chosen for the app."
+  },
+  {
+    "task": "Import notes through settings after setting the theme color to auto light/dark mode.",
+    "solution": "Set the theme color to auto light/dark mode, then navigate to settings and import notes."
+  },
+  {
+    "task": "Rename the selected checklist item to 'Complete by Friday', then move it to the bottom of the list.",
+    "solution": "Rename the selected checklist item to 'Complete by Friday', then move it to the bottom of the list."
+  },
+  {
+    "task": "Set the font size in Notes app to 90%, then lock the current note.",
+    "solution": "Change the font size to 90%, then lock the current note."
+  },
+  {
+    "task": "Show the information of the app after enabling automatic backups in settings.",
+    "solution": "Enable automatic backups in settings, then display the information of the app."
+  },
+  {
+    "task": "Change the theme color to dark, then set the font size to 150%, and finally export notes from settings.",
+    "solution": "Change the theme color to dark, go to font size settings and set the font size to 150%, then navigate to settings and export the notes."
+  },
+  {
+    "task": "Rename the selected checklist item to 'Grocery Shopping', then move it to the top of the list.",
+    "solution": "Select the checklist item, rename it to 'Grocery Shopping', and then move it to the top of the list."
+  },
+  {
+    "task": "Change the theme color to light, then switch the text color, and set the font size of the app to 75%.",
+    "solution": "Change the theme color to light, switch the text color, and set the font size of the app to 75%."
+  },
+  {
+    "task": "Set the font size to 250%, then confirm the sort type of the current checklist and close the window.",
+    "solution": "Set the font size to 250%, confirm the sort type of the current checklist, and close the window."
+  },
+  {
+    "task": "Change the primary color to blue, then change the app background color, and enable display save success messages in settings.",
+    "solution": "Change the primary color to blue, change the app background color, and enable display save success messages in settings."
+  },
+  {
+    "task": "Set the font size to 300%, then delete the selected checklist item.",
+    "solution": "Set the font size to 300%, select the checklist item, and delete it."
+  },
+  {
+    "task": "Sort the checklist items by date created, then rename the selected checklist item to 'Grocery Shopping'.",
+    "solution": "Sort the checklist items by date created, select the checklist item, and rename it to 'Grocery Shopping'."
+  },
+  {
+    "task": "Set the font size to 60% and then change the theme color to dark.",
+    "solution": "Set the font size to 60%, then change the theme color to dark."
+  },
+  {
+    "task": "Change the theme color to dark, set the font size to 100%, and then export notes from settings.",
+    "solution": "Change the theme color to dark, set the font size to 100%, and then navigate to settings to export notes."
+  },
+  {
+    "task": "Switch the text color, then set the font size to 200%, and delete the current note.",
+    "solution": "Switch the text color, set the font size to 200%, and then delete the current note."
+  },
+  {
+    "task": "Set the theme color to custom, then save all color changes, and finally close the color settings popup.",
+    "solution": "First, set the theme color to custom. Next, save all color changes. Finally, close the color settings popup."
+  },
+  {
+    "task": "Change the font size of the app to 250%, then set the theme color to dark red, and finally enable automatic backups.",
+    "solution": "First, change the font size of the app to 250%. Next, set the theme color to dark red. Finally, enable automatic backups."
+  },
+  {
+    "task": "Set the theme of the Notes app to Auto Light/Dark mode, then change the font size to 175%, and finally set the text color to red.",
+    "solution": "First, set the theme of the Notes app to Auto Light/Dark mode. Next, change the font size to 175%. Finally, set the text color to red."
+  },
+  {
+    "task": "Import notes from Google Drive, then set the font size in the Notes app to 175%, and finally change the background color to black.",
+    "solution": "First, import notes from Google Drive. Next, set the font size in the Notes app to 175%. Finally, change the background color to black."
+  },
+  {
+    "task": "Change the theme color of the app to Light, then move the checklist item 'Call Mom' to the bottom of the list, and finally change the font size of the app to 90%.",
+    "solution": "First, change the theme color of the app to Light. Next, move the checklist item 'Call Mom' to the bottom of the list. Finally, change the font size of the app to 90%."
+  },
+  {
+    "task": "Change the theme color to dark red and then adjust the font size to 250% in the Notes app.",
+    "solution": "First, change the theme color to dark red, then switch the font size to 250%."
+  },
+  {
+    "task": "Set the theme color of the Notes app to white and rename the current note to 'Meeting Summary'.",
+    "solution": "Start by setting the theme color to white, then proceed to rename the current note to 'Meeting Summary'."
+  },
+  {
+    "task": "Export the note 'Vacation Plans' as a PDF file and print it.",
+    "solution": "Open the note titled 'Vacation Plans', export it as a PDF file, and then print the PDF."
+  },
+  {
+    "task": "Set the font size in the Notes app to 125% and change the background color.",
+    "solution": "Adjust the font size in the Notes app to 125%, then change the background color."
+  },
+  {
+    "task": "Lock the note titled 'Personal Diary' and confirm, then show the information about the Notes app.",
+    "solution": "Lock the note titled 'Personal Diary' and confirm the action, then navigate to show the app information."
+  },
+  {
+    "task": "Create a shortcut for the note 'Grocery List' on the home screen and set the widget colors to dark mode.",
+    "solution": "Create a shortcut for the note titled 'Grocery List' on the home screen, then change the widget colors to dark mode."
+  },
+  {
+    "task": "Delete the note named 'Old Receipts' and then turn on display save success messages.",
+    "solution": "Delete the note named 'Old Receipts', and afterwards enable the display of save success messages."
+  },
+  {
+    "task": "Change the text color to blue and set the font size in the Notes app to 150%.",
+    "solution": "First change the text color to blue, then set the font size in the Notes app to 150%."
+  },
+  {
+    "task": "Print the current note and then show the about page of the Notes app.",
+    "solution": "Print the current note and after printing is complete, navigate to the about page of the Notes app."
+  },
+  {
+    "task": "Decrease the font size in the Notes app to 60% and then increase it back to 250%.",
+    "solution": "First, decrease the font size in the Notes app to 60%, then adjust it back to 250%."
+  },
+  {
+    "task": "Save the new color settings I have chosen for text, background, and app icon, and then close the color settings window.",
+    "solution": "First, save the new color settings for text, background, and app icon, then close the color settings window."
+  },
+  {
+    "task": "Increase the font size to 150%, enable line wrap for better text formatting, and display a note picker on startup.",
+    "solution": "Set the font size to 150%, enable line wrap, and set the app to show a note picker on startup."
+  },
+  {
+    "task": "Change the font size to 300%, make all links and emails in the note clickable, and use Incognito mode on the keyboard.",
+    "solution": "Adjust the font size to 300%, enable clickable links and emails, and activate Incognito mode on the keyboard."
+  },
+  {
+    "task": "Set the theme color of the notes app to black & white, then show the word count for each note I write.",
+    "solution": "Change the theme color to black & white and enable word count display for each note."
+  },
+  {
+    "task": "Use a monospaced font for all my notes to improve readability, then set the cursor to be placed at the end of the note.",
+    "solution": "Enable a monospaced font for all notes and set the cursor to be automatically placed at the end of the note."
+  },
+  {
+    "task": "Export the current note as a file, then save the new color settings and close the color settings window.",
+    "solution": "Export the current note to a file, then save the new color settings and close the settings window."
+  },
+  {
+    "task": "Set the primary color of the app to teal, then enable automatic backups to Google Drive.",
+    "solution": "Change the primary color of the app to teal and enable automatic backups to Google Drive."
+  },
+  {
+    "task": "Automatically show the keyboard when I open a note, then reduce the font size of the notes app to 90%.",
+    "solution": "Set the app to automatically show the keyboard when a note is opened, and reduce the font size to 90%."
+  },
+  {
+    "task": "Set the font size to 150% for easier reading, then import notes from my email.",
+    "solution": "Adjust the font size to 150% and import notes from your email."
+  },
+  {
+    "task": "Turn on autosave for all my notes, then export my notes to a PDF file on my desktop.",
+    "solution": "Enable the autosave feature for all notes and export your notes as a PDF file to your desktop."
+  },
+  {
+    "task": "Enable the feature to show word count and switch to use monospaced font",
+    "solution": "First, enable the feature to show word count in the settings. Then, switch the font type to a monospaced font in the font settings."
+  },
+  {
+    "task": "Turn on the autosave notes feature and change the primary color of the app to black",
+    "solution": "Navigate to the settings and enable the autosave notes feature. Then, go to the color settings and set the primary color of the app to black."
+  },
+  {
+    "task": "Change the font size of the app to 125% and import notes from Dropbox",
+    "solution": "Adjust the font size setting in the app to 125%. Then, use the import function to pull notes from your Dropbox account."
+  },
+  {
+    "task": "Set the font size to 90% and turn on the option to display save success messages",
+    "solution": "In the settings, set the font size to 90%. Then, enable the option to display save success messages."
+  },
+  {
+    "task": "Switch the theme color to auto light/dark and open the alignment settings",
+    "solution": "First, change the theme color to auto light/dark in the theme settings. Then, navigate to the alignment settings."
+  },
+  {
+    "task": "Change the font size to 150% and set the text color to blue",
+    "solution": "Set the font size to 150% in the font settings. Then, open the color settings and change the text color to blue."
+  },
+  {
+    "task": "Scroll down the settings page and set the font size to 75%",
+    "solution": "Scroll down the settings page until you find the font size option. Then, set the font size to 75%."
+  },
+  {
+    "task": "Rename the current note to \"Meeting Minutes\" and move it to the top of the list",
+    "solution": "Open the note and rename it to \"Meeting Minutes.\" Then, move this note to the top of the list by using the reordering function."
+  },
+  {
+    "task": "Export all the notes to my email and change the app icon color to red",
+    "solution": "First, use the export function to send all notes to your email. Then, change the app icon color to red in the settings."
+  },
+  {
+    "task": "Set the theme color to dark and increase the font size to 125%",
+    "solution": "Change the theme color to dark in the theme settings. Then, adjust the font size to 125% in the font size settings."
+  },
+  {
+    "task": "Rename the current note to 'Meeting Minutes' and then print the current note.",
+    "solution": "First, rename the current note as 'Meeting Minutes'. Next, print the current note."
+  },
+  {
+    "task": "Set the font size of the app to 200% and then enable dark theme color.",
+    "solution": "First, change the font size of the app to 200%. Then, turn on the dark theme color in the Notes app."
+  },
+  {
+    "task": "Create a shortcut of the current note and ensure autosave is enabled for all notes.",
+    "solution": "First, create a shortcut of the current note. Then, enable autosave for all notes in the app settings."
+  },
+  {
+    "task": "Enable Incognito mode for the keyboard and make all links and emails clickable within the Notes app.",
+    "solution": "First, activate Incognito mode for the keyboard while using the Notes app. Next, enable the option to make all links and emails clickable."
+  },
+  {
+    "task": "Rename the selected checklist item to 'Grocery List' and move it to the top of the list.",
+    "solution": "First, rename the selected checklist item to 'Grocery List'. Then, move the selected checklist item to the top of the list."
+  },
+  {
+    "task": "Set the theme color of the Notes app to Dark Red and ensure the keyboard shows up when starting the Notes app.",
+    "solution": "First, set the theme color of the Notes app to Dark Red. Then, adjust the app settings to ensure the keyboard shows up when the Notes app is started."
+  },
+  {
+    "task": "Display word count in all notes and change the theme color of the app to White.",
+    "solution": "First, enable the display of the word count in all notes. Then, change the theme color of the Notes app to White."
+  },
+  {
+    "task": "Set the cursor to the end of the note when opening it and enable line wrap in the app settings.",
+    "solution": "First, set the cursor to go to the end of the note when it is opened. Then, enable line wrap in the Notes app settings."
+  },
+  {
+    "task": "Use a monospaced font for typing and set the font size of the app to 150%.",
+    "solution": "First, change the font setting to use a monospaced font for typing. Then, set the font size of the app to 150%."
+  },
+  {
+    "task": "Print the current note and then confirm the deletion of the current note titled 'Old Notes'.",
+    "solution": "First, print the current note. After printing, confirm the deletion of the note titled 'Old Notes'."
+  },
+  {
+    "task": "Export all my notes to a PDF file, save it to my desktop, and notify me when the task is completed successfully.",
+    "solution": "Enable display of save success messages in the Notes app, export my notes to a PDF file and save it to my desktop."
+  },
+  {
+    "task": "Set the font size to 150%, change the theme color to Dark, and center align my note content.",
+    "solution": "Set the font size to 150%, change the theme color of the app to Dark, set the alignment of the note content to center."
+  },
+  {
+    "task": "Enable automatic backups, set the primary color to teal, and switch on the autosave notes function.",
+    "solution": "Turn on automatic backups in the Notes app, set the primary color in the Notes app to teal, turn on the autosave notes function."
+  },
+  {
+    "task": "Create a shortcut for the checklist note, set the font size to 125%, and change the text color of the Notes APP to red.",
+    "solution": "Create a shortcut for the checklist note, set the font size of the app to 125%, change the text color of the Notes APP."
+  },
+  {
+    "task": "Turn on the autosave notes function, switch to a monospaced font, and set the font size to 100%.",
+    "solution": "Turn on the autosave notes function, use monospaced font for the notes, set the font size to the default 100%."
+  },
+  {
+    "task": "Increase the font size to 300%, set the theme color to Black & White, and exit the settings page.",
+    "solution": "Increase the font size to 300%, set the theme color of the app to black & white, exit the settings page."
+  },
+  {
+    "task": "Decrease the font size to 75%, change the alignment of text in notes to left, and enable display of success messages.",
+    "solution": "Decrease the font size to 75%, change the alignment of text in notes, enable display of save success messages in the Notes app."
+  },
+  {
+    "task": "Export the current note as a PDF file and notify me upon completion, then change the font size to 90%.",
+    "solution": "Enable display of save success messages in the Notes app, export the current note as a PDF file, set the font size of the Notes APP to 90%."
+  },
+  {
+    "task": "Set the font size to 50%, change the theme color to Custom, and turn off the autosave notes function.",
+    "solution": "Set the font size of the app to 50%, change the theme color of the app to Custom, switch off autosave notes function."
+  },
+  {
+    "task": "Adjust the font size to the smallest setting, set the primary color to teal, and export the current note as a file.",
+    "solution": "Adjust the font size in the Notes app to the smallest available setting, 50%, set the primary color in the Notes app to teal, export the current note as a file."
+  },
+  {
+    "task": "Rename the current note to 'Project Plan', increase the font size to 200%, and then lock the note with the password 'secure123'.",
+    "solution": "First, rename the current note to 'Project Plan'. Next, increase the font size to 200%. Finally, lock the note using the password 'secure123'."
+  },
+  {
+    "task": "Set the theme color of the app to Dark Red, sort the checklist items by title, and remove all completed items from the checklist.",
+    "solution": "Initially, change the app's theme color to Dark Red. Then, sort the checklist items by title. After sorting, remove all the completed items from the checklist."
+  },
+  {
+    "task": "Save the current theme color settings, export the current note as a PDF file, and then print the note.",
+    "solution": "First, save the current theme color settings. Export the current note as a PDF file. Finally, print the note."
+  },
+  {
+    "task": "Set the app to autosave notes every 5 minutes, enable automatic backups to iCloud every day, and toggle the theme color to auto light/dark mode.",
+    "solution": "First, set the app to autosave notes every 5 minutes. Then, enable automatic backups to iCloud every day. Finally, toggle the theme color to auto light/dark mode."
+  },
+  {
+    "task": "Rename the current note to 'Interview Questions', increase the font size to 250%, and change the text color to blue.",
+    "solution": "First, rename the current note to 'Interview Questions'. Next, increase the font size to 250%. Finally, change the text color to blue."
+  },
+  {
+    "task": "Scroll down to view more settings, set the theme color to Black & White, and then set the cursor position to the end of the note.",
+    "solution": "First, scroll down to view more settings. Set the theme color to Black & White. Lastly, set the cursor position to the end of the note."
+  },
+  {
+    "task": "Increase the font size to 150% for easier reading, export the current note as a file, and create a shortcut for this note on the home screen.",
+    "solution": "First, increase the font size to 150% for easier reading. Then, export the current note as a file. Finally, create a shortcut for this note on the home screen."
+  },
+  {
+    "task": "Change the theme color to teal, set the app icon color to green, and display success messages when notes are saved.",
+    "solution": "First, change the theme color to teal. Next, set the app icon color to green. Finally, enable the display of success messages when notes are saved."
+  },
+  {
+    "task": "Change the theme color to light, set the font size to 125%, and enable line wrap.",
+    "solution": "Start by switching the theme color of the notes app to light. Then, adjust the font size to 125%. Finally, enable line wrap in the notes app."
+  },
+  {
+    "task": "Rename the current note to 'Meeting Notes October', set the text color to blue, and activate autosave.",
+    "solution": "First, rename the current note to 'Meeting Notes October'. Next, change the text color to blue in the notes app. Finally, turn on autosave for notes in the notes app."
+  },
+  {
+    "task": "Enable Incognito mode for the keyboard, set the text alignment to center, and set the background color to light gray.",
+    "solution": "First, activate Incognito mode for the keyboard in the notes app. Then, change the text alignment to center. Lastly, set the background color to light gray."
+  },
+  {
+    "task": "Set the font size to 150%, change the app icon color to green, and adjust the primary color to teal.",
+    "solution": "Begin by setting the font size of the app to 150%. Then, change the app icon color to green. Finally, adjust the primary color to teal in the notes app."
+  },
+  {
+    "task": "Show the word count, enable clickable links and emails, and switch the font size to 175%.",
+    "solution": "Start by enabling the word count in the notes app. Then, enable clickable links and emails. Lastly, change the font size to 175%."
+  },
+  {
+    "task": "Display a note picker on startup, enable line wrap in the text, and set the alignment of the text to left.",
+    "solution": "Ensure a note picker shows up on startup. Then, enable line wrap in the text. Finally, set the alignment of the text to left."
+  },
+  {
+    "task": "Show the keyboard on startup, lock the current note, and turn off the word count of the note content.",
+    "solution": "First, enable the keyboard to show on startup. Then, lock the current note. Finally, turn off the word count of the note content."
+  },
+  {
+    "task": "Set the font size to 60%, enable monospaced font for typing, and open the 'About' page of the app.",
+    "solution": "Start by setting the font size of the app to 60%. Then, use a monospaced font for typing in the notes app. Finally, open the 'About' page of the app."
+  },
+  {
+    "task": "Ensure a note picker shows up on startup, scroll down the settings page to view more options, and change the font size to 150%.",
+    "solution": "First, ensure a note picker shows up on startup. Then, scroll down the settings page to view more options. Finally, set the font size of the app to 150%."
+  },
+  {
+    "task": "Toggle the theme color to auto light/dark mode, set the font size to 150%, and set the alignment of the note content to center.",
+    "solution": "Begin by toggling the theme color to auto light/dark mode. Then, set the font size to 150%. Finally, adjust the alignment of the note content to center."
+  },
+  {
+    "task": "Move the checklist item 'Buy milk' to the top and then rename it to 'Buy skimmed milk'.",
+    "solution": "First, move the checklist item 'Buy milk' to the top of the list. Then, rename the item 'Buy milk' to 'Buy skimmed milk'."
+  },
+  {
+    "task": "Disable autosave notes and set the font size to 90% in the Notes app settings.",
+    "solution": "Go to the Notes app settings, disable autosave notes, and then set the font size to 90%."
+  },
+  {
+    "task": "Change the text alignment to center for the note titled 'Blog Post' and show word count in the Notes app settings.",
+    "solution": "Set the alignment of the text in the note titled 'Blog Post' to center. Then, navigate to the Notes app settings and enable the word count option."
+  },
+  {
+    "task": "Turn on Incognito mode of keyboards and make links and emails clickable in the Notes app settings.",
+    "solution": "Go to the Notes app settings, turn on Incognito mode of keyboards, and then enable the option to make links and emails clickable."
+  },
+  {
+    "task": "Rename the checklist item 'Workout at gym' to 'Gym session at 7 PM' and move 'Schedule doctor appointment' to the bottom of the list.",
+    "solution": "Rename the checklist item 'Workout at gym' to 'Gym session at 7 PM'. Then, move the checklist item 'Schedule doctor appointment' to the bottom of the list."
+  },
+  {
+    "task": "Set the font size to 175% and change the text color of the notes to blue in the Notes app",
+    "solution": "Start by setting the font size to 175%, then navigate to text color settings to change the text color to blue."
+  },
+  {
+    "task": "Import notes and then move the most recently added note to the top of the list in the Notes app",
+    "solution": "First, import the notes. After importing, select the most recently added note and move it to the top of the list."
+  },
+  {
+    "task": "Change the primary color in the Notes app, enable save success messages, and set the theme color to auto light/dark",
+    "solution": "Go to primary color settings and change the primary color, then enable save success messages, and finally, set the theme color to auto light/dark in the settings."
+  },
+  {
+    "task": "Enable automatic backups and set the font size to 150% for easier reading in the Notes app",
+    "solution": "First, go to settings to enable automatic backups, then set the font size to 150% for easier reading."
+  },
+  {
+    "task": "Set the font size to 200%, export the notes, and then save the color settings in the Notes app",
+    "solution": "Start by setting the font size to 200%, then export the notes. After that, go to color settings and save the current configurations."
+  },
+  {
+    "task": "Close the color settings, set the font size to 100%, and change the theme color to dark in the Notes app",
+    "solution": "Close the color settings window if open, set the font size to 100%, and then change the theme color to dark."
+  },
+  {
+    "task": "Set the font size to 300%, change the text color to blue, and move the selected item to the bottom of the list in the Notes app",
+    "solution": "First, set the font size to 300%, then, change the text color to blue, and finally, move the selected item to the bottom of the list."
+  },
+  {
+    "task": "Set the font size of the app to 125% and change the primary color before exporting the notes in the Notes app",
+    "solution": "Set the font size of the app to 125%, then change the primary color, and proceed to export the notes."
+  },
+  {
+    "task": "Set the font size of the app to 90% and import notes, then enable save success messages",
+    "solution": "First, set the font size of the app to 90% and import the notes. After importing, enable save success messages in the settings."
+  },
+  {
+    "task": "Change the theme color to dark, set the font size of the app to 200%, and move the selected item to the top of the list",
+    "solution": "Start by changing the theme color to dark, then set the font size of the app to 200%, and finally move the selected item to the top of the list."
+  },
+  {
+    "task": "Rename the current note to 'Strategy Meeting Notes' and export it as a PDF file.",
+    "solution": "First, rename the current note by selecting 'Rename the current note to \"Strategy Meeting Notes\"' and then export it by selecting 'Export the current note as a PDF file'."
+  },
+  {
+    "task": "Enable automatic backups and autosave notes in the Notes app.",
+    "solution": "First, set the app to enable automatic backups by selecting 'Set the app to enable automatic backups', then set it to autosave notes by selecting 'Set the app to autosave notes'."
+  },
+  {
+    "task": "Create a shortcut for the current note on the home screen and then set the text alignment to justified.",
+    "solution": "Create a shortcut by selecting 'Create a shortcut for the current note on the home screen', then adjust the text alignment by selecting 'Set the text alignment to justified in the Notes app'."
+  },
+  {
+    "task": "Delete the current note and then enable the line wrap function in the app.",
+    "solution": "Delete the current note by selecting 'Delete the current note', then enable line wrap by selecting 'Enable the line wrap function in the app'."
+  },
+  {
+    "task": "Set the font size of the Notes app to 150% and change the theme color to custom.",
+    "solution": "Adjust the font size by selecting 'Set the font size of the Notes app to 150% for easier reading', then change the theme color by selecting 'Change the theme color of the notes app to custom'."
+  },
+  {
+    "task": "Rename the selected checklist item 'Workout Plan' to 'Exercise Schedule' and move it to the top of the list.",
+    "solution": "Rename the checklist item by selecting 'Rename the selected checklist item \"Workout Plan\" to \"Exercise Schedule\"', then move it to the top by selecting 'Move the selected checklist item to the top of the list'."
+  },
+  {
+    "task": "Show the word count of the note content and print the current note.",
+    "solution": "First, show the word count by selecting 'Show the word count of the note content', and then print the note by selecting 'Print the current note'."
+  },
+  {
+    "task": "Set the app to show the keyboard at startup and enable the use of an incognito mode keyboard for typing note content.",
+    "solution": "First, set the app to show the keyboard at startup by selecting 'Set the app to show the keyboard at startup', then enable incognito mode by using 'Use incognito mode of keyboards for typing the note content'."
+  },
+  {
+    "task": "Rename the current note to 'Project Plan', enable monospaced font, and then create a shortcut for this note.",
+    "solution": "Rename the note by selecting 'Rename the current note to \"Project Plan\"', use a monospaced font by selecting 'Use monospaced font for the note content', and finally, create a shortcut by selecting 'Create a shortcut for the current note on the home screen'."
+  },
+  {
+    "task": "Set the cursor to automatically position at the end of a note and delete the selected note",
+    "solution": "First, set the cursor position by selecting 'Set the cursor to automatically position at the end of a note', then delete the selected note by selecting 'Delete the selected note'."
+  },
+  {
+    "task": "Customize the Notes APP by setting the theme color to dark red, increasing the font size to 175%, and then lock the current note.",
+    "solution": "Set the theme color of the app to Dark Red, set the font size of the app to 175%, and finally lock the current note."
+  },
+  {
+    "task": "Import notes to the Notes APP, customize the widget colors, and then print the current note.",
+    "solution": "Import notes to the Notes APP, customize the colors of the widget, and then print the current note."
+  },
+  {
+    "task": "Change the theme color of the Notes APP to custom, set a custom theme color, and save the color settings.",
+    "solution": "Set the theme color of the Notes app to Custom, set a custom theme color for the app, and save the color settings of the Notes APP."
+  },
+  {
+    "task": "Set the font size of the Notes APP to 125%, change the background color of the app, and then open the file of the current note.",
+    "solution": "Adjust the font size of the Notes APP to 125%, change the background color of the Notes APP, and open the file of the current note."
+  },
+  {
+    "task": "Set the theme color of the Notes APP to light, change the app icon color, then show the information about the app.",
+    "solution": "Set the theme color of the Notes app to Light, change the App icon color of the notes APP, and show the information about the app."
+  },
+  {
+    "task": "Delete the current note, exit the settings page, and then scroll down the settings page before exiting again.",
+    "solution": "Delete the current note, exit the settings page, scroll down the settings page, and exit the settings page again."
+  },
+  {
+    "task": "Set the font size of the app to 150%, customize the widget colors, and then set the background color of the app.",
+    "solution": "Choose 150% as the font size of the app, customize the widget colors, and change the background color of the Notes APP."
+  },
+  {
+    "task": "Change the theme color of the Notes APP to Black & White, set the font size to 100%, and then print the current note.",
+    "solution": "Set the theme color of the Notes app to Black & White, set the font size of the app to 100%, and print the current note."
+  },
+  {
+    "task": "Set the theme color to white, then adjust the font size to 175%, and finally print the current note.",
+    "solution": "Set the theme color of the app to White, set the font size of the app to 175%, and print the current note."
+  },
+  {
+    "task": "Scroll down the settings page, set the theme color of the Notes APP to dark, and then lock the current note.",
+    "solution": "Scroll down the settings page, set the theme color of the Notes app to Dark, and lock the current note."
+  },
+  {
+    "task": "Reduce eye strain by changing the background color to light grey, set the font size to 75%, and switch to dark mode for nighttime use.",
+    "solution": "First, change the background color to light grey, then set the font size to 75%, and finally switch the theme to dark mode."
+  },
+  {
+    "task": "Improve visibility by setting the font size to 250% and adjust the primary color of the app to teal.",
+    "solution": "Start by setting the font size to 250% and then change the primary color of the app to teal."
+  },
+  {
+    "task": "Create a new checklist item named 'Grocery List', import notes from john.doe@example.com, and rename the imported notes to 'Grocery List'.",
+    "solution": "First, create a new checklist item and rename it to 'Grocery List'. Next, import notes from john.doe@example.com and rename the imported notes to 'Grocery List'."
+  },
+  {
+    "task": "Export my notes to a PDF file and email it to jane.doe@example.com, and display a save success message for confirmation.",
+    "solution": "Export your notes to a PDF file, email it to jane.doe@example.com, and ensure the app displays a save success message for confirmation."
+  },
+  {
+    "task": "Enable automatic backups to my cloud account, save the current color settings, and close the color settings menu.",
+    "solution": "First, enable automatic backups to your cloud account, then save the current color settings, and finally close the color settings menu."
+  },
+  {
+    "task": "Set the app icon color to match the new theme color after switching to dark mode.",
+    "solution": "Switch the theme to dark mode and then set the app icon color to match the new theme color."
+  },
+  {
+    "task": "Export the note titled 'Rental Agreement' as a PDF file and send it to Alice via email.",
+    "solution": "First, export the note titled 'Rental Agreement' as a PDF file. Then, open your email app, create a new email to Alice, attach the exported PDF, and send the email."
+  },
+  {
+    "task": "Rename the current note to 'Meeting Agenda', set the cursor to be placed at the beginning of the note, and print it.",
+    "solution": "Rename the current note to 'Meeting Agenda', place the cursor at the beginning of the note, and then use the print function to print the note."
+  },
+  {
+    "task": "Change the theme of the Notes app to dark red, then create a shortcut for the note named 'Grocery List' on the home screen.",
+    "solution": "Change the theme of the Notes app to dark red in the settings, then navigate to the note named 'Grocery List' and create a shortcut for it on the home screen."
+  },
+  {
+    "task": "Import notes from iCloud drive into the Notes app and print the note titled 'Project Proposal'.",
+    "solution": "First, import notes from your iCloud drive into the Notes app. After the import is complete, locate the note titled 'Project Proposal' and use the print function to print the note."
+  },
+  {
+    "task": "Increase the font size to 200%, disable clickable links and emails in the note content, and lock the note named 'Personal Diary'.",
+    "solution": "Increase the font size in the Notes app to 200%. Next, disable clickable links and emails in the settings. Finally, locate the note named 'Personal Diary' and lock it."
+  },
+  {
+    "task": "Rename the current note to 'Agenda', set the background color of the Notes app to light gray, and export the note as a PDF file.",
+    "solution": "Rename the current note to 'Agenda'. Next, change the background color of the Notes app to light gray via settings, and then export the note as a PDF file."
+  },
+  {
+    "task": "Set the theme color of the app to dark, activate Incognito mode for keyboards, and show the information about the Notes app version and developer.",
+    "solution": "Change the theme color of the app to dark in the settings. Then, activate Incognito mode for keyboards. Finally, navigate to the settings to view and display information about the Notes app version and developer."
+  },
+  {
+    "task": "Create a shortcut for the current note, increase the font size to 250%, and save the current color settings in the Notes app.",
+    "solution": "Create a shortcut for the current note on the home screen. Increase the font size to 250% in the settings, and then save the current color settings."
+  },
+  {
+    "task": "Enable Auto light/dark theme in the Notes app, scroll through the settings page to view additional options, and set the cursor to be placed at the beginning of the note.",
+    "solution": "Enable the Auto light/dark theme in the settings. Scroll through the settings page to view additional options. Finally, set the cursor to be placed at the beginning of the current note."
+  },
+  {
+    "task": "Delete the note called 'Old Recipes' and then show the word count in every note.",
+    "solution": "Delete the note called 'Old Recipes'. Then, go to the settings and enable the option to show the word count in every note."
+  }
+]

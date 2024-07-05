@@ -1,0 +1,77 @@
+Suppose you are a mobile app testing expert who is working on testing the function of the Notes app on a smartphone, you are given a python-style script to complete a specific task, but something went wrong when you execute the script, you should try to fix it. 
+
+Task: 'Export the note titled "Meeting Notes" as a file'
+Original script of the task: 
+tap($open_note); tap($open_note_title_list.match('Meeting Notes')[0]); tap($more_options_note); tap($export_as_file)
+
+You met error when executing `tap($open_note_title_list.match('Meeting Notes')[0])`, the error info is below: 
+  File "<string>", line 4, in <module>
+IndexError: list index out of range, no element matched. The elements that were able to be matched are: open_note_title_list.match('123'), open_note_title_list.match('Diary'), open_note_title_list.match('Grocery List'), open_note_title_list.match('test')
+
+The UI of the app when meeting the error was:
+<FrameLayout id='0'>
+  <LinearLayout id='1'>
+    <FrameLayout id='2'>
+      <FrameLayout id='3' resource_id='action_bar_root'>
+        <FrameLayout id='4' resource_id='content'>
+          <LinearLayoutCompat id='5' resource_id='parentPanel'>
+            <LinearLayout id='6' resource_id='topPanel'>
+              <p id='7' resource_id='dialog_title_textview'>Open note</p>
+            </LinearLayout>
+            <FrameLayout id='8' resource_id='customPanel'>
+              <FrameLayout id='9' resource_id='custom'>
+                <ScrollView id='10' resource_id='dialog_open_note_holder'>
+                  <RelativeLayout id='11' resource_id='dialog_open_note_wrapper'>
+                    <LinearLayout id='12' resource_id='dialog_open_note_linear'>
+                      <RelativeLayout id='13' resource_id='open_note_item_holder'>
+                        <checkbox id='14' status='selected'>123</checkbox>
+                      </RelativeLayout>
+                      <RelativeLayout id='15' resource_id='open_note_item_holder'>
+                        <checkbox id='16'>Diary</checkbox>
+                      </RelativeLayout>
+                      <RelativeLayout id='17' resource_id='open_note_item_holder'>
+                        <checkbox id='18'>Grocery List</checkbox>
+                      </RelativeLayout>
+                      <RelativeLayout id='19' resource_id='open_note_item_holder'>
+                        <checkbox id='20'>test</checkbox>
+                      </RelativeLayout>
+                    </LinearLayout>
+                    <ImageView id='21' resource_id='dialog_open_note_divider'></ImageView>
+                    <RadioGroup id='22' resource_id='dialog_open_note_create_new'>
+                      <checkbox id='23' resource_id='dialog_open_note_new_radio'>Create a new note</checkbox>
+                    </RadioGroup>
+                  </RelativeLayout>
+                </ScrollView>
+              </FrameLayout>
+            </FrameLayout>
+          </LinearLayoutCompat>
+        </FrameLayout>
+      </FrameLayout>
+    </FrameLayout>
+  </LinearLayout>
+</FrameLayout>
+
+You should think about:
+1. Is the task executable? Some of the tasks should are not executable because the app does not have corresponding data, so you are suggested to revise the task and make it executable
+
+2. Is the solution correct? If not, please revise the solution script. The script should following the following rules: 
+In the script, except for the common python control flow (for, if-else, function def/calls, etc.), you can use the following APIs:
+- tap(<element_selector>): tap on the element. Almost all elements can be taped. If an element's attribute checked=false or selected=false, tapping it can make it checked or selected, vice versa.
+- set_text(<element_selector>, <text>): set the text of the element to <text>. Only editable text fields can be set text.
+- get_text(<element_selector>): return the text of the element as a string.
+- get_attributes(<element_selector>): return the attributes of the element as a dict, dict keys include "selected", "checked", "scrollable", dict values are boolean. eg. get_attributes($files[3])["selected"].
+- back(): close the current window
+
+The <element_selector> primitive is used to select an element, possible ways of selection include:
+- $<element id>, eg. $settings_button
+- <element_list>[<idx>]: the idx-th in the element list. eg. $my_items[1]
+
+The <element_list> primitive is used to select a list of elements, possible ways of selection include:
+- <element_selector>: the items in the list element identified by <element_selector>. eg. $my_items
+- <element_list>.match(<text or attribute dict>): the elements in the element list that match the given text or attribute dict. eg. $my_items.match("key words") or $my_items.match({"selected": true})
+You can use len(<element_list>) to get the total number of items in an element list.
+
+Your answer must follow the below python dict format:
+{'reasoning': '<Your understanding of bugs and how to fix them>', 'task': '<revised task if you think the task could not be finished>', 'script': '<the python script to finish the task>'}
+
+Please answer nothing else but the above python dict!

@@ -1,0 +1,726 @@
+Task: Open the checklist containing the item 'Shopping List' and rename the checklist item 'Shopping List' to 'Groceries List'
+*************************************
+Error Traceback (most recent call last):
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/input_manager.py", line 207, in start
+    exec(code_script)
+  File "<string>", line 33, in <module>
+  File "<string>", line 18, in autodroidv2_task_solution_code
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 522, in tap
+    self.check_output_crash(button_api_name)
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 410, in check_output_crash
+    raise Exception(f'Action not found when executing tap {api_name}')
+Exception: Action not found when executing tap more_options_checklist
+:
+--------------------------------------
+Error 0:
+# check whether the current UI is the note picker page, if so, go back to the main page
+ui_tree = get_ui_tree()
+if '>Open note</p>' in ui_tree:
+    # go back to the main screen
+    back()
+
+
+# # {Available UI elements: ['open_note', 'create_note', 'more_options_note', 'switch_item', 'checklist_item_list', 'checklist_item', 'add_checklist_item']}
+tap($open_note)
+
+open_notes = $open_note_title_list
+# # {Available UI elements: ['save_set_colors', 'open_note_title_list', 'create_note']}
+for i in range(len(open_notes)):
+
+    # # {Available UI elements: ['save_set_colors', 'open_note_title_list', 'create_note']}
+    if get_text(open_notes[i]) == 'Shopping List':
+
+        tap(open_notes[i])
+        break
+# # {Available UI elements: ['save_set_colors', 'open_note_title_list', 'create_note']}
+tap($more_options_checklist)
+
+checklist_items = $checklist_item_list
+for j in range(len(checklist_items)):
+    if get_text(checklist_items[j]) == 'Shopping List':
+        long_tap(checklist_items[j])
+        tap($rename_selected_checklist_item)
+        set_text($rename_input, 'Groceries List')
+        tap($rename_ok)
+        break
+back()
+
+
+=====================================================Task: Ensure that a note titled 'Grocery List' exists and is opened, then print the current note about the grocery list.
+*************************************
+Error Traceback (most recent call last):
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/input_manager.py", line 207, in start
+    exec(code_script)
+  File "<string>", line 33, in <module>
+  File "<string>", line 29, in autodroidv2_task_solution_code
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 522, in tap
+    self.check_output_crash(button_api_name)
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 410, in check_output_crash
+    raise Exception(f'Action not found when executing tap {api_name}')
+Exception: Action not found when executing tap more_options_note
+:
+--------------------------------------
+Error 2:
+# check whether the current UI is the note picker page, if so, go back to the main page
+ui_tree = get_ui_tree()
+if '>Open note</p>' in ui_tree:
+    # go back to the main screen
+    back()
+
+
+# # {Available UI elements: ['open_note', 'create_note', 'more_options_note', 'switch_item', 'checklist_item_list', 'checklist_item', 'add_checklist_item']}
+tap($open_note)    
+
+exists = False
+open_notes = $open_note_title_list
+# # {Available UI elements: ['save_set_colors', 'open_note_title_list', 'create_note']}
+for i in range(len(open_notes)):
+
+    # # {Available UI elements: ['save_set_colors', 'open_note_title_list', 'create_note']}
+    if get_text(open_notes[i]) == 'Grocery List':
+
+        tap(open_notes[i])
+        exists = True
+        break
+if not exists:
+    # # {Available UI elements: ['save_set_colors', 'open_note_title_list', 'create_note']}
+    tap($create_note)
+
+    # # {Available UI elements: ['rename_input', 'font_size_types', 'text_note_type', 'checklist_type', 'save_set_colors', 'sort_checklist_items_ok']}
+    set_text($add_note_title, 'Grocery List')
+
+    # # {Available UI elements: ['rename_input', 'font_size_types', 'text_note_type', 'checklist_type', 'save_set_colors', 'sort_checklist_items_ok']}
+    tap($text_note_type)
+
+    # # {Available UI elements: ['rename_input', 'font_size_types', 'text_note_type', 'checklist_type', 'save_set_colors', 'sort_checklist_items_ok']}
+    tap($add_note_ok)
+
+# # {Available UI elements: ['rename_input', 'font_size_types', 'text_note_type', 'checklist_type', 'save_set_colors', 'sort_checklist_items_ok']}
+tap($more_options_note)
+
+tap($export_as_file)  # Temporary usage to print
+
+
+=====================================================Task: Open an existing note or create a new one if necessary, then show the title of the current note
+*************************************
+Error Traceback (most recent call last):
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/input_manager.py", line 207, in start
+    exec(code_script)
+  File "<string>", line 25, in <module>
+  File "<string>", line 23, in autodroidv2_task_solution_code
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 614, in get_text
+    target_ele, element_tree = self.navigate_and_get_target_element(element_selector, caller_type='get_text', statement={'current_code': current_code_line, 'original_lineno': lineno_in_original_script, 'original_code': original_code_line})
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 440, in navigate_and_get_target_element
+    self.check_output_crash(element_selector_xpath)
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 410, in check_output_crash
+    raise Exception(f'Action not found when executing tap {api_name}')
+Exception: Action not found when executing tap //p[text()='Enter text']
+:
+--------------------------------------
+Error 3:
+# check whether the current UI is the note picker page, if so, go back to the main page
+ui_tree = get_ui_tree()
+if '>Open note</p>' in ui_tree:
+    # go back to the main screen
+    back()
+
+
+open_notes = $open_note_title_list
+# # {Available UI elements: ['open_note', 'create_note', 'more_options_note', 'switch_item', 'checklist_item_list', 'checklist_item', 'add_checklist_item']}
+if len(open_notes) == 0:
+
+    tap($create_note)
+    set_text($add_note_title, 'New Note')
+    tap($text_note_type)
+    tap($add_note_ok)
+else:
+    # # {Available UI elements: ['save_set_colors', 'open_note_title_list', 'create_note']}
+    tap(open_notes[0])
+
+# # {Available UI elements: ['search_within_note', 'open_note', 'create_note', 'more_options_note', 'switch_item', 'save_set_colors', 'note_content']}
+get_text($item_title)
+
+
+
+=====================================================Task: Create multiple checklist items and then sort the items of the current checklist by Custom
+*************************************
+Error Traceback (most recent call last):
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/input_manager.py", line 207, in start
+    exec(code_script)
+  File "<string>", line 41, in <module>
+  File "<string>", line 22, in autodroidv2_task_solution_code
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 522, in tap
+    self.check_output_crash(button_api_name)
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 410, in check_output_crash
+    raise Exception(f'Action not found when executing tap {api_name}')
+Exception: Action not found when executing tap add_checklist_item
+:
+--------------------------------------
+Error 7:
+# check whether the current UI is the note picker page, if so, go back to the main page
+ui_tree = get_ui_tree()
+if '>Open note</p>' in ui_tree:
+    # go back to the main screen
+    back()
+
+# # {Available UI elements: ['search_within_note', 'open_note', 'create_note', 'more_options_note', 'switch_item', 'save_set_colors', 'note_content']}
+tap($open_note)
+
+# # {Available UI elements: ['save_set_colors', 'open_note_title_list', 'create_note']}
+if len($open_note_title_list) == 0:
+
+	tap($create_note)
+	tap($checklist_type)
+	tap($add_note_ok)
+else:
+	# # {Available UI elements: ['save_set_colors', 'open_note_title_list', 'create_note']}
+	tap($open_note_title_list[0])
+
+# # {Available UI elements: ['search_within_note', 'open_note', 'create_note', 'more_options_note', 'switch_item', 'save_set_colors', 'note_content']}
+tap($add_checklist_item)
+
+set_text($add_checklist_item_title, 'Item 1')
+tap($add_checklist_item_ok)
+tap($add_checklist_item)
+set_text($add_checklist_item_title, 'Item 2')
+tap($add_checklist_item_ok)
+tap($add_checklist_item)
+set_text($add_checklist_item_title, 'Item 3')
+tap($add_checklist_item_ok)
+tap($more_options_checklist)
+tap($sort_checklist_items)
+tap($custom_type)
+tap($sort_checklist_items_ok)
+
+=====================================================Task: Open a checklist note or create one if there is none, then rename the current checklist to 'Grocery List'
+*************************************
+Error Traceback (most recent call last):
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/input_manager.py", line 207, in start
+    exec(code_script)
+  File "<string>", line 31, in <module>
+  File "<string>", line 30, in autodroidv2_task_solution_code
+  File "<string>", line 23, in task0
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 522, in tap
+    self.check_output_crash(button_api_name)
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 410, in check_output_crash
+    raise Exception(f'Action not found when executing tap {api_name}')
+Exception: Action not found when executing tap more_options_note
+:
+--------------------------------------
+Error 10:
+# check whether the current UI is the note picker page, if so, go back to the main page
+ui_tree = get_ui_tree()
+if '>Open note</p>' in ui_tree:
+    # go back to the main screen
+    back()
+
+def task0():
+    # # {Available UI elements: ['search_within_note', 'open_note', 'create_note', 'more_options_note', 'switch_item', 'save_set_colors', 'note_content']}
+    tap($open_note)
+
+    # # {Available UI elements: ['save_set_colors', 'open_note_title_list', 'create_note']}
+    if len($open_note_title_list) == 0:
+
+        back()
+        tap($create_note)
+        set_text($add_note_title, 'New Checklist')
+        tap($checklist_type)
+        tap($add_note_ok)
+    # # {Available UI elements: ['save_set_colors', 'open_note_title_list', 'create_note']}
+    tap($more_options_note)
+
+    tap($rename_note)
+    set_text($rename_input, 'Grocery List')
+    tap($rename_ok)
+task0()
+
+=====================================================Task: Create checklist items, mark some as done, and then remove all done items from the current checklist.
+*************************************
+Error Traceback (most recent call last):
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/input_manager.py", line 207, in start
+    exec(code_script)
+  File "<string>", line 25, in <module>
+  File "<string>", line 10, in autodroidv2_task_solution_code
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 189, in __init__
+    self.check_api_name(api_name)
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 221, in check_api_name
+    raise Exception(f'Error: Element {api_name} does not exist in the app! Please use the real element name! ')
+Exception: Error: Element add_checklist_item_title does not exist in the app! Please use the real element name! 
+:
+--------------------------------------
+Error 31:
+# check whether the current UI is the note picker page, if so, go back to the main page
+ui_tree = get_ui_tree()
+if '>Open note</p>' in ui_tree:
+    # go back to the main screen
+    back()
+
+# # {Available UI elements: ['open_note', 'create_note', 'more_options_note', 'switch_item', 'add_checklist_item']}
+tap($add_checklist_item)
+
+set_text($add_checklist_item_title, 'Task 1')
+tap($add_checklist_item_ok)
+# # {Available UI elements: ['save_set_colors', 'sort_checklist_items_ok']}
+tap($add_checklist_item)
+
+set_text($add_checklist_item_title, 'Task 2')
+tap($add_checklist_item_ok)
+tap($checklist_item[0])
+tap($checklist_item[1])
+tap($more_options_checklist)
+tap($remove_done_checklist_items)
+
+=====================================================Task: Open a checklist note containing 'Meeting at 3PM' if one is not already opened, then rename the checklist item 'Meeting at 3PM' to 'Team Meeting at 3PM'.
+*************************************
+Error Traceback (most recent call last):
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/input_manager.py", line 207, in start
+    exec(code_script)
+  File "<string>", line 25, in <module>
+  File "<string>", line 16, in autodroidv2_task_solution_code
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 326, in match
+    self.navigate_to_api_name(self.api_name, caller_type='match', statement={'current_code': current_code_line, 'original_lineno': lineno_in_original_script, 'original_code': original_code_line})
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 231, in navigate_to_api_name
+    target_ele, element_tree = self.verifier.navigate_and_get_target_element(api_name, caller_type, statement)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 440, in navigate_and_get_target_element
+    self.check_output_crash(element_selector_xpath)
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 410, in check_output_crash
+    raise Exception(f'Action not found when executing tap {api_name}')
+Exception: Action not found when executing tap //RecyclerView[@resource_id='checklist_list']
+:
+--------------------------------------
+Error 32:
+# check whether the current UI is the note picker page, if so, go back to the main page
+ui_tree = get_ui_tree()
+if '>Open note</p>' in ui_tree:
+    # go back to the main screen
+    back()
+
+# # {Available UI elements: ['open_note', 'create_note', 'more_options_note', 'switch_item', 'add_checklist_item']}
+tap($open_note)
+
+# # {Available UI elements: ['save_set_colors', 'open_note_title_list', 'create_note']}
+for i in range(len($open_note_title_list)):
+
+    # # {Available UI elements: ['save_set_colors', 'open_note_title_list', 'create_note']}
+    if 'Meeting at 3PM' in get_text($open_note_title_list[i]):
+
+        tap($open_note_title_list[i])
+        break
+# # {Available UI elements: ['save_set_colors', 'open_note_title_list', 'create_note']}
+tap($checklist_item_list.match('Meeting at 3PM')[0])
+
+long_tap($checklist_item_list.match('Meeting at 3PM')[0])
+tap($rename_selected_checklist_item)
+set_text($rename_input, 'Team Meeting at 3PM')
+tap($rename_ok)
+
+=====================================================Task: Open a checklist note or create one if there is none, then confirm the current checklist sorting type
+*************************************
+Error Traceback (most recent call last):
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/input_manager.py", line 207, in start
+    exec(code_script)
+  File "<string>", line 25, in <module>
+  File "<string>", line 21, in autodroidv2_task_solution_code
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 522, in tap
+    self.check_output_crash(button_api_name)
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 410, in check_output_crash
+    raise Exception(f'Action not found when executing tap {api_name}')
+Exception: Action not found when executing tap more_options_checklist
+:
+--------------------------------------
+Error 33:
+# check whether the current UI is the note picker page, if so, go back to the main page
+ui_tree = get_ui_tree()
+if '>Open note</p>' in ui_tree:
+    # go back to the main screen
+    back()
+
+# # {Available UI elements: ['open_note', 'create_note', 'more_options_note', 'switch_item', 'add_checklist_item']}
+tap($open_note)
+
+# # {Available UI elements: ['save_set_colors', 'open_note_title_list', 'create_note']}
+if len($open_note_title_list) == 0:
+
+    tap($create_note)
+    set_text($add_note_title, 'New Checklist')
+    tap($checklist_type)
+    tap($add_note_ok)
+# # {Available UI elements: ['save_set_colors', 'open_note_title_list', 'create_note']}
+tap($more_options_checklist)
+
+tap($sort_checklist_items)
+back()
+
+=====================================================Task: Open any existing note or create a new note, then enable Incognito mode for keyboards in notes.
+*************************************
+Error Traceback (most recent call last):
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/input_manager.py", line 207, in start
+    exec(code_script)
+  File "<string>", line 26, in <module>
+  File "<string>", line 21, in autodroidv2_task_solution_code
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 522, in tap
+    self.check_output_crash(button_api_name)
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 410, in check_output_crash
+    raise Exception(f'Action not found when executing tap {api_name}')
+Exception: Action not found when executing tap settings
+:
+--------------------------------------
+Error 34:
+# check whether the current UI is the note picker page, if so, go back to the main page
+ui_tree = get_ui_tree()
+if '>Open note</p>' in ui_tree:
+    # go back to the main screen
+    back()
+
+# # {Available UI elements: ['open_note', 'create_note', 'more_options_note', 'switch_item', 'add_checklist_item']}
+tap($open_note)
+
+# # {Available UI elements: ['save_set_colors', 'open_note_title_list', 'create_note']}
+if len($open_note_title_list) == 0:
+
+    tap($create_note)
+    set_text($add_note_title, 'New Note')
+    tap($text_note_type)
+    tap($add_note_ok)
+# # {Available UI elements: ['save_set_colors', 'open_note_title_list', 'create_note']}
+tap($settings)
+
+scroll($scroll_settings_page, 'down')
+tap($set_use_incognito_mode_of_keyboards)
+
+=====================================================Task: Open a checklist note or create one if there is none, then move the checklist item 'Buy Groceries' to the top of the list.
+*************************************
+Error Traceback (most recent call last):
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/input_manager.py", line 207, in start
+    exec(code_script)
+  File "<string>", line 27, in <module>
+  File "<string>", line 11, in autodroidv2_task_solution_code
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 365, in __len__
+    self.navigate_to_api_name(self.api_name, caller_type='len', statement={'current_code': current_code_line, 'original_lineno': lineno_in_original_script, 'original_code': original_code_line})
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 231, in navigate_to_api_name
+    target_ele, element_tree = self.verifier.navigate_and_get_target_element(api_name, caller_type, statement)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 440, in navigate_and_get_target_element
+    self.check_output_crash(element_selector_xpath)
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 410, in check_output_crash
+    raise Exception(f'Action not found when executing tap {api_name}')
+Exception: Action not found when executing tap //RecyclerView[@resource_id='checklist_list']
+:
+--------------------------------------
+Error 35:
+# check whether the current UI is the note picker page, if so, go back to the main page
+ui_tree = get_ui_tree()
+if '>Open note</p>' in ui_tree:
+    # go back to the main screen
+    back()
+
+# # {Available UI elements: ['open_note', 'create_note', 'more_options_note', 'switch_item', 'add_checklist_item']}
+tap($switch_item)
+
+# # {Available UI elements: ['search_within_note', 'open_note', 'create_note', 'more_options_note', 'switch_item', 'save_set_colors', 'note_content']}
+if len($checklist_item_list) == 0:
+
+    tap($create_note)
+    set_text($add_note_title, 'New Checklist Note')
+    tap($checklist_type)
+    tap($add_note_ok)
+
+for i in range(len($checklist_item_list)):
+    if get_text($checklist_item_list[i]) == 'Buy Groceries':
+        long_tap($checklist_item_list[i])
+        tap($move_selected_item_to_the_top)
+        break
+
+=====================================================Task: Ensure a note is open and then delete all text in the current note.
+*************************************
+Error Traceback (most recent call last):
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/input_manager.py", line 207, in start
+    exec(code_script)
+  File "<string>", line 15, in <module>
+  File "<string>", line 13, in autodroidv2_task_solution_code
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 522, in tap
+    self.check_output_crash(button_api_name)
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 410, in check_output_crash
+    raise Exception(f'Action not found when executing tap {api_name}')
+Exception: Action not found when executing tap note_content
+:
+--------------------------------------
+Error 36:
+# check whether the current UI is the note picker page, if so, go back to the main page
+ui_tree = get_ui_tree()
+if '>Open note</p>' in ui_tree:
+    # go back to the main screen
+    back()
+
+# # {Available UI elements: ['search_within_note', 'open_note', 'create_note', 'more_options_note', 'switch_item', 'save_set_colors', 'note_content']}
+tap($open_note)
+
+# # {Available UI elements: ['save_set_colors', 'open_note_title_list', 'create_note']}
+tap($open_note_title_list[0])
+
+# # {Available UI elements: ['open_note', 'create_note', 'more_options_note', 'switch_item', 'add_checklist_item']}
+tap($note_content)
+
+set_text($note_content, '')
+
+=====================================================Task: Verify the checklist contains the item 'Plan Vacation' and rename it to 'Book Flights'.
+*************************************
+Error Traceback (most recent call last):
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/input_manager.py", line 207, in start
+    exec(code_script)
+  File "<string>", line 19, in <module>
+  File "<string>", line 9, in autodroidv2_task_solution_code
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 365, in __len__
+    self.navigate_to_api_name(self.api_name, caller_type='len', statement={'current_code': current_code_line, 'original_lineno': lineno_in_original_script, 'original_code': original_code_line})
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 231, in navigate_to_api_name
+    target_ele, element_tree = self.verifier.navigate_and_get_target_element(api_name, caller_type, statement)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 440, in navigate_and_get_target_element
+    self.check_output_crash(element_selector_xpath)
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 410, in check_output_crash
+    raise Exception(f'Action not found when executing tap {api_name}')
+Exception: Action not found when executing tap //RecyclerView[@resource_id='checklist_list']
+:
+--------------------------------------
+Error 37:
+# check whether the current UI is the note picker page, if so, go back to the main page
+ui_tree = get_ui_tree()
+if '>Open note</p>' in ui_tree:
+    # go back to the main screen
+    back()
+
+# # {Available UI elements: ['open_note', 'create_note', 'more_options_note', 'switch_item', 'add_checklist_item']}
+for i in range(len($checklist_item_list)):
+
+    if get_text($checklist_item_list[i]) == 'Plan Vacation':
+        long_tap($checklist_item_list[i])
+        tap($rename_selected_checklist_item)
+        set_text($rename_input, 'Book Flights')
+        tap($rename_ok)
+        break
+
+=====================================================Task: Open a checklist and then open more options for the current checklist
+*************************************
+Error Traceback (most recent call last):
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/input_manager.py", line 207, in start
+    exec(code_script)
+  File "<string>", line 22, in <module>
+  File "<string>", line 11, in autodroidv2_task_solution_code
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 365, in __len__
+    self.navigate_to_api_name(self.api_name, caller_type='len', statement={'current_code': current_code_line, 'original_lineno': lineno_in_original_script, 'original_code': original_code_line})
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 231, in navigate_to_api_name
+    target_ele, element_tree = self.verifier.navigate_and_get_target_element(api_name, caller_type, statement)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 440, in navigate_and_get_target_element
+    self.check_output_crash(element_selector_xpath)
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 410, in check_output_crash
+    raise Exception(f'Action not found when executing tap {api_name}')
+Exception: Action not found when executing tap //RecyclerView[@resource_id='checklist_list']
+:
+--------------------------------------
+Error 38:
+# check whether the current UI is the note picker page, if so, go back to the main page
+ui_tree = get_ui_tree()
+if '>Open note</p>' in ui_tree:
+    # go back to the main screen
+    back()
+
+# # {Available UI elements: ['open_note', 'create_note', 'more_options_note', 'switch_item', 'add_checklist_item']}
+tap($switch_item)
+
+# # {Available UI elements: ['search_within_note', 'open_note', 'create_note', 'more_options_note', 'switch_item', 'save_set_colors', 'note_content']}
+if len($checklist_item_list) == 0:
+
+    tap($create_note)
+    set_text($add_note_title, 'New Checklist Note')
+    tap($checklist_type)
+    tap($add_note_ok)
+tap($more_options_checklist)
+
+=====================================================Task: Open a checklist note if none are currently opened, then move the checklist item 'Read a Book' to the top of the list.
+*************************************
+Error Traceback (most recent call last):
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/input_manager.py", line 207, in start
+    exec(code_script)
+  File "<string>", line 32, in <module>
+  File "<string>", line 10, in autodroidv2_task_solution_code
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 614, in get_text
+    target_ele, element_tree = self.navigate_and_get_target_element(element_selector, caller_type='get_text', statement={'current_code': current_code_line, 'original_lineno': lineno_in_original_script, 'original_code': original_code_line})
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 440, in navigate_and_get_target_element
+    self.check_output_crash(element_selector_xpath)
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 410, in check_output_crash
+    raise Exception(f'Action not found when executing tap {api_name}')
+Exception: Action not found when executing tap //p[text()='Enter text']
+:
+--------------------------------------
+Error 40:
+# check whether the current UI is the note picker page, if so, go back to the main page
+ui_tree = get_ui_tree()
+if '>Open note</p>' in ui_tree:
+    # go back to the main screen
+    back()
+
+
+# # {Available UI elements: ['search_within_note', 'open_note', 'create_note', 'more_options_note', 'switch_item', 'save_set_colors', 'note_content']}
+if get_text($item_title) != 'No Opened Checklist Note': 
+
+    tap($open_note)
+    notes = $open_note_titles
+    for i in range(len(notes)):
+        if 'Checklist' in get_text(notes[i]):
+            tap(notes[i])
+            break
+
+if 'Read a Book' in [get_text(item) for item in $checklist_item_list]:
+    checklist_items = $checklist_item_list
+    for i in range(len(checklist_items)):
+        if get_text(checklist_items[i]) == 'Read a Book':
+            long_tap(checklist_items[i])
+            tap($move_selected_item_to_the_top)
+            break
+else:
+    print('The checklist item Read a Book does not exist')
+
+
+=====================================================Task: Open a note, make it the current note, and then search for 'important dates' within the current note.
+*************************************
+Error Traceback (most recent call last):
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/input_manager.py", line 207, in start
+    exec(code_script)
+  File "<string>", line 22, in <module>
+  File "<string>", line 11, in autodroidv2_task_solution_code
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 189, in __init__
+    self.check_api_name(api_name)
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 221, in check_api_name
+    raise Exception(f'Error: Element {api_name} does not exist in the app! Please use the real element name! ')
+Exception: Error: Element open_note_titles does not exist in the app! Please use the real element name! 
+:
+--------------------------------------
+Error 41:
+# check whether the current UI is the note picker page, if so, go back to the main page
+ui_tree = get_ui_tree()
+if '>Open note</p>' in ui_tree:
+    # go back to the main screen
+    back()
+
+
+# # {Available UI elements: ['search_within_note', 'open_note', 'create_note', 'more_options_note', 'switch_item', 'save_set_colors', 'note_content']}
+tap($open_note)
+
+notes = $open_note_titles
+for i in range(len(notes)):
+    # # {Available UI elements: ['save_set_colors', 'open_note_title_list', 'create_note']}
+    if 'important dates' in get_text(notes[i]):
+
+        tap(notes[i])
+        break
+tap($search_within_note)
+set_text($search_text, 'important dates')
+
+
+=====================================================Task: Open a note (or create one if none exists) and edit the content of the note to say 'Meeting at 10am on Monday'
+*************************************
+Error Traceback (most recent call last):
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/input_manager.py", line 207, in start
+    exec(code_script)
+  File "<string>", line 28, in <module>
+  File "<string>", line 9, in autodroidv2_task_solution_code
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 189, in __init__
+    self.check_api_name(api_name)
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 221, in check_api_name
+    raise Exception(f'Error: Element {api_name} does not exist in the app! Please use the real element name! ')
+Exception: Error: Element open_note_titles does not exist in the app! Please use the real element name! 
+:
+--------------------------------------
+Error 42:
+# check whether the current UI is the note picker page, if so, go back to the main page
+ui_tree = get_ui_tree()
+if '>Open note</p>' in ui_tree:
+    # go back to the main screen
+    back()
+
+
+if len($open_note_titles) == 0:
+    # # {Available UI elements: ['search_within_note', 'open_note', 'create_note', 'more_options_note', 'switch_item', 'save_set_colors', 'note_content']}
+    tap($create_note)
+
+    set_text($add_note_title, 'New Note')
+    tap($text_note_type)
+    tap($add_note_ok)
+    set_text($note_content, 'Meeting at 10am on Monday')
+else:
+    tap($open_note)
+    tap($open_note_titles[0])
+    set_text($note_content, 'Meeting at 10am on Monday')
+
+
+=====================================================Task: Create a checklist item 'Clean Room' if it does not exist, then delete the checklist item 'Clean Room'
+*************************************
+Error Traceback (most recent call last):
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/input_manager.py", line 207, in start
+    exec(code_script)
+  File "<string>", line 25, in <module>
+  File "<string>", line 10, in autodroidv2_task_solution_code
+NameError: name 'get_text_list' is not defined
+:
+--------------------------------------
+Error 43:
+# check whether the current UI is the note picker page, if so, go back to the main page
+ui_tree = get_ui_tree()
+if '>Open note</p>' in ui_tree:
+    # go back to the main screen
+    back()
+
+
+if get_text_list($checklist_item_list).count('Clean Room') == 0:
+    tap($add_checklist_item)
+    set_text($add_checklist_item_title, 'Clean Room')
+    tap($add_checklist_item_ok)
+
+for i in range(len($checklist_item_list)):
+    if get_text($checklist_item_list[i]) == 'Clean Room':
+        long_tap($checklist_item_list[i])
+        tap($delete_selected_checklist_item)
+        break
+
+
+=====================================================Task: Change the theme color of the app to White
+*************************************
+Error Traceback (most recent call last):
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/input_manager.py", line 207, in start
+    exec(code_script)
+  File "<string>", line 22, in <module>
+  File "<string>", line 14, in autodroidv2_task_solution_code
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 522, in tap
+    self.check_output_crash(button_api_name)
+  File "/Users/haowen/Desktop/scientific_work/droidbot-llm/droidbot/ui_apis.py", line 410, in check_output_crash
+    raise Exception(f'Action not found when executing tap {api_name}')
+Exception: Action not found when executing tap set_colors
+:
+--------------------------------------
+Error 44:
+# check whether the current UI is the note picker page, if so, go back to the main page
+ui_tree = get_ui_tree()
+if '>Open note</p>' in ui_tree:
+    # go back to the main screen
+    back()
+
+
+# # {Available UI elements: ['rename_note', 'create_shortcut', 'lock_note', 'open_file', 'export_as_file', 'print_note', 'delete_note', 'settings', 'about']}
+tap($settings)
+
+# # {Available UI elements: ['exit_settings', 'scroll_settings_page', 'set_colors', 'set_widget_colors', 'set_font_size', 'current_font_size', 'set_show_word_count', 'set_make_links_and_emails_clickable', 'set_use_monospaced_font', 'set_use_incognito_mode_of_keyboards', 'set_enable_line_wrap', 'set_alignment']}
+scroll($scroll_settings_page, 'down')
+
+# # {Available UI elements: ['exit_settings', 'scroll_settings_page', 'set_place_cursor_to_the_end_of_note', 'set_show_keyboard_on_startup', 'set_show_a_note_picker_on_startup', 'set_autosave_notes', 'set_display_save_success_messages', 'export_notes', 'import_notes', 'set_enable_automatic_backups']}
+tap($set_colors)
+
+tap($set_theme_color)
+tap($theme_color_types.match('White'))
+tap($save_set_colors)
+
+
+=====================================================
