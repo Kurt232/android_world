@@ -1,0 +1,128 @@
+Suppose you are a dataset annotator who is working on generating a series of tasks about the notes APP on a smartphone. You are given a series of UI elements in this APP, which you could interact with by tapping, long tapping, edit, scroll, etc. You should generate as many specific tasks that could be executed by a virtual assistant on a smartphone as possible. Note that the tasks you generate must only involve these elements. 
+
+UI elements in the Notes APP: 
+
+element: rename_ok 
+	Description: a button "OK"; used to confirm the new name of the current note 
+	Function: tap to close the rename popup window 
+	Dependency: this UI element could be interacted after tap(rename_note)
+
+element: print_note 
+	Description: a button "Print"; used to print the current note 
+	Function: tap to print the current note 
+	Dependency: this UI element could be interacted after tap(more_options_note) or this UI element could be interacted after tap(more_options_checklist)
+
+element: switch_to_prev_item 
+	Description: a button; used to switch the previous item of checklist or note 
+	Function: tap to switch to the previous item of checklist or note 
+	Dependency: No dependency, this UI element is in the main screen of the app. 
+
+element: prev_matched_text 
+	Description: a button "Previous"; used to search the previous matching text within the current note 
+	Function: tap to highlight the previous matching text within the current note 
+	Dependency: this UI element could be interacted after tap(search_within_note)
+
+element: search_text 
+	Description: a input; used to input the text to search within the current note 
+	Function: set text to input the text to search within the current note 
+	Dependency: this UI element could be interacted after tap(search_within_note)
+
+element: scroll_settings_page 
+	Description: a scrollbar; used to scroll the settings page 
+	Function: swipe down to get more settings 
+	Dependency: this UI element could be interacted after tap(settings)
+
+element: open_file 
+	Description: a button "Open file"; used to open the file of the current note 
+	Function: tap to switch the file manager to open the file of the current note 
+	Dependency: this UI element could be interacted after tap(more_options_note) or this UI element could be interacted after tap(more_options_checklist)
+
+element: remove_done_checklist_items 
+	Description: a button "Remove done items"; used to remove the done items of the current checklist 
+	Function: tap to clost the more options popup window 
+	Dependency: this UI element could be interacted after tap(more_options_checklist)
+
+element: export_as_file 
+	Description: a button "Export as file"; used to export the current note as a file 
+	Function: tap to switch the file manager to export the current note as a file 
+	Dependency: this UI element could be interacted after tap(more_options_note) or this UI element could be interacted after tap(more_options_checklist)
+
+element: rename_input 
+	Description: a input; used to input the new name of the current note 
+	Function: set text to input the new name of the current note 
+	Dependency: this UI element could be interacted after tap(rename_note)
+
+element: item_title 
+	Description: a text showed current item title; used to show the title of the current item 
+	Function:  
+	Dependency: No dependency, this UI element is in the main screen of the app. 
+
+element: save_note 
+	Description: a button; used to save the current note after changed text_note_content 
+	Function: tap to save the current note 
+	Dependency: this UI element could be reached in the note screen of the app
+
+element: exit_settings 
+	Description: a button "Back"; used to exit the settings page 
+	Function: tap to exit the settings page 
+	Dependency: this UI element could be interacted after tap(settings)
+
+element: switch_item 
+	Description: a scrollbar; used to switch previous or next item which is a checklist or a note 
+	Function: swipe up to switch to the previous item of checklist or note; swipe down to switch to the next item of checklist or note 
+	Dependency: No dependency, this UI element is in the main screen of the app. 
+
+element: close_search_box 
+	Description: a button; used to close the search box of matching text within the current note 
+	Function: tap to close the search box 
+	Dependency: this UI element could be interacted after tap(search_within_note)
+
+element: note_content 
+	Description: a input; used to show a large editable text area; used to edit the content of the current note 
+	Function: set text to edit the content of the current note 
+	Dependency: this UI element could be reached in the note screen of the app
+
+element: create_shortcut 
+	Description: a button "Create shortcut"; used to create a shortcut of the current note 
+	Function: tap to create a shortcut of the current note 
+	Dependency: this UI element could be interacted after tap(more_options_note) or this UI element could be interacted after tap(more_options_checklist)
+
+element: add_checklist_item 
+	Description: a button; used to add a new checklist item 
+	Function: tap to open a popup window of checklist item, containing, add_checklist_item_title, add_more_checklist_item, add_to_the_top, add_checklist_item_ok, add_checklist_item_cancel 
+	Dependency: this UI element could be reached in the checklist screen of the app
+
+element: next_matchhed_text 
+	Description: a button "Next"; used to search the next matching text within the current note 
+	Function: tap to highlight the next matching text within the current note 
+	Dependency: this UI element could be interacted after tap(search_within_note)
+
+element: delete_note_ok 
+	Description: a button "Delete"; used to confirm the delete of the current note 
+	Function: tap to close the delete popup window 
+	Dependency: this UI element could be interacted after tap(delete_note)
+
+element: switch_to_next_item 
+	Description: a button; used to switch the next item of checklist or note 
+	Function: tap to switch to the next item of checklist or note 
+	Dependency: No dependency, this UI element is in the main screen of the app. 
+
+element: about 
+	Description: a button "About"; used to show the information of the app 
+	Function: tap to switch the about page of the app 
+	Dependency: this UI element could be interacted after tap(more_options_note) or this UI element could be interacted after tap(more_options_checklist)
+
+element: lock_note_ok 
+	Description: a button "OK"; used to confirm the lock of the current note 
+	Function: tap to close the lock popup window 
+	Dependency: this UI element could be interacted after tap(lock_note)
+
+
+Please write down the tasks you would like to generate. You must use the following JSON format:
+
+["<Task 1>", "<Task 2>", "<Task 3>"...]
+
+Now please generate the specifc tasks. Notice that:
+- You should be specific and avoid vague tasks. for example, you are forbidden to give tasks like "Send a message", instead, you should say "Send a message 'good morning' to Alice". Namely, you should be ensure your task descriptions are detailed, incorporating elements like names, accounts, phone numbers, and addresses.
+- Focus on end-user actions rather than detailing every step or UI element involved. Your tasks should mimic natural language commands that a user might give to a virtual assistant like Siri. 
+- **Please do not output anything else but the JSON content**

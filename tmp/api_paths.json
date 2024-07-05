@@ -1,0 +1,2566 @@
+{
+  "open_note": [
+    [
+      "root",
+      "open_note"
+    ]
+  ],
+  "create_note": [
+    [
+      "root",
+      {
+        "name": "open_note",
+        "action_type": "touch"
+      },
+      "create_note"
+    ],
+    [
+      "root",
+      "create_note"
+    ]
+  ],
+  "more_options_checklist": [
+    [
+      "root",
+      "more_options_checklist"
+    ]
+  ],
+  "switch_item": [
+    [
+      "root",
+      "switch_item"
+    ]
+  ],
+  "switch_to_prev_item": [
+    [
+      "root",
+      "switch_to_prev_item"
+    ]
+  ],
+  "item_title": [
+    [
+      "root",
+      "item_title"
+    ]
+  ],
+  "switch_to_next_item": [
+    [
+      "root",
+      "switch_to_next_item"
+    ]
+  ],
+  "checklist_item_list": [
+    [
+      "root",
+      "checklist_item_list"
+    ]
+  ],
+  "checklist_item": [
+    [
+      "root",
+      {
+        "name": "checklist_item_list",
+        "action_type": "match"
+      },
+      "checklist_item"
+    ]
+  ],
+  "add_checklist_item": [
+    [
+      "root",
+      "add_checklist_item"
+    ]
+  ],
+  "move_selected_item_to_the_top": [
+    [
+      "root",
+      {
+        "name": "checklist_item_list",
+        "action_type": "match"
+      },
+      {
+        "name": "checklist_item",
+        "action_type": "touch"
+      },
+      "move_selected_item_to_the_top"
+    ]
+  ],
+  "move_selected_item_to_the_buttom": [
+    [
+      "root",
+      {
+        "name": "checklist_item_list",
+        "action_type": "match"
+      },
+      {
+        "name": "checklist_item",
+        "action_type": "touch"
+      },
+      "move_selected_item_to_the_buttom"
+    ]
+  ],
+  "rename_selected_checklist_item": [
+    [
+      "root",
+      {
+        "name": "checklist_item_list",
+        "action_type": "match"
+      },
+      {
+        "name": "checklist_item",
+        "action_type": "touch"
+      },
+      "rename_selected_checklist_item"
+    ]
+  ],
+  "delete_selected_checklist_item": [
+    [
+      "root",
+      {
+        "name": "checklist_item_list",
+        "action_type": "match"
+      },
+      {
+        "name": "checklist_item",
+        "action_type": "touch"
+      },
+      "delete_selected_checklist_item"
+    ]
+  ],
+  "open_note_title_list": [
+    [
+      "root",
+      {
+        "name": "open_note",
+        "action_type": "touch"
+      },
+      "open_note_title_list"
+    ]
+  ],
+  "open_note_title": [
+    [
+      "root",
+      {
+        "name": "open_note",
+        "action_type": "touch"
+      },
+      "open_note_title"
+    ]
+  ],
+  "save_note": [
+    [
+      "root",
+      "save_note"
+    ]
+  ],
+  "search_within_note": [
+    [
+      "root",
+      "search_within_note"
+    ]
+  ],
+  "more_options_note": [
+    [
+      "root",
+      "more_options_note"
+    ]
+  ],
+  "note_content": [
+    [
+      "root",
+      "note_content"
+    ]
+  ],
+  "search_text": [
+    [
+      "root",
+      {
+        "name": "search_within_note",
+        "action_type": "touch"
+      },
+      "search_text"
+    ]
+  ],
+  "prev_matched_text": [
+    [
+      "root",
+      {
+        "name": "search_within_note",
+        "action_type": "touch"
+      },
+      "prev_matched_text"
+    ]
+  ],
+  "next_matched_text": [
+    [
+      "root",
+      {
+        "name": "search_within_note",
+        "action_type": "touch"
+      },
+      "next_matched_text"
+    ]
+  ],
+  "close_search_box": [
+    [
+      "root",
+      {
+        "name": "search_within_note",
+        "action_type": "touch"
+      },
+      "close_search_box"
+    ]
+  ],
+  "add_note_title": [
+    [
+      "root",
+      {
+        "name": "open_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "create_note",
+        "action_type": "touch"
+      },
+      "add_note_title"
+    ],
+    [
+      "root",
+      {
+        "name": "create_note",
+        "action_type": "touch"
+      },
+      "add_note_title"
+    ]
+  ],
+  "add_note_types": [
+    [
+      "root",
+      {
+        "name": "open_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "create_note",
+        "action_type": "touch"
+      },
+      "add_note_types"
+    ],
+    [
+      "root",
+      {
+        "name": "create_note",
+        "action_type": "touch"
+      },
+      "add_note_types"
+    ]
+  ],
+  "text_note_type": [
+    [
+      "root",
+      {
+        "name": "open_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "create_note",
+        "action_type": "touch"
+      },
+      "text_note_type"
+    ],
+    [
+      "root",
+      {
+        "name": "create_note",
+        "action_type": "touch"
+      },
+      "text_note_type"
+    ]
+  ],
+  "checklist_type": [
+    [
+      "root",
+      {
+        "name": "open_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "create_note",
+        "action_type": "touch"
+      },
+      "checklist_type"
+    ],
+    [
+      "root",
+      {
+        "name": "create_note",
+        "action_type": "touch"
+      },
+      "checklist_type"
+    ]
+  ],
+  "add_note_ok": [
+    [
+      "root",
+      {
+        "name": "open_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "create_note",
+        "action_type": "touch"
+      },
+      "add_note_ok"
+    ],
+    [
+      "root",
+      {
+        "name": "create_note",
+        "action_type": "touch"
+      },
+      "add_note_ok"
+    ]
+  ],
+  "rename_note": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      "rename_note"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      "rename_note"
+    ]
+  ],
+  "create_shortcut": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      "create_shortcut"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      "create_shortcut"
+    ]
+  ],
+  "lock_note": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      "lock_note"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      "lock_note"
+    ]
+  ],
+  "open_file": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      "open_file"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      "open_file"
+    ]
+  ],
+  "export_as_file": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      "export_as_file"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      "export_as_file"
+    ]
+  ],
+  "print_note": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      "print_note"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      "print_note"
+    ]
+  ],
+  "delete_note": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      "delete_note"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      "delete_note"
+    ]
+  ],
+  "settings": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      "settings"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      "settings"
+    ]
+  ],
+  "about": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      "about"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      "about"
+    ]
+  ],
+  "rename_input": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "rename_note",
+        "action_type": "touch"
+      },
+      "rename_input"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "rename_note",
+        "action_type": "touch"
+      },
+      "rename_input"
+    ]
+  ],
+  "rename_ok": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "rename_note",
+        "action_type": "touch"
+      },
+      "rename_ok"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "rename_note",
+        "action_type": "touch"
+      },
+      "rename_ok"
+    ]
+  ],
+  "lock_note_ok": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "lock_note",
+        "action_type": "touch"
+      },
+      "lock_note_ok"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "lock_note",
+        "action_type": "touch"
+      },
+      "lock_note_ok"
+    ]
+  ],
+  "delete_note_ok": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "delete_note",
+        "action_type": "touch"
+      },
+      "delete_note_ok"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "delete_note",
+        "action_type": "touch"
+      },
+      "delete_note_ok"
+    ]
+  ],
+  "remove_done_checklist_items": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      "remove_done_checklist_items"
+    ]
+  ],
+  "sort_checklist_items": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      "sort_checklist_items"
+    ]
+  ],
+  "sort_checklist_items_types": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "sort_checklist_items",
+        "action_type": "touch"
+      },
+      "sort_checklist_items_types"
+    ]
+  ],
+  "title_type": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "sort_checklist_items",
+        "action_type": "touch"
+      },
+      "title_type"
+    ]
+  ],
+  "date_created_type": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "sort_checklist_items",
+        "action_type": "touch"
+      },
+      "date_created_type"
+    ]
+  ],
+  "custom_type": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "sort_checklist_items",
+        "action_type": "touch"
+      },
+      "custom_type"
+    ]
+  ],
+  "sort_checklist_items_ok": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "sort_checklist_items",
+        "action_type": "touch"
+      },
+      "sort_checklist_items_ok"
+    ]
+  ],
+  "exit_settings": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "exit_settings"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "exit_settings"
+    ]
+  ],
+  "scroll_settings_page": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "scroll_settings_page"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "scroll_settings_page"
+    ]
+  ],
+  "set_colors": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_colors"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_colors"
+    ]
+  ],
+  "set_widget_colors": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_widget_colors"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_widget_colors"
+    ]
+  ],
+  "set_font_size": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_font_size"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_font_size"
+    ]
+  ],
+  "current_font_size": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "current_font_size"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "current_font_size"
+    ]
+  ],
+  "set_show_word_count": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_show_word_count"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_show_word_count"
+    ]
+  ],
+  "set_make_links_and_emails_clickable": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_make_links_and_emails_clickable"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_make_links_and_emails_clickable"
+    ]
+  ],
+  "set_use_monospaced_font": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_use_monospaced_font"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_use_monospaced_font"
+    ]
+  ],
+  "set_use_incognito_mode_of_keyboards": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_use_incognito_mode_of_keyboards"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_use_incognito_mode_of_keyboards"
+    ]
+  ],
+  "set_enable_line_wrap": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_enable_line_wrap"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_enable_line_wrap"
+    ]
+  ],
+  "set_alignment": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_alignment"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_alignment"
+    ]
+  ],
+  "close_set_colors": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      "close_set_colors"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      "close_set_colors"
+    ]
+  ],
+  "save_set_colors": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      "save_set_colors"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      "save_set_colors"
+    ]
+  ],
+  "set_theme_color": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      "set_theme_color"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      "set_theme_color"
+    ]
+  ],
+  "set_text_color": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      "set_text_color"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      "set_text_color"
+    ]
+  ],
+  "set_background_color": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      "set_background_color"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      "set_background_color"
+    ]
+  ],
+  "set_primary_color": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      "set_primary_color"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      "set_primary_color"
+    ]
+  ],
+  "set_app_icon_color": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      "set_app_icon_color"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      "set_app_icon_color"
+    ]
+  ],
+  "theme_color_types": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_theme_color",
+        "action_type": "touch"
+      },
+      "theme_color_types"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_theme_color",
+        "action_type": "touch"
+      },
+      "theme_color_types"
+    ]
+  ],
+  "theme_color_auto_light_dark": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_theme_color",
+        "action_type": "touch"
+      },
+      "theme_color_auto_light_dark"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_theme_color",
+        "action_type": "touch"
+      },
+      "theme_color_auto_light_dark"
+    ]
+  ],
+  "theme_color_light": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_theme_color",
+        "action_type": "touch"
+      },
+      "theme_color_light"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_theme_color",
+        "action_type": "touch"
+      },
+      "theme_color_light"
+    ]
+  ],
+  "theme_color_dark": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_theme_color",
+        "action_type": "touch"
+      },
+      "theme_color_dark"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_theme_color",
+        "action_type": "touch"
+      },
+      "theme_color_dark"
+    ]
+  ],
+  "theme_color_dark_red": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_theme_color",
+        "action_type": "touch"
+      },
+      "theme_color_dark_red"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_theme_color",
+        "action_type": "touch"
+      },
+      "theme_color_dark_red"
+    ]
+  ],
+  "theme_color_white": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_theme_color",
+        "action_type": "touch"
+      },
+      "theme_color_white"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_theme_color",
+        "action_type": "touch"
+      },
+      "theme_color_white"
+    ]
+  ],
+  "theme_color_black_white": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_theme_color",
+        "action_type": "touch"
+      },
+      "theme_color_black_white"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_theme_color",
+        "action_type": "touch"
+      },
+      "theme_color_black_white"
+    ]
+  ],
+  "theme_color_custom": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_theme_color",
+        "action_type": "touch"
+      },
+      "theme_color_custom"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_colors",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_theme_color",
+        "action_type": "touch"
+      },
+      "theme_color_custom"
+    ]
+  ],
+  "font_size_types": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_font_size",
+        "action_type": "touch"
+      },
+      "font_size_types"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "current_font_size",
+        "action_type": "touch"
+      },
+      "font_size_types"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_font_size",
+        "action_type": "touch"
+      },
+      "font_size_types"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "current_font_size",
+        "action_type": "touch"
+      },
+      "font_size_types"
+    ]
+  ],
+  "font_size_50%": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_font_size",
+        "action_type": "touch"
+      },
+      "font_size_50%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "current_font_size",
+        "action_type": "touch"
+      },
+      "font_size_50%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_font_size",
+        "action_type": "touch"
+      },
+      "font_size_50%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "current_font_size",
+        "action_type": "touch"
+      },
+      "font_size_50%"
+    ]
+  ],
+  "font_size_60%": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_font_size",
+        "action_type": "touch"
+      },
+      "font_size_60%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "current_font_size",
+        "action_type": "touch"
+      },
+      "font_size_60%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_font_size",
+        "action_type": "touch"
+      },
+      "font_size_60%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "current_font_size",
+        "action_type": "touch"
+      },
+      "font_size_60%"
+    ]
+  ],
+  "font_size_75%": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_font_size",
+        "action_type": "touch"
+      },
+      "font_size_75%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "current_font_size",
+        "action_type": "touch"
+      },
+      "font_size_75%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_font_size",
+        "action_type": "touch"
+      },
+      "font_size_75%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "current_font_size",
+        "action_type": "touch"
+      },
+      "font_size_75%"
+    ]
+  ],
+  "font_size_90%": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_font_size",
+        "action_type": "touch"
+      },
+      "font_size_90%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "current_font_size",
+        "action_type": "touch"
+      },
+      "font_size_90%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_font_size",
+        "action_type": "touch"
+      },
+      "font_size_90%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "current_font_size",
+        "action_type": "touch"
+      },
+      "font_size_90%"
+    ]
+  ],
+  "font_size_100%": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_font_size",
+        "action_type": "touch"
+      },
+      "font_size_100%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "current_font_size",
+        "action_type": "touch"
+      },
+      "font_size_100%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_font_size",
+        "action_type": "touch"
+      },
+      "font_size_100%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "current_font_size",
+        "action_type": "touch"
+      },
+      "font_size_100%"
+    ]
+  ],
+  "font_size_125%": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_font_size",
+        "action_type": "touch"
+      },
+      "font_size_125%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "current_font_size",
+        "action_type": "touch"
+      },
+      "font_size_125%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_font_size",
+        "action_type": "touch"
+      },
+      "font_size_125%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "current_font_size",
+        "action_type": "touch"
+      },
+      "font_size_125%"
+    ]
+  ],
+  "font_size_150%": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_font_size",
+        "action_type": "touch"
+      },
+      "font_size_150%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "current_font_size",
+        "action_type": "touch"
+      },
+      "font_size_150%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_font_size",
+        "action_type": "touch"
+      },
+      "font_size_150%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "current_font_size",
+        "action_type": "touch"
+      },
+      "font_size_150%"
+    ]
+  ],
+  "font_size_175%": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_font_size",
+        "action_type": "touch"
+      },
+      "font_size_175%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "current_font_size",
+        "action_type": "touch"
+      },
+      "font_size_175%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_font_size",
+        "action_type": "touch"
+      },
+      "font_size_175%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "current_font_size",
+        "action_type": "touch"
+      },
+      "font_size_175%"
+    ]
+  ],
+  "font_size_200%": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_font_size",
+        "action_type": "touch"
+      },
+      "font_size_200%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "current_font_size",
+        "action_type": "touch"
+      },
+      "font_size_200%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_font_size",
+        "action_type": "touch"
+      },
+      "font_size_200%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "current_font_size",
+        "action_type": "touch"
+      },
+      "font_size_200%"
+    ]
+  ],
+  "font_size_250%": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_font_size",
+        "action_type": "touch"
+      },
+      "font_size_250%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "current_font_size",
+        "action_type": "touch"
+      },
+      "font_size_250%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_font_size",
+        "action_type": "touch"
+      },
+      "font_size_250%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "current_font_size",
+        "action_type": "touch"
+      },
+      "font_size_250%"
+    ]
+  ],
+  "font_size_300%": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_font_size",
+        "action_type": "touch"
+      },
+      "font_size_300%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "current_font_size",
+        "action_type": "touch"
+      },
+      "font_size_300%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "set_font_size",
+        "action_type": "touch"
+      },
+      "font_size_300%"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      {
+        "name": "current_font_size",
+        "action_type": "touch"
+      },
+      "font_size_300%"
+    ]
+  ],
+  "set_place_cursor_to_the_end_of_note": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_place_cursor_to_the_end_of_note"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_place_cursor_to_the_end_of_note"
+    ]
+  ],
+  "set_show_keyboard_on_startup": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_show_keyboard_on_startup"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_show_keyboard_on_startup"
+    ]
+  ],
+  "set_show_a_note_picker_on_startup": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_show_a_note_picker_on_startup"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_show_a_note_picker_on_startup"
+    ]
+  ],
+  "set_autosave_notes": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_autosave_notes"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_autosave_notes"
+    ]
+  ],
+  "set_display_save_success_messages": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_display_save_success_messages"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_display_save_success_messages"
+    ]
+  ],
+  "export_notes": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "export_notes"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "export_notes"
+    ]
+  ],
+  "import_notes": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "import_notes"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "import_notes"
+    ]
+  ],
+  "set_enable_automatic_backups": [
+    [
+      "root",
+      {
+        "name": "more_options_checklist",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_enable_automatic_backups"
+    ],
+    [
+      "root",
+      {
+        "name": "more_options_note",
+        "action_type": "touch"
+      },
+      {
+        "name": "settings",
+        "action_type": "touch"
+      },
+      "set_enable_automatic_backups"
+    ]
+  ]
+}

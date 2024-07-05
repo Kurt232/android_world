@@ -1,0 +1,360 @@
+{
+  "2024-04-18_233059": [
+    {
+      "id": 0,
+      "resource_id": null,
+      "class_name": "android.widget.FrameLayout",
+      "text": null,
+      "content_description": null,
+      "bound_box": "0,0,1080,2340",
+      "children": [
+        1,
+        40,
+        41
+      ],
+      "full_desc": "<div bound_box=0,0,1080,2340></div>",
+      "xpath": ""
+    },
+    {
+      "id": 1,
+      "resource_id": null,
+      "class_name": "android.widget.LinearLayout",
+      "text": null,
+      "content_description": null,
+      "bound_box": "0,0,1080,2208",
+      "children": [
+        2
+      ],
+      "full_desc": "<div bound_box=0,0,1080,2208></div>",
+      "xpath": ""
+    },
+    {
+      "id": 2,
+      "resource_id": null,
+      "class_name": "android.widget.FrameLayout",
+      "text": null,
+      "content_description": null,
+      "bound_box": "0,136,1080,2208",
+      "children": [
+        3
+      ],
+      "full_desc": "<div bound_box=0,136,1080,2208></div>",
+      "xpath": ""
+    },
+    {
+      "id": 3,
+      "resource_id": "com.simplemobiletools.notes.pro:id/action_bar_root",
+      "class_name": "android.widget.FrameLayout",
+      "text": null,
+      "content_description": null,
+      "bound_box": "0,136,1080,2208",
+      "children": [
+        4
+      ],
+      "full_desc": "<div bound_box=0,136,1080,2208></div>",
+      "xpath": ""
+    },
+    {
+      "id": 4,
+      "resource_id": "android:id/content",
+      "class_name": "android.widget.FrameLayout",
+      "text": null,
+      "content_description": null,
+      "bound_box": "0,136,1080,2208",
+      "children": [
+        5
+      ],
+      "full_desc": "<div bound_box=0,136,1080,2208></div>",
+      "xpath": ""
+    },
+    {
+      "id": 5,
+      "resource_id": "com.simplemobiletools.notes.pro:id/main_coordinator",
+      "class_name": "android.view.ViewGroup",
+      "text": null,
+      "content_description": null,
+      "bound_box": "0,136,1080,2208",
+      "children": [
+        6,
+        11
+      ],
+      "full_desc": "<div bound_box=0,136,1080,2208></div>",
+      "xpath": ""
+    },
+    {
+      "id": 6,
+      "resource_id": "com.simplemobiletools.notes.pro:id/main_toolbar",
+      "class_name": "android.view.ViewGroup",
+      "text": null,
+      "content_description": null,
+      "bound_box": "0,136,1080,312",
+      "children": [
+        7
+      ],
+      "full_desc": "<div bound_box=0,136,1080,312></div>",
+      "xpath": ""
+    },
+    {
+      "id": 7,
+      "resource_id": null,
+      "class_name": "androidx.appcompat.widget.LinearLayoutCompat",
+      "text": null,
+      "content_description": null,
+      "bound_box": "705,147,1080,301",
+      "children": [
+        8,
+        9,
+        10
+      ],
+      "full_desc": "<div bound_box=705,147,1080,301></div>",
+      "xpath": ""
+    },
+    {
+      "id": 8,
+      "resource_id": "com.simplemobiletools.notes.pro:id/open_note",
+      "class_name": "android.widget.Button",
+      "text": null,
+      "content_description": "Open note",
+      "bound_box": "705,158,837,290",
+      "children": [],
+      "full_desc": "<button alt='Open note' bound_box=705,158,837,290></button>",
+      "xpath": ""
+    },
+    {
+      "id": 9,
+      "resource_id": "com.simplemobiletools.notes.pro:id/new_note",
+      "class_name": "android.widget.Button",
+      "text": null,
+      "content_description": "Create a new note",
+      "bound_box": "837,158,969,290",
+      "children": [],
+      "full_desc": "<button alt='Create a new note' bound_box=837,158,969,290></button>",
+      "xpath": ""
+    },
+    {
+      "id": 10,
+      "resource_id": null,
+      "class_name": "android.widget.ImageView",
+      "text": null,
+      "content_description": "More options",
+      "bound_box": "969,158,1080,290",
+      "children": [],
+      "full_desc": "<button alt='More options' bound_box=969,158,1080,290></button>",
+      "xpath": ""
+    },
+    {
+      "id": 11,
+      "resource_id": "com.simplemobiletools.notes.pro:id/main_linear_layout",
+      "class_name": "android.widget.LinearLayout",
+      "text": null,
+      "content_description": null,
+      "bound_box": "0,312,1080,2208",
+      "children": [
+        12
+      ],
+      "full_desc": "<div bound_box=0,312,1080,2208></div>",
+      "xpath": ""
+    },
+    {
+      "id": 12,
+      "resource_id": "com.simplemobiletools.notes.pro:id/view_pager",
+      "class_name": "q4.n",
+      "text": null,
+      "content_description": null,
+      "bound_box": "0,312,1080,2208",
+      "children": [
+        13,
+        17,
+        23,
+        34
+      ],
+      "full_desc": "<scrollbar bound_box=0,312,1080,2208></scrollbar>",
+      "xpath": ""
+    },
+    {
+      "id": 13,
+      "resource_id": "com.simplemobiletools.notes.pro:id/pager_tab_strip",
+      "class_name": "android.view.ViewGroup",
+      "text": null,
+      "content_description": null,
+      "bound_box": "0,312,1080,384",
+      "children": [
+        14,
+        15,
+        16
+      ],
+      "full_desc": "<div bound_box=0,312,1080,384></div>",
+      "xpath": ""
+    },
+    {
+      "id": 14,
+      "resource_id": null,
+      "class_name": "android.widget.TextView",
+      "text": "Enter label",
+      "content_description": null,
+      "bound_box": "0,320,131,358",
+      "children": [],
+      "full_desc": "<button bound_box=0,320,131,358>Enter label</button>",
+      "xpath": ""
+    },
+    {
+      "id": 15,
+      "resource_id": null,
+      "class_name": "android.widget.TextView",
+      "text": "Enter text",
+      "content_description": null,
+      "bound_box": "481,320,599,358",
+      "children": [],
+      "full_desc": "<p bound_box=481,320,599,358>Enter text</p>",
+      "xpath": ""
+    },
+    {
+      "id": 16,
+      "resource_id": null,
+      "class_name": "android.widget.TextView",
+      "text": "Sample Label",
+      "content_description": null,
+      "bound_box": "910,320,1080,358",
+      "children": [],
+      "full_desc": "<button bound_box=910,320,1080,358>Sample Label</button>",
+      "xpath": ""
+    },
+    {
+      "id": 23,
+      "resource_id": "com.simplemobiletools.notes.pro:id/checklist_holder",
+      "class_name": "android.view.ViewGroup",
+      "text": null,
+      "content_description": null,
+      "bound_box": "0,384,1080,2208",
+      "children": [
+        24,
+        33
+      ],
+      "full_desc": "<div bound_box=0,384,1080,2208></div>",
+      "xpath": ""
+    },
+    {
+      "id": 24,
+      "resource_id": "com.simplemobiletools.notes.pro:id/checklist_items_holder",
+      "class_name": "android.widget.RelativeLayout",
+      "text": null,
+      "content_description": null,
+      "bound_box": "0,384,1080,2208",
+      "children": [
+        25
+      ],
+      "full_desc": "<div bound_box=0,384,1080,2208></div>",
+      "xpath": ""
+    },
+    {
+      "id": 25,
+      "resource_id": "com.simplemobiletools.notes.pro:id/checklist_content_holder",
+      "class_name": "android.widget.RelativeLayout",
+      "text": null,
+      "content_description": null,
+      "bound_box": "0,384,1080,2208",
+      "children": [
+        26
+      ],
+      "full_desc": "<div bound_box=0,384,1080,2208></div>",
+      "xpath": ""
+    },
+    {
+      "id": 26,
+      "resource_id": "com.simplemobiletools.notes.pro:id/checklist_list",
+      "class_name": "androidx.recyclerview.widget.RecyclerView",
+      "text": null,
+      "content_description": null,
+      "bound_box": "0,384,1080,2208",
+      "children": [
+        27,
+        30
+      ],
+      "full_desc": "<div bound_box=0,384,1080,2208></div>",
+      "xpath": ""
+    },
+    {
+      "id": 27,
+      "resource_id": "com.simplemobiletools.notes.pro:id/checklist_holder",
+      "class_name": "android.view.ViewGroup",
+      "text": null,
+      "content_description": null,
+      "bound_box": "0,384,1080,538",
+      "children": [
+        28,
+        29
+      ],
+      "full_desc": "<div bound_box=0,384,1080,538></div>",
+      "xpath": ""
+    },
+    {
+      "id": 28,
+      "resource_id": "com.simplemobiletools.notes.pro:id/checklist_title",
+      "class_name": "android.widget.TextView",
+      "text": "2",
+      "content_description": null,
+      "bound_box": "0,442,893,480",
+      "children": [],
+      "full_desc": "<button bound_box=0,442,893,480>2</button>",
+      "xpath": ""
+    },
+    {
+      "id": 29,
+      "resource_id": "com.simplemobiletools.notes.pro:id/checklist_image",
+      "class_name": "android.widget.ImageView",
+      "text": null,
+      "content_description": null,
+      "bound_box": "893,384,1047,538",
+      "children": [],
+      "full_desc": "<div bound_box=893,384,1047,538></div>",
+      "xpath": ""
+    },
+    {
+      "id": 30,
+      "resource_id": "com.simplemobiletools.notes.pro:id/checklist_holder",
+      "class_name": "android.view.ViewGroup",
+      "text": null,
+      "content_description": null,
+      "bound_box": "0,538,1080,692",
+      "children": [
+        31,
+        32
+      ],
+      "full_desc": "<div bound_box=0,538,1080,692></div>",
+      "xpath": ""
+    },
+    {
+      "id": 31,
+      "resource_id": "com.simplemobiletools.notes.pro:id/checklist_title",
+      "class_name": "android.widget.TextView",
+      "text": "1",
+      "content_description": null,
+      "bound_box": "0,596,893,634",
+      "children": [],
+      "full_desc": "<button bound_box=0,596,893,634>1</button>",
+      "xpath": ""
+    },
+    {
+      "id": 32,
+      "resource_id": "com.simplemobiletools.notes.pro:id/checklist_image",
+      "class_name": "android.widget.ImageView",
+      "text": null,
+      "content_description": null,
+      "bound_box": "893,538,1047,692",
+      "children": [],
+      "full_desc": "<div bound_box=893,538,1047,692></div>",
+      "xpath": ""
+    },
+    {
+      "id": 33,
+      "resource_id": "com.simplemobiletools.notes.pro:id/checklist_fab",
+      "class_name": "android.widget.ImageButton",
+      "text": null,
+      "content_description": null,
+      "bound_box": "882,2010,1036,2164",
+      "children": [],
+      "full_desc": "<div bound_box=882,2010,1036,2164></div>",
+      "xpath": ""
+    }
+  ]
+}
