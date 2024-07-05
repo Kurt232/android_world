@@ -11,7 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """Utilities for agents."""
 
 import ast
@@ -22,6 +21,7 @@ import re
 
 from typing import Any, Optional
 
+from lxml import etree
 from PIL import Image
 from absl import logging
 
@@ -48,6 +48,7 @@ def extract_json(s: str) -> Optional[dict[str, Any]]:
       return None
   else:
     return None
+
 
 # HTML representation of the UI elements
 def forest_to_element_tree(forest: Any,
@@ -375,23 +376,28 @@ class ElementTree(object):
 
     return _str(self.root)
 
-  # def get_ele_by_xpath(self, xpath: str):
-  #   html_view = self.str
-  #   root = etree.fromstring(html_view)
-  #   eles = root.xpath(xpath)
-  #   if not eles:
-  #     return None
-  #   ele_desc = etree.tostring(eles[0], pretty_print=True).decode(
-  #       'utf-8')  # only for father node
-  #   id_str = re.search(r' id="(\d+)"', ele_desc).group(1)
-  #   try:
-  #     id = int(id_str)
-  #   except Exception as e:
-  #     print('fail to analyze xpath, err: {e}')
-  #     raise e  # todo:: add a better way to handle this
-  #   return self.eles[id]
+  def get_ele_by_xpath(self, xpath: str) -> None | EleAttr:
+    html_view = self.str
+    root = etree.fromstring(html_view)
+    eles = root.xpath(xpath)
+    if not eles:
+      return None
+    ele_desc = etree.tostring(eles[0], pretty_print=True).decode(
+        'utf-8')  # only for father node
+    id_str = re.search(r' id="(\d+)"', ele_desc).group(1)
+    try:
+      id = int(id_str)
+    except Exception as e:
+      print('fail to analyze xpath, err: {e}')
+      raise e  # todo:: add a better way to handle this
+    print('found element with id', id)
+    return self.ele_map[id]
 
-  def get_children_by_ele(self, ele: EleAttr):
+  def match_str_in_children(self, ele: EleAttr, key: str):
+    eles = self.get_children_by_ele(ele)
+    return [e for e in eles if e.is_match(key)]
+
+  def get_children_by_ele(self, ele: EleAttr) -> list[EleAttr]:
     if ele.id not in self.ele_map:
       return []
     que = [self.root]
@@ -408,9 +414,78 @@ class ElementTree(object):
     # only for valid children, the sort is ascending order of the id
     return [self.ele_map[idx] for idx in sorted(target.leaves)]
 
+  def get_children_by_idx(self, ele: EleAttr, idx: int):
+    for childid, child in enumerate(ele.children):
+      if childid == idx:
+        return self.ele_map[child]
+    return None
+
   def match_str_in_children(self, ele: EleAttr, key: str):
     eles = self.get_children_by_ele(ele)
     return [e for e in eles if e.is_match(key)]
+
+  def get_ele_text(self, ele):
+    if ele.text:
+      return ele.text
+    for child in ele.children:
+      child_text = self.get_ele_text(self.ele_map[child])
+      if child_text is not None:
+        return child_text
+    return None
+
+  def get_content_desc(self, ele):
+    if ele.content_description:
+      return ele.content_description
+    for child in ele.children:
+      child_content = self.get_content_desc(self.ele_map[child])
+      if child_content is not None:
+        return child_content
+    return None
+
+  def get_text(self, ele):
+    ele_text = self.get_ele_text(ele)
+    if ele_text:
+      return ele_text
+    ele_content_description = self.get_content_desc(ele)
+    if ele_content_description:
+      return ele_content_description
+
+  def get_all_children_by_ele(self, ele: EleAttr):
+    try:
+      result = [self.ele_map[child] for child in ele.children]
+    except:
+      import pdb
+      pdb.set_trace()
+    if not result:
+      return []
+    for child in ele.children:
+      result.extend(self.get_all_children_by_ele(self.ele_map[child]))
+    return result
+
+  def get_ele_descs_without_text(self):
+    ele_descs = []
+    for ele_id, ele in self.ele_map.items():
+      ele_dict = ele.dict()
+      ele_desc = ''
+      for k in [
+          'resource_id', 'class_name', 'content_description', 'bound_box'
+      ]:
+        if ele_dict[k]:
+          ele_desc += f'{k}={ele_dict[k]} '
+      ele_descs.append(ele_desc)
+    return ele_descs
+
+  def get_ele_id_by_properties(self, key_values: dict):
+    for ele_id, ele in self.ele_map.items():
+      ele_dict = ele.dict()
+      matched = True
+      for k, v in key_values.items():
+        if k not in ele_dict.keys() or ele_dict[k] != v:
+          matched = False
+          break
+      if matched:
+        return ele.id
+    return -1
 
 
 def save_to_yaml(save_path: str, html_view: str, tag: str, action_type: str,
@@ -451,9 +526,20 @@ def save_screenshot(save_path: str, tag: str, pixels: np.ndarray):
   if not save_path:
     return
 
-  output_dir = os.path.join(save_path, 'views')
+  output_dir = os.path.join(save_path, 'states')
   if not os.path.exists(output_dir):
     os.makedirs(output_dir)
-  file_path = os.path.join(output_dir, f"views_{tag}.jpg")
+  file_path = os.path.join(output_dir, f"screen_{tag}.png")
   image = Image.fromarray(pixels)
-  image.save(file_path, format='JPEG')
+  image.save(file_path, 'PNG')
+
+
+def save_raw_state(save_path: str, tag: str, forest: Any):
+  if not save_path:
+    return
+
+  output_dir = os.path.join(save_path, 'states')
+  if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
+  file_path = os.path.join(output_dir, f"state_{tag}.json")
+  # todo::
