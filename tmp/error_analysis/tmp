@@ -1,0 +1,8 @@
+0: xpath error (fixed)
+1: first, did not successfully open the Shopping List checklist because it does not exist; Task needs more information like creating the checklist or selecting the correct list.
+3: the first note might not be a checklist; add_checklist_item_title does not exist in the app; Code based methods might do better in judgeing whether the task can be completed.
+4: switch_item is a scrollbar, not a button, could not be tapped; the code is based on the stuck UI, which should be executed from the stuck UI
+5: the code is based on the stuck UI, which should be executed from the stuck UI
+7: xpath error (fixed)
+8: wrongly scrolled down the settings page; Not judging whether the opened one is a note or a checklist, but assuming it is a note; Not checking the status of the checkbox 'set_use_incognito_mode_of_keyboards', but assuming it is not checked.
+13: 

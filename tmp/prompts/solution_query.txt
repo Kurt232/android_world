@@ -1,0 +1,523 @@
+A Notes app in smartphone has the following important UI elements:
+
+element: open_note
+	Description: A button "Open Note"; used to open a note
+	 Function: used to open a note; tap to open a popup window containing elements open_note_titles and create_note 
+	Dependency: No dependency, this UI element is in the main screen of the app. 
+
+element: create_note
+	Description: A button ; used to add a new note; tap to open a window containing add_note_title, add_note_types, add_note_ok
+	 Function: tap to open a popup window containing add_note_title, add_note_types, add_note_ok 
+	Dependency: this UI element could be interacted in the main screen or this UI element could be interacted after tap(open_note). 
+
+element: more_options_checklist
+	Description: A button "more options"; used to open more options of the current checklist
+	 Function: tap to open the popup window more_option_checklist_buttons, including A list of buttons; Each item is a button for an option, including rename note, remove done items, sort by, share, create shortcut, lock note, open file, export as file, print, delete note, settings, about. 
+	Dependency: this UI element could be reached in the checklist screen of the app. 
+
+element: switch_item
+	Description: a scrollbar; used to switch previous or next item which is a checklist or a note
+	 Function: swipe up to switch to the previous item of checklist or note; swipe down to switch to the next item of checklist or note 
+	Dependency: No dependency, this UI element is in the main screen of the app. 
+
+element: switch_to_prev_item
+	Description: a button; used to switch the previous item of checklist or note
+	 Function: tap to switch to the previous item of checklist or note 
+	Dependency: No dependency, this UI element is in the main screen of the app. 
+
+element: item_title
+	Description: a text showed current item title; used to show the title of the current item
+	 Function:  
+	Dependency: No dependency, this UI element is in the main screen of the app. 
+
+element: switch_to_next_item
+	Description: a button; used to switch the next item of checklist or note
+	 Function: tap to switch to the next item of checklist or note 
+	Dependency: No dependency, this UI element is in the main screen of the app. 
+
+element: checklist_item_list
+	Description: a element list of checklist items; used to show and match all checklist items
+	 Function:  
+	Dependency: this UI element could be reached in the checklist screen of the app. 
+
+element: checklist_item
+	Description: a button; used to show the content and the state of the checklist item
+	 Function: tap to toggle the state; long tap to open a popup window to edit and select the checklist item 
+	Dependency: this UI element could be interacted after match(checklist_item_list). 
+
+element: add_checklist_item
+	Description: a button; used to add a new checklist item
+	 Function: tap to open a popup window of checklist item, containing, add_checklist_item_title, add_more_checklist_item, add_to_the_top, add_checklist_item_ok, add_checklist_item_cancel 
+	Dependency: this UI element could be reached in the checklist screen of the app. 
+
+element: move_selected_item_to_the_top
+	Description: a button "Move to the top"; used to move the selected item to the top of the list
+	 Function: tap to move the selected item to the top of the list 
+	Dependency: this UI element could be interacted after long_tap(checklist_item). 
+
+element: move_selected_item_to_the_buttom
+	Description: a button "Move to the bottom"; used to move the selected checklist item to the bottom of the list
+	 Function: tap to move the selected item to the buttom of the list 
+	Dependency: this UI element could be interacted after long_tap(checklist_item). 
+
+element: rename_selected_checklist_item
+	Description: a button "Rename"; used to rename the selected checklist item
+	 Function: tap to open the popup window to input the new name of the selected item 
+	Dependency: this UI element could be interacted after long_tap(checklist_item). 
+
+element: delete_selected_checklist_item
+	Description: a button "Delete"; used to delete the selected item
+	 Function: tap to delete item and close the popup window to edit the checklist item 
+	Dependency: this UI element could be interacted after long_tap(checklist_item). 
+
+element: open_note_title_list
+	Description: A list of open_note_title elements; used to display the titles of notes to open
+	 Function:  
+	Dependency: this UI element could be interacted after tap(open_note). 
+
+element: open_note_title
+	Description: a button; used to open the note with the title
+	 Function: tap to switch the note or checklist 
+	Dependency: this UI element could be interacted after tap(open_note). 
+
+element: save_note
+	Description: a button; used to save the current note after changed text_note_content
+	 Function: tap to save the current note 
+	Dependency: this UI element could be reached in the note screen of the app. 
+
+element: search_within_note
+	Description: a button "Search"; used to search within the current note
+	 Function: tap to open the search box, containing search_text, search_text_prev, search_text_next, search_close 
+	Dependency: this UI element could be reached in the note screen of the app. 
+
+element: more_options_note
+	Description: A button "more options"; used to open more options of the current note
+	 Function: tap to open the popup window more_option_note_buttons, including A list of buttons; Each item is a button for an option, including rename note, share, create shortcut, lock note, open file, export as file, print, delete note, settings, about. 
+	Dependency: this UI element could be reached in the note screen of the app. 
+
+element: note_content
+	Description: a input; used to show a large editable text area; used to edit the content of the current note
+	 Function: set text to edit the content of the current note 
+	Dependency: this UI element could be reached in the note screen of the app. 
+
+element: search_text
+	Description: a input; used to input the text to search within the current note
+	 Function: set text to input the text to search within the current note 
+	Dependency: this UI element could be interacted after tap(search_within_note). 
+
+element: prev_matched_text
+	Description: a button "Previous"; used to search the previous matching text within the current note
+	 Function: tap to highlight the previous matching text within the current note 
+	Dependency: this UI element could be interacted after tap(search_within_note). 
+
+element: next_matched_text
+	Description: a button "Next"; used to search the next matching text within the current note
+	 Function: tap to highlight the next matching text within the current note 
+	Dependency: this UI element could be interacted after tap(search_within_note). 
+
+element: close_search_box
+	Description: a button; used to close the search box of matching text within the current note
+	 Function: tap to close the search box 
+	Dependency: this UI element could be interacted after tap(search_within_note). 
+
+element: add_note_title
+	Description: a input "label"; used to input the title of the new note
+	 Function: set text to input the title of the new note 
+	Dependency: this UI element could be interacted after tap(create_note). 
+
+element: add_note_types
+	Description: a element tuple including text_note_type and checklist_type; used to show the types of the new note
+	 Function:  
+	Dependency: this UI element could be interacted after tap(create_note). 
+
+element: text_note_type
+	Description: a checkbox; used to select the type of the new note
+	 Function: select or unselect the type of the new note 
+	Dependency: this UI element could be interacted after tap(create_note). 
+
+element: checklist_type
+	Description: a checkbox; used to select the type of the new note
+	 Function: select or unselect the type of the new note 
+	Dependency: this UI element could be interacted after tap(create_note). 
+
+element: add_note_ok
+	Description: a button "OK"; used to confirm the new note
+	 Function: tap to confirom the new note and close the popup window 
+	Dependency: this UI element could be interacted after tap(create_note). 
+
+element: rename_note
+	Description: a button "Rename note"; used to rename the current note
+	 Function: tap to open a popup window to input the new name of the current note, including rename_input and rename_ok 
+	Dependency: this UI element could be interacted after tap(more_options_note) or this UI element could be interacted after tap(more_options_checklist). 
+
+element: create_shortcut
+	Description: a button "Create shortcut"; used to create a shortcut of the current note
+	 Function: tap to create a shortcut of the current note 
+	Dependency: this UI element could be interacted after tap(more_options_note) or this UI element could be interacted after tap(more_options_checklist). 
+
+element: lock_note
+	Description: a button "Lock note"; used to lock the current note
+	 Function: tap to open a popup window to confirm the lock of the current note, including lock_note_ok 
+	Dependency: this UI element could be interacted after tap(more_options_note) or this UI element could be interacted after tap(more_options_checklist). 
+
+element: open_file
+	Description: a button "Open file"; used to open the file of the current note
+	 Function: tap to switch the file manager to open the file of the current note 
+	Dependency: this UI element could be interacted after tap(more_options_note) or this UI element could be interacted after tap(more_options_checklist). 
+
+element: export_as_file
+	Description: a button "Export as file"; used to export the current note as a file
+	 Function: tap to switch the file manager to export the current note as a file 
+	Dependency: this UI element could be interacted after tap(more_options_note) or this UI element could be interacted after tap(more_options_checklist). 
+
+element: print_note
+	Description: a button "Print"; used to print the current note
+	 Function: tap to print the current note 
+	Dependency: this UI element could be interacted after tap(more_options_note) or this UI element could be interacted after tap(more_options_checklist). 
+
+element: delete_note
+	Description: a button "Delete note"; used to delete the current note
+	 Function: tap to open a popup window to confirm the delete of the current note, including delete_note_ok 
+	Dependency: this UI element could be interacted after tap(more_options_note) or this UI element could be interacted after tap(more_options_checklist). 
+
+element: settings
+	Description: a button "Settings"; used to open the settings of the app, including #todo
+	 Function: tap to switch the settings page of the app 
+	Dependency: this UI element could be interacted after tap(more_options_note) or this UI element could be interacted after tap(more_options_checklist). 
+
+element: about
+	Description: a button "About"; used to show the information of the app
+	 Function: tap to switch the about page of the app 
+	Dependency: this UI element could be interacted after tap(more_options_note) or this UI element could be interacted after tap(more_options_checklist). 
+
+element: rename_input
+	Description: a input; used to input the new name of the current note
+	 Function: set text to input the new name of the current note 
+	Dependency: this UI element could be interacted after tap(rename_note). 
+
+element: rename_ok
+	Description: a button "OK"; used to confirm the new name of the current note
+	 Function: tap to close the rename popup window 
+	Dependency: this UI element could be interacted after tap(rename_note). 
+
+element: lock_note_ok
+	Description: a button "OK"; used to confirm the lock of the current note
+	 Function: tap to close the lock popup window 
+	Dependency: this UI element could be interacted after tap(lock_note). 
+
+element: delete_note_ok
+	Description: a button "Delete"; used to confirm the delete of the current note
+	 Function: tap to close the delete popup window 
+	Dependency: this UI element could be interacted after tap(delete_note). 
+
+element: remove_done_checklist_items
+	Description: a button "Remove done items"; used to remove the done items of the current checklist
+	 Function: tap to clost the more options popup window 
+	Dependency: this UI element could be interacted after tap(more_options_checklist). 
+
+element: sort_checklist_items
+	Description: a button "Sort by"; used to sort the items of the current checklist
+	 Function: tap to open a popup window to select the sort type of the current checklist, including sort_by_title, sort_by_date_created, sort_by_custom, sort_by_ok 
+	Dependency: this UI element could be interacted after tap(more_options_checklist). 
+
+element: sort_checklist_items_types
+	Description: a element tuple including sort_by_title, sort_by_date_created, sort_by_custom; used to show the types of sorting the items of the current checklist
+	 Function:  
+	Dependency: this UI element could be interacted after tap(sort_checklist_items). 
+
+element: title_type
+	Description: a checkbox "Title"; used to sort the items of the current checklist by title
+	 Function: select or unselect the type of sorting the items of the current checklist 
+	Dependency: this UI element could be interacted after tap(sort_checklist_items). 
+
+element: date_created_type
+	Description: a checkbox "Date created"; used to sort the items of the current checklist by Date created
+	 Function: select or unselect the type of sorting the items of the current checklist 
+	Dependency: this UI element could be interacted after tap(sort_checklist_items). 
+
+element: custom_type
+	Description: a checkbox "Custom"; used to sort the items of the current checklist by Custom
+	 Function: select or unselect the type of sorting the items of the current checklist 
+	Dependency: this UI element could be interacted after tap(sort_checklist_items). 
+
+element: sort_checklist_items_ok
+	Description: a button "OK"; used to confirm the sort type of the current checklist
+	 Function: tap to confirom the sort type of the current checklist and close the popup window 
+	Dependency: this UI element could be interacted after tap(sort_checklist_items). 
+
+element: exit_settings
+	Description: a button "Back"; used to exit the settings page
+	 Function: tap to exit the settings page 
+	Dependency: this UI element could be interacted after tap(settings). 
+
+element: scroll_settings_page
+	Description: a scrollbar; used to scroll the settings page
+	 Function: swipe down to get more settings 
+	Dependency: this UI element could be interacted after tap(settings). 
+
+element: set_colors
+	Description: a button "Customize colors"; used to customize the colors of the app
+	 Function: tap to open a popup window to set colors of the app, including customize_theme, customize_text_color, customize_background_color, customize_primary_ok, customize_app_icon_color 
+	Dependency: this UI element could be interacted after tap(settings). 
+
+element: set_widget_colors
+	Description: a button "Customize widget colors"; used to customize the colors of the widget
+	 Function: tap to open a popup window to set colors of the widget 
+	Dependency: this UI element could be interacted after tap(settings). 
+
+element: set_font_size
+	Description: a button "Font size"; used to set the font size of the app
+	 Function: tap to open a popup window to set the font size of the app 
+	Dependency: this UI element could be interacted after tap(settings). 
+
+element: current_font_size
+	Description: a button; used to show the current font size of the app
+	 Function: tap to open a popup window to set current font size of the app 
+	Dependency: this UI element could be interacted after tap(settings). 
+
+element: set_show_word_count
+	Description: a checkbox "Show word count"; used to show the word count of the app
+	 Function: select or unselect to show the word count of the app 
+	Dependency: this UI element could be interacted after tap(settings). 
+
+element: set_make_links_and_emails_clickable
+	Description: a checkbox "Make links and emails clickable"; used to make links and emails clickable
+	 Function: select or unselect to make links and emails clickable 
+	Dependency: this UI element could be interacted after tap(settings). 
+
+element: set_use_monospaced_font
+	Description: a checkbox "use monospaced font"; used to use monospaced font
+	 Function: select or unselect to use monospaced font 
+	Dependency: this UI element could be interacted after tap(settings). 
+
+element: set_use_incognito_mode_of_keyboards
+	Description: a checkbox "Use Incognito mode of keyboards"; used to use Incognito mode of keyboards
+	 Function: select or unselect to use Incognito mode of keyboards 
+	Dependency: this UI element could be interacted after tap(settings). 
+
+element: set_enable_line_wrap
+	Description: a checkbox "Enable line wrap"; used to enable line wrap
+	 Function: select or unselect to enable line wrap 
+	Dependency: this UI element could be interacted after tap(settings). 
+
+element: set_alignment
+	Description: a button "Alignment"; used to set the alignment of the app
+	 Function: tap to open a popup window to set the alignment of the app 
+	Dependency: this UI element could be interacted after tap(settings). 
+
+element: close_set_colors
+	Description: a button "Close"; used to close the popup window of setting colors
+	 Function: tap to close the popup window 
+	Dependency: this UI element could be interacted after tap(set_colors). 
+
+element: save_set_colors
+	Description: a button "Save"; used to save the colors of the app
+	 Function: tap to save the colors of the app 
+	Dependency: this UI element could be interacted after tap(set_colors). 
+
+element: set_theme_color
+	Description: a button "Theme"; used to set the theme color of the app
+	 Function: tap to open a popup window to set the theme color of the app 
+	Dependency: this UI element could be interacted after tap(set_colors). 
+
+element: set_text_color
+	Description: a button "Text color"; used to set the text color of the app
+	 Function: tap to open a popup window to set the text color of the app 
+	Dependency: this UI element could be interacted after tap(set_colors). 
+
+element: set_background_color
+	Description: a button "Background color"; used to set the background color of the app
+	 Function: tap to open a popup window to set the background color of the app 
+	Dependency: this UI element could be interacted after tap(set_colors). 
+
+element: set_primary_color
+	Description: a button "Primary color"; used to set the primary color of the app
+	 Function: tap to open a popup window to set the primary color of the app 
+	Dependency: this UI element could be interacted after tap(set_colors). 
+
+element: set_app_icon_color
+	Description: a button "App icon color"; used to set the app icon color of the app
+	 Function: tap to open a popup window to set the app icon color of the app 
+	Dependency: this UI element could be interacted after tap(set_colors). 
+
+element: theme_color_types
+	Description: a element tuple including auto_light_drak, light, dark, dark_red, white, black_white, custom; used to show the theme color types of the app
+	 Function:  
+	Dependency: this UI element could be interacted after tap(set_theme_color). 
+
+element: theme_color_auto_light_dark
+	Description: a checkbox "Auto light / dark"; used to set the theme color of the app
+	 Function: select or unselect to set the theme color of the app 
+	Dependency: this UI element could be interacted after tap(set_theme_color). 
+
+element: theme_color_light
+	Description: a checkbox "light"; used to set the theme color of the app
+	 Function: select or unselect to set the theme color of the app 
+	Dependency: this UI element could be interacted after tap(set_theme_color). 
+
+element: theme_color_dark
+	Description: a checkbox "Dark"; used to set the theme color of the app
+	 Function: select or unselect to set the theme color of the app 
+	Dependency: this UI element could be interacted after tap(set_theme_color). 
+
+element: theme_color_dark_red
+	Description: a checkbox "Dark red"; used to set the theme color of the app
+	 Function: select or unselect to set the theme color of the app 
+	Dependency: this UI element could be interacted after tap(set_theme_color). 
+
+element: theme_color_white
+	Description: a checkbox "White"; used to set the theme color of the app
+	 Function: select or unselect to set the theme color of the app 
+	Dependency: this UI element could be interacted after tap(set_theme_color). 
+
+element: theme_color_black_white
+	Description: a checkbox "Black & White"; used to set the theme color of the app
+	 Function: select or unselect to set the theme color of the app 
+	Dependency: this UI element could be interacted after tap(set_theme_color). 
+
+element: theme_color_custom
+	Description: a checkbox "Custom"; used to set the theme color of the app
+	 Function: select or unselect to set the theme color of the app 
+	Dependency: this UI element could be interacted after tap(set_theme_color). 
+
+element: font_size_types
+	Description: a element tuple including 50%, 60%, 75%, 90%, 100%, 125%, 150%, 175%, 200%, 250%, 300%; used to show the font size types of the app
+	 Function:  
+	Dependency: this UI element could be interacted after tap(set_font_size) or this UI element could be interacted after tap(current_font_size). 
+
+element: font_size_50%
+	Description: a checkbox "50%"; used to set the font size of the app
+	 Function: select or unselect to set the font size of the app 
+	Dependency: this UI element could be interacted after tap(set_font_size) or this UI element could be interacted after tap(current_font_size). 
+
+element: font_size_60%
+	Description: a checkbox "60%"; used to set the font size of the app
+	 Function: select or unselect to set the font size of the app 
+	Dependency: this UI element could be interacted after tap(set_font_size) or this UI element could be interacted after tap(current_font_size). 
+
+element: font_size_75%
+	Description: a checkbox "75%"; used to set the font size of the app
+	 Function: select or unselect to set the font size of the app 
+	Dependency: this UI element could be interacted after tap(set_font_size) or this UI element could be interacted after tap(current_font_size). 
+
+element: font_size_90%
+	Description: a checkbox "90%"; used to set the font size of the app
+	 Function: select or unselect to set the font size of the app 
+	Dependency: this UI element could be interacted after tap(set_font_size) or this UI element could be interacted after tap(current_font_size). 
+
+element: font_size_100%
+	Description: a checkbox "100%"; used to set the font size of the app
+	 Function: select or unselect to set the font size of the app 
+	Dependency: this UI element could be interacted after tap(set_font_size) or this UI element could be interacted after tap(current_font_size). 
+
+element: font_size_125%
+	Description: a checkbox "125%"; used to set the font size of the app
+	 Function: select or unselect to set the font size of the app 
+	Dependency: this UI element could be interacted after tap(set_font_size) or this UI element could be interacted after tap(current_font_size). 
+
+element: font_size_150%
+	Description: a checkbox "150%"; used to set the font size of the app
+	 Function: select or unselect to set the font size of the app 
+	Dependency: this UI element could be interacted after tap(set_font_size) or this UI element could be interacted after tap(current_font_size). 
+
+element: font_size_175%
+	Description: a checkbox "175%"; used to set the font size of the app
+	 Function: select or unselect to set the font size of the app 
+	Dependency: this UI element could be interacted after tap(set_font_size) or this UI element could be interacted after tap(current_font_size). 
+
+element: font_size_200%
+	Description: a checkbox "200%"; used to set the font size of the app
+	 Function: select or unselect to set the font size of the app 
+	Dependency: this UI element could be interacted after tap(set_font_size) or this UI element could be interacted after tap(current_font_size). 
+
+element: font_size_250%
+	Description: a checkbox "250%"; used to set the font size of the app
+	 Function: select or unselect to set the font size of the app 
+	Dependency: this UI element could be interacted after tap(set_font_size) or this UI element could be interacted after tap(current_font_size). 
+
+element: font_size_300%
+	Description: a checkbox "300%"; used to set the font size of the app
+	 Function: select or unselect to set the font size of the app 
+	Dependency: this UI element could be interacted after tap(set_font_size) or this UI element could be interacted after tap(current_font_size). 
+
+element: set_place_cursor_to_the_end_of_note
+	Description: a checkbox; used to set the place cursor to the end of note
+	 Function: select or unselect to set the place cursor to the end of note 
+	Dependency: this UI element could be interacted after tap(settings). 
+
+element: set_show_keyboard_on_startup
+	Description: a checkbox; used to set the show keyboard on startup
+	 Function: select or unselect to set the show keyboard on startup 
+	Dependency: this UI element could be interacted after tap(settings). 
+
+element: set_show_a_note_picker_on_startup
+	Description: a checkbox; used to set show a note picker on startup
+	 Function: select or unselect to set show a note picker on startup 
+	Dependency: this UI element could be interacted after tap(settings). 
+
+element: set_autosave_notes
+	Description: a checkbox; used to set autosave notes
+	 Function: select or unselect to set autosave notes 
+	Dependency: this UI element could be interacted after tap(settings). 
+
+element: set_display_save_success_messages
+	Description: a checkbox; used to set display save success messages
+	 Function: select or unselect to set display save success messages 
+	Dependency: this UI element could be interacted after tap(settings). 
+
+element: export_notes
+	Description: a button; used to export notes
+	 Function: tap to export notes 
+	Dependency: this UI element could be interacted after tap(settings). 
+
+element: import_notes
+	Description: a button; used to import notes
+	 Function: tap to import notes 
+	Dependency: this UI element could be interacted after tap(settings). 
+
+element: set_enable_automatic_backups
+	Description: a checkbox; used to set enable automatic backups
+	 Function: select or unselect to set enable automatic backups 
+	Dependency: this UI element could be interacted after tap(settings). 
+
+
+
+You will be asked to complete tasks by writing scripts to manipulate the above elements.
+In the script, except for the common python control flow (for, if-else, function def/calls, etc.), you can use the following APIs:
+- tap(<element_selector>): tap on the element. Almost all elements can be taped. If an element's attribute checked=false or selected=false, tapping it can make it checked or selected, vice versa.
+- long_tap(<element_selector>): long tap the element. 
+- set_text(<element_selector>, <text>): set the text of the element to <text>. Only editable text fields can be set text.
+- scroll(<element_selector>, <direction>): scroll the UI element in the specified direction, and direction is a str from "up", 'down", "left", "right". e.g. scroll($scroll_settings_page, "down"
+- get_text(<element_selector>): return the text of the element as a string.
+- get_attributes(<element_selector>): return the attributes of the element as a dict, dict keys include "selected", "checked", "scrollable", dict values are boolean. eg. get_attributes($files[3])["selected"].
+- back(): close the current window
+
+
+The <element_selector> primitive is used to select an element, possible ways of selection include:
+- $<element id>, eg. $settings_button
+- <element_list>[<idx>]: the idx-th in the element list. eg. $my_items[1]
+
+The <element_list> primitive is used to select a list of elements, possible ways of selection include:
+- <element_selector>: the items in the list element identified by <element_selector>. eg. $my_items
+- <element_list>.match(<text or attribute dict>): the elements in the element list that match the given text or attribute dict. eg. $my_items.match("key words") or $my_items.match({"selected": true})
+You can use len(<element_list>) to get the total number of items in an element list.
+
+
+Now I will give you some tasks, you should return the python scripts to complete each task.
+The tasks are:
+
+Task 0: Rename the current note to 'Meeting Notes'
+Task 1: Remove all done items from the current checklist
+Task 2: Delete the selected checklist item
+Task 3: Rename the selected checklist item to 'Buy Groceries'
+Task 4: Scroll down the settings page
+
+Your answer should follow this JSON format:
+
+{
+    "<task1>": "<script1>",
+    "<task2>": "<script2>",
+    ...
+}
+
+**Note that the script is a string of python code and should only output the JSON content.**

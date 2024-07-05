@@ -27,6 +27,7 @@ from android_world import checkpointer as checkpointer_lib
 from android_world import constants
 from android_world import episode_runner
 from android_world.agents import base_agent
+from android_world.agents import verifier
 from android_world.env import adb_utils
 from android_world.env import interface
 from android_world.task_evals import task_eval
@@ -359,6 +360,63 @@ def run(
     return episode_runner.run_episode(
         goal=task.goal,
         agent=agent,
+        max_n_steps=_allocate_step_budget(task.complexity),
+        start_on_home_screen=(not task.name.lower().startswith('miniwob')),
+        termination_fn=(
+            miniwob_base.is_episode_terminated
+            if task.name.lower().startswith('miniwob')
+            else None
+        ),
+    )
+
+  if demo_mode:
+    adb_utils.send_android_intent(
+        'broadcast',
+        'com.example.ACTION_UPDATE_SCOREBOARD',
+        agent.env.base_env,
+        extras={'player_name': agent.name, 'scoreboard_value': '00/00'},
+    )
+
+  results = _run_task_suite(
+      suite,
+      run_episode,
+      agent.env,
+      checkpointer=checkpointer,
+      demo_mode=demo_mode,
+      agent_name=agent.name,
+  )
+
+  return results
+
+
+def run4code(
+    suite: Suite,
+    verifier: verifier.Verifier,
+    checkpointer: checkpointer_lib.Checkpointer = checkpointer_lib.NullCheckpointer(),
+    demo_mode: bool = False,
+) -> list[dict[str, Any]]:
+  """Create suite and runs eval suite.
+
+  Args:
+    suite: The suite of tasks to run on.
+    agent: An agent that interacts on the environment.
+    checkpointer: Checkpointer that loads from existing run and resumes from
+      there. NOTE: It will resume from the last fully completed task template.
+      Relatedly, data for a task template will not be saved until all instances
+      are executed.
+    demo_mode: Whether to run in demo mode, which displays a scoreboard and the
+      task instruction as a notification.
+
+  Returns:
+    Step-by-step data from each episode.
+  """
+
+  def run_episode(task: task_eval.TaskEval) -> episode_runner.EpisodeResult:
+    if demo_mode:
+      _display_goal(verifier.env, task)
+    return episode_runner.run_episode4code(
+        goal=task.goal,
+        verifier=verifier,
         max_n_steps=_allocate_step_budget(task.complexity),
         start_on_home_screen=(not task.name.lower().startswith('miniwob')),
         termination_fn=(

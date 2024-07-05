@@ -1,0 +1,143 @@
+{
+  "2024-04-18_233059": [
+    {
+      "id": 8,
+      "ele": "<button alt='Open note' bound_box=705,158,837,290></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Open note",
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 9,
+      "ele": "<button alt='Create a new note' bound_box=837,158,969,290></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Create a new note",
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 10,
+      "ele": "<button alt='More options' bound_box=969,158,1080,290></button>",
+      "action": [
+        "touch",
+        "long_touch"
+      ],
+      "type": "button",
+      "alt": "More options",
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 12,
+      "ele": "<scrollbar bound_box=0,312,1080,2208></scrollbar>",
+      "action": [
+        "scroll up",
+        "scroll down"
+      ],
+      "type": "scrollbar",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 14,
+      "ele": "<button bound_box=0,320,131,358>Enter label</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 15,
+      "ele": "<p bound_box=481,320,599,358>Enter text</p>",
+      "action": [
+        "touch"
+      ],
+      "type": "p",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 16,
+      "ele": "<button bound_box=910,320,1080,358>Sample Label</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 28,
+      "ele": "<button bound_box=0,442,893,480>2</button>",
+      "action": [
+        "touch",
+        "long_touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 31,
+      "ele": "<button bound_box=0,596,893,634>1</button>",
+      "action": [
+        "touch",
+        "long_touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    }
+  ]
+}
