@@ -491,7 +491,7 @@ class ElementTree(object):
 
 def save_to_yaml(save_path: str, html_view: str, tag: str, action_type: str,
                  action_details: dict, choice: int | None, input_text: str,
-                 width: int, height: int, marked_ids: list[int]):
+                 width: int, height: int):
   if not save_path:
     return
 
@@ -513,8 +513,7 @@ def save_to_yaml(save_path: str, html_view: str, tag: str, action_type: str,
       'Input': input_text,
       'tag': tag,
       'width': width,
-      'height': height,
-      'dynamic_ids': marked_ids
+      'height': height
   })
   data = {
       'step_num': len(list(old_yaml_data['records'])),
