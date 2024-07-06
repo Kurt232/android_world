@@ -43,8 +43,6 @@ class HumanAgent(base_agent.EnvironmentInteractingAgent):
     state = self.get_post_transition_state()
     element_tree = agent_utils.forest_to_element_tree(state.forest)
 
-    marked_ids = self.mark_dynamic_ids(element_tree)
-    
     action_list = [
         "wait", "click", "input_text", "scroll", "long_press", "navigate_home",
         "navigate_back", "open_app", "answer", "keyboard_enter", "status"
@@ -83,12 +81,12 @@ class HumanAgent(base_agent.EnvironmentInteractingAgent):
 
     timestamp = datetime.datetime.now().strftime('%Y-%m-%d_T%H%M%S')
 
-    if action_details['action_type'] != "wait" and len(marked_ids) != 0:
+    if action_details['action_type'] != "wait":
       agent_utils.save_to_yaml(self.save_path, element_tree.str, timestamp,
-                               action_details['action_type'], action_details, ele_id,
-                               action_details.get('text', None),
+                               action_details['action_type'], action_details,
+                               ele_id, action_details.get('text', None),
                                self.env.device_screen_size[0],
-                               self.env.device_screen_size[1], marked_ids)
+                               self.env.device_screen_size[1])
 
       agent_utils.save_screenshot(self.save_path, timestamp,
                                   state.pixels.copy())
@@ -169,25 +167,3 @@ class HumanAgent(base_agent.EnvironmentInteractingAgent):
       action_details['app_name'] = app_name
 
     return action_details, None
-
-  def mark_dynamic_ids(self, element_tree: ElementTree) -> list[int]:
-    dynamic_ids = set()
-    print('\033[0;32m', '-' * 40, 'Dynamic', '-' * 40, '\033[0m')
-    print(element_tree.get_str(is_color=True))
-    ids = input('Please input the dynamic ids, like `0 2-5 8`:')
-    ids = ids.split()
-    for id in ids:
-      if '-' in id:
-        start, end = id.split('-')
-        start, end = int(start), int(end)
-        for i in range(start, end + 1):
-          if i < 0 or i >= element_tree.size:
-            break
-          dynamic_ids.add(i)
-      else:
-        i = int(id)
-        if i < 0 or i >= element_tree.size:
-          continue
-        dynamic_ids.add(int(id))
-
-    return list(dynamic_ids)
