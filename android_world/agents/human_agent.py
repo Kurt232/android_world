@@ -134,10 +134,11 @@ class HumanAgent(base_agent.EnvironmentInteractingAgent):
             + '\033[0m')
         return wait_action, None
 
-      if ele.check_action(action_type) is False:
-        print('\033[1;31m' + 'Invalid action, replaced by wait action.' +
-              '\033[0m')
-        return wait_action, None
+      # todo:: it's not strict for 5 elements
+      # if ele.check_action(action_type) is False:
+      #   print('\033[1;31m' + 'Invalid action, replaced by wait action.' +
+      #         '\033[0m')
+      #   return wait_action, None
 
       if action_type in ["click", "long_press", "input_text"]:
         x, y = ele.ele.bbox_pixels.center
