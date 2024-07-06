@@ -83,9 +83,9 @@ class HumanAgent(base_agent.EnvironmentInteractingAgent):
 
     timestamp = datetime.datetime.now().strftime('%Y-%m-%d_T%H%M%S')
 
-    if action_type != "wait":
+    if action_details['action_type'] != "wait" and len(marked_ids) != 0:
       agent_utils.save_to_yaml(self.save_path, element_tree.str, timestamp,
-                               action_type, action_details, ele_id,
+                               action_details['action_type'], action_details, ele_id,
                                action_details.get('text', None),
                                self.env.device_screen_size[0],
                                self.env.device_screen_size[1], marked_ids)
