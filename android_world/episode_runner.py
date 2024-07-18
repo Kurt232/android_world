@@ -72,6 +72,9 @@ def run_episode(
   if termination_fn is None:
     termination_fn = lambda env: False
 
+  if agent.name == "human_agent":
+    max_n_steps = 1000
+  
   agent.reset(start_on_home_screen)
 
   output = []

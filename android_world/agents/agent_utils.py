@@ -86,7 +86,7 @@ def forest_to_element_tree(forest: Any,
     id2element[node_id] = ele_attr
     ele_attr.set_type('div')
     # TODO:: add the element type for image
-    if not element.content_description and not element.text and not element.is_scrollable and not element.is_editable:
+    if (node.child_ids and not node.content_description and not node.is_scrollable) or not node.is_visible_to_user:
       continue
 
     text = element.text if element.text else ''
