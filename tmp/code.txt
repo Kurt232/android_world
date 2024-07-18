@@ -1,5 +1,17 @@
-scroll($scroll_settings_page, "up")
-tap($set_colors)
-tap($set_theme_color)
-tap($theme_color_types.match("White"))
-tap($save_set_colors)
+
+# Open the note to access the checklist items
+tap($open_note)
+
+# Look for "Clean Room" item in the checklist
+checklist_items = $checklist_item_list
+clean_room_item = checklist_items.match("Clean Room")
+
+# If "Clean Room" does not exist, add it
+if len(clean_room_item) == 0:
+    tap($add_checklist_item)
+    set_text($add_checklist_item_title, "Clean Room")
+    tap($add_checklist_item_ok)
+
+# Delete the "Clean Room" checklist item
+long_tap($checklist_item.match("Clean Room")[0])
+tap($delete_selected_checklist_item)

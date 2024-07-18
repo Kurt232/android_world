@@ -1,0 +1,5 @@
+# check whether the current UI is the note picker page, if so, go back to the main page
+ui_tree = get_ui_tree()
+if '>Open note</p>' in ui_tree:
+    # go back to the main screen
+    back()

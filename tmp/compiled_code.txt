@@ -1,18 +1,33 @@
-def autodroidv2_task_solution_code(verifier, env, save_path, api_xpaths):
+def autodroidv2_task_solution_code(verifier, self.device, code_policy, api_xpaths):
 	# check whether the current UI is the note picker page, if so, go back to the main page
 	ui_tree = verifier.get_ui_tree()
 	if '>Open note</p>' in ui_tree:
 	    # go back to the main screen
 	    verifier.back()
 	
-	scroll_settings_page = ElementList('scroll_settings_page', None, env, save_path, api_xpaths, verifier)
-	verifier.scroll(scroll_settings_page, "up")
-	set_colors = ElementList('set_colors', None, env, save_path, api_xpaths, verifier)
-	verifier.tap(set_colors)
-	set_theme_color = ElementList('set_theme_color', None, env, save_path, api_xpaths, verifier)
-	verifier.tap(set_theme_color)
-	theme_color_types = ElementList('theme_color_types', None, env, save_path, api_xpaths, verifier)
-	verifier.tap(theme_color_types.match("White"))
-	save_set_colors = ElementList('save_set_colors', None, env, save_path, api_xpaths, verifier)
-	verifier.tap(save_set_colors)
-autodroidv2_task_solution_code(verifier, env, save_path, api_xpaths)
+	
+	# Open the note to access the checklist items
+	open_note = ElementList('open_note', None, self.device, code_policy,api_xpaths, verifier)
+	verifier.tap(open_note)
+	
+	# Look for "Clean Room" item in the checklist
+	checklist_item_list = ElementList('checklist_item_list', None, self.device, code_policy,api_xpaths, verifier)
+	checklist_items = checklist_item_list
+	clean_room_item = checklist_items.match("Clean Room")
+	
+	# If "Clean Room" does not exist, add it
+	if len(clean_room_item) == 0:
+	    add_checklist_item = ElementList('add_checklist_item', None, self.device, code_policy,api_xpaths, verifier)
+	    verifier.tap(add_checklist_item)
+	    add_checklist_item_title = ElementList('add_checklist_item_title', None, self.device, code_policy,api_xpaths, verifier)
+	    verifier.set_text(add_checklist_item_title, "Clean Room")
+	    add_checklist_item_ok = ElementList('add_checklist_item_ok', None, self.device, code_policy,api_xpaths, verifier)
+	    verifier.tap(add_checklist_item_ok)
+	
+	# Delete the "Clean Room" checklist item
+	checklist_item = ElementList('checklist_item', None, self.device, code_policy, api_xpaths, verifier)
+	verifier.long_tap(checklist_item.match("Clean Room")[0])
+	delete_selected_checklist_item = ElementList('delete_selected_checklist_item', None, self.device, code_policy,api_xpaths, verifier)
+	verifier.tap(delete_selected_checklist_item)
+	
+autodroidv2_task_solution_code(verifier, self.device, code_policy, api_xpaths)
