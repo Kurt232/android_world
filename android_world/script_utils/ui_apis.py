@@ -545,12 +545,11 @@ class Verifier:
   # Wait a few seconds for the screen to stabilize after executing an action.
   WAIT_AFTER_ACTION_SECONDS = 2.0
 
-  def __init__(self, env: interface.AsyncEnv, llm: infer.LlmWrapper,
+  def __init__(self, env: interface.AsyncEnv,
                save_path: str, app_name: str, api_xpaths, api_data,
                dependencies) -> None:
     # android world
     self.env = env
-    self.llm = llm
     self.save_path = save_path
     self.app_name = app_name
 
