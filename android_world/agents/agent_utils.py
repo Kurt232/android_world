@@ -87,9 +87,10 @@ def forest_to_element_tree(forest: Any,
     id2element[node_id] = ele_attr
     ele_attr.set_type('div')
     # TODO:: add the element type for image
-    if (node.child_ids and not node.content_description and not node.is_scrollable) or not node.is_visible_to_user:
+    if (node.child_ids and not node.content_description and
+        not node.is_scrollable) or not node.is_visible_to_user:
       continue
-    
+
     text = element.text if element.text else ''
     text = text.replace('\n', ' \\ ')
     text = text[:50] if len(text) > 50 else text
@@ -182,30 +183,30 @@ class EleAttr(object):
         '.')[-1] if self.class_name else 'div'  # only existing init
 
   def dict(self, only_original_attributes=False):
-        checked = self.checked or self.selected
-        if only_original_attributes:
-            return {
-                'resource_id': self.resource_id,
-                'class_name': self.class_name,
-                'text': self.text,
-                'content_description': self.content_description,
-                'checked': checked,
-                'scrollable': self.ele.is_scrollable, 
-                'editable': self.ele.is_editable,
-                'clickable': self.ele.is_clickable,
-                'long_clickable': self.ele.is_long_clickable,
-            }
-        return {
-            'id': self.id,
-            'resource_id': self.resource_id,
-            'class_name': self.class_name,
-            'text': self.text,
-            'content_description': self.content_description,
-            'bound_box': self.bound_box,
-            'children': self.children,
-            'full_desc': self.full_desc,
-        }    
-  
+    checked = self.checked or self.selected
+    if only_original_attributes:
+      return {
+          'resource_id': self.resource_id,
+          'class_name': self.class_name,
+          'text': self.text,
+          'content_description': self.content_description,
+          'checked': checked,
+          'scrollable': self.ele.is_scrollable,
+          'editable': self.ele.is_editable,
+          'clickable': self.ele.is_clickable,
+          'long_clickable': self.ele.is_long_clickable,
+      }
+    return {
+        'id': self.id,
+        'resource_id': self.resource_id,
+        'class_name': self.class_name,
+        'text': self.text,
+        'content_description': self.content_description,
+        'bound_box': self.bound_box,
+        'children': self.children,
+        'full_desc': self.full_desc,
+    }
+
   def get_attributes(self):
     checked = self.checked or self.selected
     return {
@@ -324,13 +325,14 @@ class EleAttr(object):
 class ElementTree(object):
 
   def __init__(self, ele_attrs: dict[int, EleAttr], valid_ele_ids: list[int]):
+    # member
+    self.scrollable_ele_ids: list[int] = []
     # tree
     self.root, self.ele_map, self.valid_ele_ids = self._build_tree(
         ele_attrs, valid_ele_ids)
     self.size = len(self.ele_map)
     # result
     self.str = self.get_str()
-    self.scrollable_ele_ids: list[int] = []
 
   def get_ele_by_id(self, index: int):
     return self.ele_map.get(index, None)
@@ -366,7 +368,9 @@ class ElementTree(object):
         self.children.clear()
         self.leaves.clear()
 
-  def _build_tree(self, ele_map: dict[int, EleAttr], valid_ele_ids: list[int]) -> tuple[node, dict[int, EleAttr], set[int]]:
+  def _build_tree(
+      self, ele_map: dict[int, EleAttr],
+      valid_ele_ids: list[int]) -> tuple[node, dict[int, EleAttr], set[int]]:
     root = self.node(0, -1)
     queue = [root]
     while queue:
@@ -442,7 +446,7 @@ class ElementTree(object):
 
     return _str(self.root)
 
-  def get_ele_by_xpath(self, xpath: str) -> EleAttr|None:
+  def get_ele_by_xpath(self, xpath: str) -> EleAttr | None:
     html_view = self.str
     root = etree.fromstring(html_view)
     eles = root.xpath(xpath)
@@ -531,7 +535,7 @@ class ElementTree(object):
       if not ele:
         continue
       result.extend(self.get_all_children_by_ele(ele))
-    
+
     return result
 
   def get_ele_descs_without_text(self):

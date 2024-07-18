@@ -1,6 +1,5 @@
 import json
 import os
-import tools
 import copy
 import ast
 from itertools import combinations
@@ -10,6 +9,7 @@ import re
 from argparse import ArgumentParser
 
 from android_world.script_utils.parallel_query import MultiProcessingQuery as mtp
+from android_world.script_utils import tools
 
 
 def parseargs():

@@ -120,8 +120,8 @@ def format_apis(env: interface.AsyncEnv, api_xpaths):
     ui_apis_ordered = []
     for id in sorted(ui_apis.keys()):
       ui_apis_ordered.append(ui_apis[id])
-    import pdb
-    pdb.set_trace()
+    # import pdb
+    # pdb.set_trace()
     return ui_apis_ordered
 
   current_state = env.get_state()
@@ -152,7 +152,8 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
   # Wait a few seconds for the screen to stabilize after executing an action.
   WAIT_AFTER_ACTION_SECONDS = 2.0
   MAX_RETRY_TIMES = 3
-  QUERY_FIRSTTIME = False
+
+  # QUERY_FIRSTTIME = True
 
   def __init__(self,
                env: interface.AsyncEnv,
@@ -161,11 +162,11 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
                name: str = 'CodeAgent'):
 
     super().__init__(env, name)
-    self.llm = llm # todo::
+    self.llm = llm  # todo::
     self.save_path = save_path
 
   def step(self, goal: str) -> base_agent.AgentInteractionResult:
-    del goal
+    tools.write_txt_file('tmp/task.txt', goal)
     """
     only execute once for code script
     """
@@ -173,26 +174,35 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
     app_name = tools.load_txt_file('tmp/app_name.txt')
     for retry_time in range(self.MAX_RETRY_TIMES):
       api_xpaths = tools.load_json_file('tmp/api_xpaths_checked.json')
-      api_data = tools.load_json_file('output/notes0503/apis.json')
-      if retry_time  == 0:
+      api_data = tools.load_json_file('tmp/apis/notes.json')
+      if retry_time == 0:
         # restart the app first in case the script couldn't run and the app has not been start
-        self.env.execute_action(json_action.JSONAction(**{'action_type': 'open_app', 'app_name': app_name}))
+        self.env.execute_action(
+            json_action.JSONAction(**{
+                'action_type': 'open_app',
+                'app_name': app_name
+            }))
         time.sleep(self.WAIT_AFTER_ACTION_SECONDS)
-  
-        
-        if self.QUERY_FIRSTTIME:
-            # if there is no solution code yet at the first time, we need to generate one
-            task = tools.load_txt_file('tmp/task.txt')
-            solution_generator = SolutionGenerator('output/notes0503/apis.json')
-            formatted_apis = format_apis(self.env, api_xpaths)
-            solution_code = solution_generator.get_solution(app_name='Notes', prompt_answer_path=os.path.join(self.save_path, f'solution.json'), task=task, ui_elements=formatted_apis, enable_dependency=False, model_name='gpt-4o')
-            tools.write_txt_file('tmp/code.txt', solution_code)
-      
+
+        # if there is no solution code yet at the first time, we need to generate one
+        task = tools.load_txt_file('tmp/task.txt')
+        solution_generator = SolutionGenerator('tmp/apis/notes.json', self.llm)
+        formatted_apis = format_apis(self.env, api_xpaths)
+        solution_code = solution_generator.get_solution(
+            app_name=app_name,
+            prompt_answer_path=os.path.join(self.save_path, f'solution.json'),
+            task=task,
+            ui_elements=formatted_apis,
+            enable_dependency=False,
+            model_name='gpt-4o')
+        tools.write_txt_file('tmp/code.txt', solution_code)
+
       code = tools.load_txt_file('tmp/code.txt')
       code = tools.get_combined_code('data/notes_preparation.txt', code)
       tools.write_txt_file('tmp/combined_code.txt', code)
       dependencies = tools.load_json_file('tmp/api_paths.json')
-      verifier = Verifier(self, self.env, self.save_path, api_xpaths, api_data, dependencies)
+      verifier = Verifier(self, self.env, self.save_path, api_xpaths, api_data,
+                          dependencies)
       code_script, line_mappings = regenerate_script(self.code, 'verifier',
                                                      'self.device',
                                                      'code_policy',
@@ -208,7 +218,8 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
         # save_current_ui_to_log(code_policy, api_name=None)
         tb_str = traceback.format_exc()
         error_path = os.path.join(self.save_path, f'error.json')
-        error_info = process_error_info(self.code, code_script, tb_str, str(e), line_mappings)
+        error_info = process_error_info(code, code_script, tb_str, str(e),
+                                        line_mappings)
 
         tools.dump_json_file(error_path, error_info)
 
@@ -218,25 +229,24 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
             error_log_path=error_path,
             task=tools.load_txt_file('tmp/task.txt'),
             raw_solution=tools.load_txt_file('tmp/code.txt'),
-            apis_path='output/notes0503/apis.json',
+            apis_path='tmp/apis/notes.json',
             api_xpath_file='tmp/api_xpaths_checked.json')
 
         stuck_apis_str = format_apis(self.env, api_xpaths)
         script = bug_processor.process_bug(prompt_answer_path=os.path.join(
-            self.save_path,
-            f'debug_task{self.task_id}_turn{retry_time}.json'),
+            self.save_path, f'debug_task{self.task_id}_turn{retry_time}.json'),
                                            enable_dependency=False,
                                            model_name='gpt-4o',
                                            stuck_ui_apis=stuck_apis_str)
         tools.write_txt_file('tmp/code.txt', script)
 
     result = {}
-    
+
     if retry_time == self.MAX_RETRY_TIMES - 1:
       result['result'] = 'failed'
     else:
       result['result'] = 'succeed'
-    
+
     return base_agent.AgentInteractionResult(True, result)
 
   def get_post_transition_state(self) -> interface.State:

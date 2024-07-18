@@ -1,5 +1,4 @@
 import json
-import tools
 import os
 import re
 import pdb
@@ -12,6 +11,8 @@ from android_world.agents import agent_utils
 from android_world.agents import infer
 from android_world.env import interface
 from android_world.env import json_action
+
+from android_world.script_utils import tools
 
 # Constants
 MAX_SCROLL_NUM = 4
@@ -618,12 +619,12 @@ class Verifier:
     for ele_id in element_tree.scrollable_ele_ids:
       origin_ele = element_tree.ele_map[ele_id]
       ele_properties_without_idx = {
-        'resource_id': origin_ele.resource_id,
-        'class_name': origin_ele.class_name,
-        'content_description': origin_ele.content_description,
-        'bound_box': origin_ele.bound_box,
+          'resource_id': origin_ele.resource_id,
+          'class_name': origin_ele.class_name,
+          'content_description': origin_ele.content_description,
+          'bound_box': origin_ele.bound_box,
       }
-      
+
       for _ in range(MAX_SCROLL_NUM):
 
         state = self.env.get_state()
@@ -659,7 +660,8 @@ class Verifier:
         #     scrolled_state.width,
         #     scrolled_state.height,
         #     currently_executing_code=self.code_to_be_executed['statement'])
-        target_ele = element_tree.get_ele_by_properties(ele_properties_without_idx)
+        target_ele = element_tree.get_ele_by_properties(
+            ele_properties_without_idx)
         if target_ele:
           self.env.execute_action(
               json_action.JSONAction(
@@ -695,52 +697,56 @@ class Verifier:
       self.selected_dependency_path = []
       return
 
-    executable_action = self.get_action_from_xpath(element_tree, xpath, action_type, text)
+    executable_action = self.get_action_from_xpath(element_tree, xpath,
+                                                   action_type, text)
 
     if executable_action.get('goal_status', None) != 'infeasible':
       self.env.execute_action(json_action.JSONAction(**executable_action))
       time.sleep(self.WAIT_AFTER_ACTION_SECONDS)
       return
-    
+
     # could not find a target element in the current UI, find in the dependencies
-    executable_action = self.scroll_and_find_target_ele(element_tree, xpath, action_type, text)
-    
-    
+    executable_action = self.scroll_and_find_target_ele(element_tree, xpath,
+                                                        action_type, text)
+
     # could not find a target element in the current UI, find in the dependencies
     if executable_action.get('goal_status', None) != 'infeasible':
       self.env.execute_action(json_action.JSONAction(**executable_action))
       time.sleep(self.WAIT_AFTER_ACTION_SECONDS)
       return
-    
+
     # we have executed all the dependencies, but still not found the target element
     done = False
-    while not done: 
+    while not done:
       for root_to_ele_path in code_to_be_executed['dependencies']:
         executing_dependency_id = -1
-        for idx, xpath_data in enumerate(root_to_ele_path[::-1]): # todo:: check
+        for idx, xpath_data in enumerate(
+            root_to_ele_path[::-1]):  # todo:: check
           xpath = xpath_data['xpath']
           action_type = xpath_data['action_type']
           text = xpath_data['text']
-          executable_action = self.get_action_from_xpath(element_tree, xpath, action_type, text)
+          executable_action = self.get_action_from_xpath(
+              element_tree, xpath, action_type, text)
           if executable_action.get('goal_status', None) != 'infeasible':
             ele_xpath_idx = len(root_to_ele_path) - idx - 1
             # next time we will start from the next dependency
-            executing_dependency_id = ele_xpath_idx + 1 # todo:: check id
+            executing_dependency_id = ele_xpath_idx + 1  # todo:: check id
             self.env.execute_action(json_action.JSONAction(**executable_action))
             time.sleep(self.WAIT_AFTER_ACTION_SECONDS)
             break
-        
-        if executing_dependency_id == -1: # not find the possible xpath
+
+        if executing_dependency_id == -1:  # not find the possible xpath
           continue
-        
+
         for xpath_data in root_to_ele_path[executing_dependency_id:]:
           state = self.env.get_state()
           element_tree = agent_utils.forest_to_element_tree(state.forest)
-          
+
           xpath = xpath_data['xpath']
           action_type = xpath_data['action_type']
           text = xpath_data['text']
-          executable_action = self.get_action_from_xpath(element_tree, xpath, action_type, text)
+          executable_action = self.get_action_from_xpath(
+              element_tree, xpath, action_type, text)
           if executable_action.get('goal_status', None) != 'infeasible':
             executing_dependency_id += 1
             self.env.execute_action(json_action.JSONAction(**executable_action))
@@ -748,18 +754,18 @@ class Verifier:
           else:
             # find the next dependency
             break
-          
+
         if executing_dependency_id == len(root_to_ele_path):
           done = True
           break
-        
+
       # not found the target element in all the dependencies
       break
-    
+
     if not done:
       raise Exception(f'Action not found when executing {xpath}')
     return
-  
+
   def check_output_crash(self, api_name):
     output_log = tools.load_yaml_file(
         os.path.join(self.save_path, f'log_{self.input_manager.task_id}.yaml')
@@ -1092,11 +1098,11 @@ class Verifier:
           self.dependencies[scroller_api_name], self.api_xpaths)
       direction_str = 'up' if 'up' in direction.lower() else 'down'
       ele_data = {
-        'xpath': self.api_xpaths[scroller_api_name],
-        'apiname': scroller_api_name,
-        'text': None,
-        'action_type': f'scroll {direction_str}',
-        'dependencies': ele_semantical_dependencies
+          'xpath': self.api_xpaths[scroller_api_name],
+          'apiname': scroller_api_name,
+          'text': None,
+          'action_type': f'scroll {direction_str}',
+          'dependencies': ele_semantical_dependencies
       }
 
     else:
@@ -1106,7 +1112,8 @@ class Verifier:
       scroller_api_name = scroller_api.api_name if scroller_api.api_name else scroller_api.element_list_xpath
       direction_str = 'up' if 'up' in direction.lower() else 'down'
 
-      if scroller_api.api_name and scroller_api.api_name in self.dependencies.keys():
+      if scroller_api.api_name and scroller_api.api_name in self.dependencies.keys(
+      ):
         ele_semantical_dependencies = get_api_semantic_dependency(
             self.dependencies[scroller_api.api_name], self.api_xpaths)
       else:
@@ -1151,13 +1158,13 @@ class Verifier:
         '\n')[lineno_in_original_script]
 
     target_ele, element_tree = self.navigate_and_get_target_element(
-      element_selector,
-      caller_type='get_text',
-      statement={
-          'current_code': current_code_line,
-          'original_lineno': lineno_in_original_script,
-          'original_code': original_code_line
-      })
+        element_selector,
+        caller_type='get_text',
+        statement={
+            'current_code': current_code_line,
+            'original_lineno': lineno_in_original_script,
+            'original_code': original_code_line
+        })
 
     self._save_getting_info_action('get_text', current_code_line,
                                    lineno_in_original_script,
@@ -1193,13 +1200,13 @@ class Verifier:
         '\n')[lineno_in_original_script]
 
     target_ele, _ = self.navigate_and_get_target_element(
-      element_selector,
-      caller_type='get_attributes',
-      statement={
-          'current_code': current_code_line,
-          'original_lineno': lineno_in_original_script,
-          'original_code': original_code_line
-      })
+        element_selector,
+        caller_type='get_attributes',
+        statement={
+            'current_code': current_code_line,
+            'original_lineno': lineno_in_original_script,
+            'original_code': original_code_line
+        })
 
     # yaml_path = os.path.join(self.input_policy.device.output_dir, f'log_{self.input_manager.task_id}.yaml')
     # state = self.input_policy.device.get_current_state()
@@ -1243,16 +1250,16 @@ class Verifier:
     state_desc = element_tree.str
 
     ele_data = {
-      'xpath': None,
-      'apiname': None,
-      'text': None,
-      'action_type': 'navigate_back',
-      'dependencies': None,
-      'statement': {
-          'current_code': current_code_line,
-          'original_lineno': lineno_in_original_script,
-          'original_code': original_code_line
-      }
+        'xpath': None,
+        'apiname': None,
+        'text': None,
+        'action_type': 'navigate_back',
+        'dependencies': None,
+        'statement': {
+            'current_code': current_code_line,
+            'original_lineno': lineno_in_original_script,
+            'original_code': original_code_line
+        }
     }
 
     self.execute_action(ele_data)
