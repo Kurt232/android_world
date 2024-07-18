@@ -25,6 +25,7 @@ from typing import Any, Optional
 from lxml import etree
 from PIL import Image
 from absl import logging
+from lxml import etree
 
 from android_world.env.representation_utils import UIElement, _accessibility_node_to_ui_element
 
@@ -88,7 +89,7 @@ def forest_to_element_tree(forest: Any,
     # TODO:: add the element type for image
     if (node.child_ids and not node.content_description and not node.is_scrollable) or not node.is_visible_to_user:
       continue
-
+    
     text = element.text if element.text else ''
     text = text.replace('\n', ' \\ ')
     text = text[:50] if len(text) > 50 else text
@@ -180,6 +181,67 @@ class EleAttr(object):
     self.type_ = self.class_name.split(
         '.')[-1] if self.class_name else 'div'  # only existing init
 
+  def dict(self, only_original_attributes=False):
+        checked = self.checked or self.selected
+        if only_original_attributes:
+            return {
+                'resource_id': self.resource_id,
+                'class_name': self.class_name,
+                'text': self.text,
+                'content_description': self.content_description,
+                'checked': checked,
+                'scrollable': self.ele.is_scrollable, 
+                'editable': self.ele.is_editable,
+                'clickable': self.ele.is_clickable,
+                'long_clickable': self.ele.is_long_clickable,
+            }
+        return {
+            'id': self.id,
+            'resource_id': self.resource_id,
+            'class_name': self.class_name,
+            'text': self.text,
+            'content_description': self.content_description,
+            'bound_box': self.bound_box,
+            'children': self.children,
+            'full_desc': self.full_desc,
+        }    
+  
+  def get_attributes(self):
+    checked = self.checked or self.selected
+    return {
+        'id': self.id,
+        'resource_id': self.resource_id,
+        'class_name': self.class_name,
+        'text': self.text,
+        'content_description': self.content_description,
+        'bound_box': self.bound_box,
+        'checked': checked,
+        'selected': checked,
+        'scrollable': self.ele.is_scrollable,
+        'editable': self.ele.is_editable,
+        'clickable': self.ele.is_clickable,
+        'long_clickable': self.ele.is_long_clickable,
+        'checkable': self.ele.is_checkable,
+    }
+
+  def set_type(self, typ: str):
+    self.type = typ
+    if typ in ['button', 'checkbox', 'input', 'scrollbar', 'p']:
+      self.type_ = self.type
+
+  def is_match(self, value: str):
+    if value == self.alt:
+      return True
+    if value == self.content:
+      return True
+    if value == self.text:
+      return True
+    if value == self.resource_id:
+      return True
+    if value == self.class_name:
+      return True
+    return False
+
   # compatible with the old version
   @property
   def view_desc(self) -> str:
@@ -268,6 +330,7 @@ class ElementTree(object):
     self.size = len(self.ele_map)
     # result
     self.str = self.get_str()
+    self.scrollable_ele_ids: list[int] = []
 
   def get_ele_by_id(self, index: int):
     return self.ele_map.get(index, None)
@@ -303,7 +366,7 @@ class ElementTree(object):
         self.children.clear()
         self.leaves.clear()
 
-  def _build_tree(self, ele_map: dict[int, EleAttr], valid_ele_ids: list[int]):
+  def _build_tree(self, ele_map: dict[int, EleAttr], valid_ele_ids: list[int]) -> tuple[node, dict[int, EleAttr], set[int]]:
     root = self.node(0, -1)
     queue = [root]
     while queue:
@@ -334,6 +397,8 @@ class ElementTree(object):
     for idx, node in enumerate(dfs_order):
       ele = ele_map[node.id]
       ele.id = idx
+      if ele.ele.is_scrollable:
+        self.scrollable_ele_ids.append(idx)
       for i, child in enumerate(ele.children):
         ele.children[i] = idx_map[child]
       _ele_map[idx] = ele
@@ -377,7 +442,7 @@ class ElementTree(object):
 
     return _str(self.root)
 
-  def get_ele_by_xpath(self, xpath: str) -> None | EleAttr:
+  def get_ele_by_xpath(self, xpath: str) -> EleAttr|None:
     html_view = self.str
     root = etree.fromstring(html_view)
     eles = root.xpath(xpath)
@@ -392,7 +457,7 @@ class ElementTree(object):
       print('fail to analyze xpath, err: {e}')
       raise e  # todo:: add a better way to handle this
     print('found element with id', id)
-    return self.ele_map[id]
+    return self.ele_map.get(id, None)
 
   def match_str_in_children(self, ele: EleAttr, key: str):
     eles = self.get_children_by_ele(ele)
@@ -424,6 +489,75 @@ class ElementTree(object):
   def match_str_in_children(self, ele: EleAttr, key: str):
     eles = self.get_children_by_ele(ele)
     return [e for e in eles if e.is_match(key)]
+
+  def get_ele_text(self, ele):
+    '''
+      recursviely get the text of the element, including the text of its children
+      '''
+    if ele.text:
+      return ele.text
+    for child in ele.children:
+      child_text = self.get_ele_text(self.eles[child])
+      if child_text is not None:
+        return child_text
+    return None
+
+  def get_content_desc(self, ele):
+    '''
+      recursviely get the content_description of the element, including the content_description of its children
+      '''
+    if ele.content_description:
+      return ele.content_description
+    for child in ele.children:
+      child_content = self.get_content_desc(self.eles[child])
+      if child_content is not None:
+        return child_content
+    return None
+
+  def get_text(self, ele):
+    ele_text = self.get_ele_text(ele)
+    if ele_text:
+      return ele_text
+    ele_content_description = self.get_content_desc(ele)
+    if ele_content_description:
+      return ele_content_description
+
+  def get_all_children_by_ele(self, ele: EleAttr):
+    if len(ele.children) == 0:
+      return [ele]
+    result = []
+    for child_id in ele.children:
+      ele = self.ele_map.get(child_id, None)
+      if not ele:
+        continue
+      result.extend(self.get_all_children_by_ele(ele))
+    
+    return result
+
+  def get_ele_descs_without_text(self):
+    ele_descs = []
+    for ele_id, ele in self.eles.items():
+      ele_dict = ele.dict()
+      ele_desc = ''
+      for k in [
+          'resource_id', 'class_name', 'content_description', 'bound_box'
+      ]:
+        if ele_dict[k]:
+          ele_desc += f'{k}={ele_dict[k]} '
+      ele_descs.append(ele_desc)
+    return ele_descs
+
+  def get_ele_by_properties(self, key_values: dict):
+    for _, ele in self.ele_map.items():
+      ele_dict = ele.dict()
+      matched = True
+      for k, v in key_values.items():
+        if k not in ele_dict.keys() or ele_dict[k] != v:
+          matched = False
+          break
+      if matched:
+        return ele
+    return None
 
   def get_ele_text(self, ele):
     if ele.text:
@@ -533,44 +667,48 @@ def save_screenshot(save_path: str, tag: str, pixels: np.ndarray):
     os.makedirs(output_dir)
   file_path = os.path.join(output_dir, f"screen_{tag}.png")
   image = Image.fromarray(pixels)
-  image.save(file_path, 'PNG')
+  image.save(file_path, format='JPEG')
 
 
-def save_raw_state(save_path: str, tag: str, forest: Any):
-  if not save_path:
-    return
+# todo
+# def get_state_str(forest: Any):
+#   view_signatures = set()
+#   for node in forest.windows[0].tree.nodes:
+#     view_text = node.class_name if node.class_name else "None"
+#     if view_text is None or len(view_text) > 50:
+#         view_text = "None"
+#     view_signature = "[class]%s[resource_id]%s[visible]%s" % \
+#                               (node.class_name if node.class_name else "None",
+#                               node.resource_id if node.resource_id else "None",
+#                               node.visible if node.visible else "None")
+#     if view_signature:
+#       view_signatures.add(view_signature) # todo:: forest.foreground_activity
+#   state_str = "%s{%s}" % (forest.foreground_activity, ",".join(
+#       sorted(view_signatures)))
+#   import hashlib
+#   return hashlib.md5(state_str.encode('utf-8')).hexdigest()
 
-  output_dir = os.path.join(save_path, 'states')
-  if not os.path.exists(output_dir):
-    os.makedirs(output_dir)
-  file_path = os.path.join(output_dir, f"state_{tag}.json")
-  if len(forest.windows) == 0:
-    return
-  state = []
-  # only windows[0] is showing the main activity
-  for node in forest.windows[0].tree.nodes:
-    element = _accessibility_node_to_ui_element(node, None)
-    state.append({
-        'id': int(node.unique_id),
-        'child_ids': [idx for idx in node.child_ids],
-        'text': element.text,
-        'content_description': element.content_description,
-        'class_name': element.class_name,
-        'bound_box': [[element.bbox_pixels.x_min, element.bbox_pixels.y_min],
-                      [element.bbox_pixels.x_max, element.bbox_pixels.y_max]],
-        'is_checked': element.is_checked,
-        'is_checkable': element.is_checkable,
-        'is_clickable': element.is_clickable,
-        'is_editable': element.is_editable,
-        'is_enabled': element.is_enabled,
-        'is_focused': element.is_focused,
-        'is_focusable': element.is_focusable,
-        'is_long_clickable': element.is_long_clickable,
-        'is_scrollable': element.is_scrollable,
-        'is_selected': element.is_selected,
-        'is_visible': element.is_visible,
-        'package_name': element.package_name,
-        'resource_id': element.resource_name
-    })
 
-  json.dump(state, open(file_path, 'w'), indent=2)
+def convert_action(action_type: str, ele: EleAttr, text: str):
+
+  action_details = {"action_type": "wait"}
+  if action_type in ["touch", "long_touch", "set_text"]:
+    x, y = ele.ele.bbox_pixels.center
+    x, y = int(x), int(y)
+    action_details['x'] = x
+    action_details['y'] = y
+    if action_type == "click":
+      action_details["action_type"] = "click"
+    elif action_type == "long_touch":
+      action_details["action_type"] = "long_press"
+    elif action_type == "set_text":
+      action_details["action_type"] = "input_text"
+      action_details['text'] = text
+    return action_details
+  elif "scroll" in action_type:
+    action_details["action_type"] = "scroll"
+    direction = action_type.split(' ')[-1]
+    action_details['index'] = ele.local_id
+    action_details['direction'] = direction
+    return action_details
+  return action_details
