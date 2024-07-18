@@ -36,6 +36,7 @@ from android_world.agents import m3a
 from android_world.agents import random_agent
 from android_world.agents import seeact
 from android_world.agents import t3a
+from android_world.agents import code_agent
 from android_world.env import env_launcher
 from android_world.env import interface
 
@@ -178,7 +179,10 @@ def _get_agent(
   # SeeAct.
   elif _AGENT_NAME.value == 'seeact':
     agent = seeact.SeeAct(env)
-
+  # CodeScript.
+  elif _AGENT_NAME.value == 'code':
+    agent = code_agent.CodeAgent(env, infer.Gpt4Wrapper('gpt-4o'), save_path=_SAVE_PATH.value)
+  
   if not agent:
     raise ValueError(f'Unknown agent: {_AGENT_NAME.value}')
 
