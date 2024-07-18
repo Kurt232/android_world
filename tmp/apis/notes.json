@@ -1,0 +1,2654 @@
+{
+  "2024-04-18_233059": [
+    {
+      "id": 8,
+      "ele": "<button alt='Open note' bound_box=705,158,837,290></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Open note",
+      "name": "open_note",
+      "desc": "A button \"Open Note\"; used to open a note",
+      "func": "used to open a note; tap to open a popup window containing elements open_note_titles and create_note",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 9,
+      "ele": "<button alt='Create a new note' bound_box=837,158,969,290></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Create a new note",
+      "name": "create_note",
+      "desc": "A button ; used to add a new note; tap to open a window containing add_note_title, add_note_types, add_note_ok",
+      "func": "tap to open a popup window containing add_note_title, add_note_types, add_note_ok",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "",
+        "tap(open_note)"
+      ]
+    },
+    {
+      "id": 10,
+      "ele": "<button alt='More options' bound_box=969,158,1080,290></button>",
+      "action": [
+        "touch",
+        "long_touch"
+      ],
+      "type": "button",
+      "alt": "More options",
+      "name": "more_options_checklist",
+      "desc": "A button \"more options\"; used to open more options of the current checklist",
+      "func": "tap to open the popup window more_option_checklist_buttons, including A list of buttons; Each item is a button for an option, including rename note, remove done items, sort by, share, create shortcut, lock note, open file, export as file, print, delete note, settings, about.",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "window(checklist)"
+      ]
+    },
+    {
+      "id": 12,
+      "ele": "<scrollbar bound_box=0,312,1080,2208></scrollbar>",
+      "action": [
+        "scroll up",
+        "scroll down"
+      ],
+      "type": "scrollbar",
+      "alt": null,
+      "name": "switch_item",
+      "desc": "a scrollbar; used to switch previous or next item which is a checklist or a note",
+      "func": "swipe up to switch to the previous item of checklist or note; swipe down to switch to the next item of checklist or note",
+      "args": "<direction>: 'up' | 'down'",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 14,
+      "ele": "<button bound_box=0,320,131,358>Enter label</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "switch_to_prev_item",
+      "desc": "a button; used to switch the previous item of checklist or note",
+      "func": "tap to switch to the previous item of checklist or note",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 15,
+      "ele": "<p bound_box=481,320,599,358>Enter text</p>",
+      "action": [
+        "touch"
+      ],
+      "type": "p",
+      "alt": null,
+      "name": "item_title",
+      "desc": "a text showed current item title; used to show the title of the current item",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 16,
+      "ele": "<button bound_box=910,320,1080,358>Sample Label</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "switch_to_next_item",
+      "desc": "a button; used to switch the next item of checklist or note",
+      "func": "tap to switch to the next item of checklist or note",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 26,
+      "ele": "<div bound_box=0,384,1080,2208></div>",
+      "action": [],
+      "type": "element_list",
+      "alt": null,
+      "name": "checklist_item_list",
+      "desc": "a element list of checklist items; used to show and match all checklist items",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "window(checklist)"
+      ]
+    },
+    {
+      "id": 28,
+      "ele": "<button bound_box=0,442,893,480>2</button>",
+      "action": [
+        "touch",
+        "long_touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "checklist_item",
+      "desc": "a button; used to show the content and the state of the checklist item",
+      "func": "tap to toggle the state; long tap to open a popup window to edit and select the checklist item",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "match(checklist_item_list)"
+      ]
+    },
+    {
+      "id": 31,
+      "ele": "<button bound_box=0,442,893,480>1</button>",
+      "action": [
+        "touch",
+        "long_touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "checklist_item",
+      "desc": "a button; used to show the content and the state of the checklist item",
+      "func": "tap to toggle the state; long tap to open a popup window to edit and select the checklist item",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "match(checklist_item_list)"
+      ]
+    },
+    {
+      "id": 33,
+      "ele": "<div bound_box=882,2010,1036,2164></div>",
+      "action": [],
+      "type": "image button#todo",
+      "alt": null,
+      "name": "add_checklist_item",
+      "desc": "a button; used to add a new checklist item",
+      "func": "tap to open a popup window of checklist item, containing, add_checklist_item_title, add_more_checklist_item, add_to_the_top, add_checklist_item_ok, add_checklist_item_cancel",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "window(checklist)"
+      ]
+    }
+  ],
+  "2024-04-18_234956": [
+    {
+      "id": 41,
+      "ele": "<button alt='Done' bound_box=0,158,154,290></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Done",
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 42,
+      "ele": "<button bound_box=198,136,338,312>1 / 2</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "",
+      "desc": "#todo::ignoring",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 44,
+      "ele": "<button alt='Move to the top' bound_box=552,158,684,290></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Move to the top",
+      "name": "move_selected_item_to_the_top",
+      "desc": "a button \"Move to the top\"; used to move the selected item to the top of the list",
+      "func": "tap to move the selected item to the top of the list",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "long_tap(checklist_item)"
+      ]
+    },
+    {
+      "id": 45,
+      "ele": "<button alt='Move to the bottom' bound_box=684,158,816,290></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Move to the bottom",
+      "name": "move_selected_item_to_the_buttom",
+      "desc": "a button \"Move to the bottom\"; used to move the selected checklist item to the bottom of the list",
+      "func": "tap to move the selected item to the buttom of the list",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "long_tap(checklist_item)"
+      ]
+    },
+    {
+      "id": 46,
+      "ele": "<button alt='Rename' bound_box=816,158,948,290></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Rename",
+      "name": "rename_selected_checklist_item",
+      "desc": "a button \"Rename\"; used to rename the selected checklist item",
+      "func": "tap to open the popup window to input the new name of the selected item",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "long_tap(checklist_item)"
+      ]
+    },
+    {
+      "id": 47,
+      "ele": "<button alt='Delete' bound_box=948,158,1080,290></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Delete",
+      "name": "delete_selected_checklist_item",
+      "desc": "a button \"Delete\"; used to delete the selected item",
+      "func": "tap to delete item and close the popup window to edit the checklist item",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "long_tap(checklist_item)"
+      ]
+    }
+  ],
+  "2024-04-19_001306": [
+    {
+      "id": 12,
+      "ele": "<div bound_box=39,764,1041,1569></div>",
+      "action": [],
+      "type": "div",
+      "alt": null,
+      "name": "open_note_title_list",
+      "desc": "A list of open_note_title elements; used to display the titles of notes to open",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(open_note)"
+      ]
+    },
+    {
+      "id": 14,
+      "ele": "<button bound_box=94,819,332,886>Enter label</button>",
+      "action": [
+        "touch",
+        "long_touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "open_note_title",
+      "desc": "a button; used to open the note with the title",
+      "func": "tap to switch the note or checklist",
+      "args": "",
+      "return": "<text>: str",
+      "dependency": [
+        "tap(open_note)"
+      ]
+    },
+    {
+      "id": 16,
+      "ele": "<button bound_box=94,996,397,1063>Sample Label</button>",
+      "action": [
+        "touch",
+        "long_touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "open_note_title",
+      "desc": "a button; used to open the note with the title",
+      "func": "tap to switch the note or checklist",
+      "args": "",
+      "return": "<text>: str",
+      "dependency": [
+        "tap(open_note)"
+      ]
+    },
+    {
+      "id": 17,
+      "ele": "<button bound_box=94,1085,375,1138>Meeting agenda</button>",
+      "action": [
+        "touch",
+        "long_touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "open_note_title",
+      "desc": "a button; used to open the note with the title",
+      "func": "tap to switch the note or checklist",
+      "args": "",
+      "return": "<text>: str",
+      "dependency": [
+        "tap(open_note)"
+      ]
+    },
+    {
+      "id": 19,
+      "ele": "<button bound_box=595,819,811,886>Enter text</button>",
+      "action": [
+        "touch",
+        "long_touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "open_note_title",
+      "desc": "a button; used to open the note with the title",
+      "func": "tap to switch the note or checklist",
+      "args": "",
+      "return": "<text>: str",
+      "dependency": [
+        "tap(open_note)"
+      ]
+    },
+    {
+      "id": 20,
+      "ele": "<button bound_box=595,908,640,1007>\u2022 2\n\u2022 1</button>",
+      "action": [
+        "touch",
+        "long_touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "open_note_title",
+      "desc": "a button; used to open the note with the title",
+      "func": "tap to switch the note or checklist",
+      "args": "",
+      "return": "<text>: str",
+      "dependency": [
+        "tap(open_note)"
+      ]
+    },
+    {
+      "id": 22,
+      "ele": "<button bound_box=595,1117,966,1184>Update note title</button>",
+      "action": [
+        "touch",
+        "long_touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "open_note_title",
+      "desc": "a button; used to open the note with the title",
+      "func": "tap to switch the note or checklist",
+      "args": "",
+      "return": "<text>: str",
+      "dependency": [
+        "tap(open_note)"
+      ]
+    },
+    {
+      "id": 23,
+      "ele": "<button bound_box=595,1206,986,1305>Discuss project timelines</button>",
+      "action": [
+        "touch",
+        "long_touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "open_note_title",
+      "desc": "a button; used to open the note with the title",
+      "func": "tap to switch the note or checklist",
+      "args": "",
+      "return": "<text>: str",
+      "dependency": [
+        "tap(open_note)"
+      ]
+    },
+    {
+      "id": 24,
+      "ele": "<div bound_box=854,1371,1008,1525></div>",
+      "action": [],
+      "type": "div",
+      "alt": null,
+      "name": "create_note",
+      "desc": "A button ; used to add a new note; tap to open a window containing add_note_title, add_note_types, add_note_ok",
+      "func": "tap to open a popup window containing add_note_title, add_note_types, add_note_ok",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "",
+        "tap(open_note)"
+      ]
+    }
+  ],
+  "2024-04-19_123307": [],
+  "2024-04-19_123330": [
+    {
+      "id": 8,
+      "ele": "<button alt='Save' bound_box=441,158,573,290></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Save",
+      "name": "save_note",
+      "desc": "a button; used to save the current note after changed text_note_content",
+      "func": "tap to save the current note",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "window(note)"
+      ]
+    },
+    {
+      "id": 9,
+      "ele": "<button alt='Search' bound_box=573,158,705,290></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Search",
+      "name": "search_within_note",
+      "desc": "a button \"Search\"; used to search within the current note",
+      "func": "tap to open the search box, containing search_text, search_text_prev, search_text_next, search_close",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "window(note)"
+      ]
+    },
+    {
+      "id": 10,
+      "ele": "<button alt='Open note' bound_box=705,158,837,290></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Open note",
+      "name": "open_note",
+      "desc": "A button \"Open Note\"; used to open a note",
+      "func": "used to open a note; tap to open a popup window containing elements open_note_titles and create_note",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 11,
+      "ele": "<button alt='Create a new note' bound_box=837,158,969,290></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Create a new note",
+      "name": "create_note",
+      "desc": "A button ; used to add a new note; tap to open a window containing add_note_title, add_note_types, add_note_ok",
+      "func": "tap to open a popup window containing add_note_title, add_note_types, add_note_ok",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "",
+        "tap(open_note)"
+      ]
+    },
+    {
+      "id": 12,
+      "ele": "<button alt='More options' bound_box=969,158,1080,290></button>",
+      "action": [
+        "touch",
+        "long_touch"
+      ],
+      "type": "button",
+      "alt": "More options",
+      "name": "more_options_note",
+      "desc": "A button \"more options\"; used to open more options of the current note",
+      "func": "tap to open the popup window more_option_note_buttons, including A list of buttons; Each item is a button for an option, including rename note, share, create shortcut, lock note, open file, export as file, print, delete note, settings, about.",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "window(note)"
+      ]
+    },
+    {
+      "id": 34,
+      "ele": "<input bound_box=0,384,1080,2208>Meeting agenda</input>",
+      "action": [
+        "touch",
+        "set_text",
+        "long_touch"
+      ],
+      "type": "input",
+      "alt": null,
+      "name": "note_content",
+      "desc": "a input; used to show a large editable text area; used to edit the content of the current note",
+      "func": "set text to edit the content of the current note",
+      "args": "<set_text>: str",
+      "return": "",
+      "dependency": [
+        "window(note)"
+      ]
+    }
+  ],
+  "2024-04-19_145804": [],
+  "2024-04-19_151147": [
+    {
+      "id": 15,
+      "ele": "<input bound_box=44,344,651,411>Search</input>",
+      "action": [
+        "touch",
+        "set_text",
+        "long_touch"
+      ],
+      "type": "input",
+      "alt": null,
+      "name": "search_text",
+      "desc": "a input; used to input the text to search within the current note",
+      "func": "set text to input the text to search within the current note",
+      "args": "<set_text>: str",
+      "return": "",
+      "dependency": [
+        "tap(search_within_note)"
+      ]
+    },
+    {
+      "id": 16,
+      "ele": "<button alt='Previous' bound_box=684,323,794,433></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Previous",
+      "name": "prev_matched_text",
+      "desc": "a button \"Previous\"; used to search the previous matching text within the current note",
+      "func": "tap to highlight the previous matching text within the current note",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(search_within_note)"
+      ]
+    },
+    {
+      "id": 17,
+      "ele": "<button alt='Next' bound_box=816,323,926,433></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Next",
+      "name": "next_matchhed_text",
+      "desc": "a button \"Next\"; used to search the next matching text within the current note",
+      "func": "tap to highlight the next matching text within the current note",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(search_within_note)"
+      ]
+    },
+    {
+      "id": 18,
+      "ele": "<button alt='Close' bound_box=948,323,1058,433></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Close",
+      "name": "close_search_box",
+      "desc": "a button; used to close the search box of matching text within the current note",
+      "func": "tap to close the search box",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(search_within_note)"
+      ]
+    }
+  ],
+  "2024-04-19_152642": [
+    {
+      "id": 13,
+      "ele": "<input bound_box=72,923,1008,1076>Label</input>",
+      "action": [
+        "touch",
+        "set_text",
+        "long_touch"
+      ],
+      "type": "input",
+      "alt": null,
+      "name": "add_note_title",
+      "desc": "a input \"label\"; used to input the title of the new note",
+      "func": "set text to input the title of the new note",
+      "args": "<set_text>: str",
+      "return": "",
+      "dependency": [
+        "tap(create_note)"
+      ]
+    },
+    {
+      "id": 15,
+      "ele": "<div bound_box=72,1195,1008,1437></div>",
+      "action": [],
+      "type": "element_tuple",
+      "alt": null,
+      "name": "add_note_types",
+      "desc": "a element tuple including text_note_type and checklist_type; used to show the types of the new note",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(create_note)"
+      ]
+    },
+    {
+      "id": 16,
+      "ele": "<checkbox bound_box=72,1195,1008,1316>Text note</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "text_note_type",
+      "desc": "a checkbox; used to select the type of the new note",
+      "func": "select or unselect the type of the new note",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(create_note)"
+      ]
+    },
+    {
+      "id": 17,
+      "ele": "<checkbox status=selected bound_box=72,1316,1008,1437>Checklist</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "checklist_type",
+      "desc": "a checkbox; used to select the type of the new note",
+      "func": "select or unselect the type of the new note",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(create_note)"
+      ]
+    },
+    {
+      "id": 21,
+      "ele": "<button bound_box=843,1448,1019,1580>OK</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "add_note_ok",
+      "desc": "a button \"OK\"; used to confirm the new note",
+      "func": "tap to confirom the new note and close the popup window",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(create_note)"
+      ]
+    }
+  ],
+  "2024-04-19_153241": [
+    {
+      "id": 6,
+      "ele": "<button bound_box=574,195,1025,254>Rename note</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "rename_note",
+      "desc": "a button \"Rename note\"; used to rename the current note",
+      "func": "tap to open a popup window to input the new name of the current note, including rename_input and rename_ok",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(more_options_note)",
+        "tap(more_options_checklist)"
+      ]
+    },
+    {
+      "id": 10,
+      "ele": "<button bound_box=574,327,1025,386>Share</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(more_options_note)",
+        "tap(more_options_checklist)"
+      ]
+    },
+    {
+      "id": 14,
+      "ele": "<button bound_box=574,459,1025,518>Create shortcut</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "create_shortcut",
+      "desc": "a button \"Create shortcut\"; used to create a shortcut of the current note",
+      "func": "tap to create a shortcut of the current note",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(more_options_note)",
+        "tap(more_options_checklist)"
+      ]
+    },
+    {
+      "id": 18,
+      "ele": "<button bound_box=574,591,1025,650>Lock note</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "lock_note",
+      "desc": "a button \"Lock note\"; used to lock the current note",
+      "func": "tap to open a popup window to confirm the lock of the current note, including lock_note_ok",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(more_options_note)",
+        "tap(more_options_checklist)"
+      ]
+    },
+    {
+      "id": 22,
+      "ele": "<button bound_box=574,723,1025,782>Open file</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "open_file",
+      "desc": "a button \"Open file\"; used to open the file of the current note",
+      "func": "tap to switch the file manager to open the file of the current note",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(more_options_note)",
+        "tap(more_options_checklist)"
+      ]
+    },
+    {
+      "id": 26,
+      "ele": "<button bound_box=574,855,1025,914>Export as file</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "export_as_file",
+      "desc": "a button \"Export as file\"; used to export the current note as a file",
+      "func": "tap to switch the file manager to export the current note as a file",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(more_options_note)",
+        "tap(more_options_checklist)"
+      ]
+    },
+    {
+      "id": 30,
+      "ele": "<button bound_box=574,987,1025,1046>Print</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "print_note",
+      "desc": "a button \"Print\"; used to print the current note",
+      "func": "tap to print the current note",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(more_options_note)",
+        "tap(more_options_checklist)"
+      ]
+    },
+    {
+      "id": 34,
+      "ele": "<button bound_box=574,1119,1025,1178>Delete note</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "delete_note",
+      "desc": "a button \"Delete note\"; used to delete the current note",
+      "func": "tap to open a popup window to confirm the delete of the current note, including delete_note_ok",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(more_options_note)",
+        "tap(more_options_checklist)"
+      ]
+    },
+    {
+      "id": 38,
+      "ele": "<button bound_box=574,1251,1025,1310>Settings</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "settings",
+      "desc": "a button \"Settings\"; used to open the settings of the app, including #todo",
+      "func": "tap to switch the settings page of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(more_options_note)",
+        "tap(more_options_checklist)"
+      ]
+    },
+    {
+      "id": 42,
+      "ele": "<button bound_box=574,1383,1025,1442>About</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "about",
+      "desc": "a button \"About\"; used to show the information of the app",
+      "func": "tap to switch the about page of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(more_options_note)",
+        "tap(more_options_checklist)"
+      ]
+    }
+  ],
+  "2024-04-19_161911": [
+    {
+      "id": 13,
+      "ele": "<input bound_box=72,1065,1008,1218>Sample Label</input>",
+      "action": [
+        "touch",
+        "set_text",
+        "long_touch"
+      ],
+      "type": "input",
+      "alt": null,
+      "name": "rename_input",
+      "desc": "a input; used to input the new name of the current note",
+      "func": "set text to input the new name of the current note",
+      "args": "<name>: str",
+      "return": "",
+      "dependency": [
+        "tap(rename_note)"
+      ]
+    },
+    {
+      "id": 17,
+      "ele": "<button bound_box=843,1317,1019,1449>OK</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "rename_ok",
+      "desc": "a button \"OK\"; used to confirm the new name of the current note",
+      "func": "tap to close the rename popup window",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(rename_note)"
+      ]
+    }
+  ],
+  "2024-04-19_162101": [
+    {
+      "id": 13,
+      "ele": "<button bound_box=843,1253,1019,1385>OK</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "lock_note_ok",
+      "desc": "a button \"OK\"; used to confirm the lock of the current note",
+      "func": "tap to close the lock popup window",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(lock_note)"
+      ]
+    }
+  ],
+  "2024-04-19_162151": [
+    {
+      "id": 13,
+      "ele": "<button bound_box=840,1216,1019,1348>Delete</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "delete_note_ok",
+      "desc": "a button \"Delete\"; used to confirm the delete of the current note",
+      "func": "tap to close the delete popup window",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(delete_note)"
+      ]
+    }
+  ],
+  "2024-04-19_162244": [
+    {
+      "id": 10,
+      "ele": "<button bound_box=574,327,1025,386>Remove done items</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "remove_done_checklist_items",
+      "desc": "a button \"Remove done items\"; used to remove the done items of the current checklist",
+      "func": "tap to clost the more options popup window",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(more_options_checklist)"
+      ]
+    },
+    {
+      "id": 14,
+      "ele": "<button bound_box=574,459,1025,518>Sort by</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "sort_checklist_items",
+      "desc": "a button \"Sort by\"; used to sort the items of the current checklist",
+      "func": "tap to open a popup window to select the sort type of the current checklist, including sort_by_title, sort_by_date_created, sort_by_custom, sort_by_ok",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(more_options_checklist)"
+      ]
+    }
+  ],
+  "2024-04-19_162344": [
+    {
+      "id": 11,
+      "ele": "<div bound_box=72,969,1008,1332></div>",
+      "action": [],
+      "type": "element_tuple",
+      "alt": null,
+      "name": "sort_checklist_items_types",
+      "desc": "a element tuple including sort_by_title, sort_by_date_created, sort_by_custom; used to show the types of sorting the items of the current checklist",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(sort_checklist_items)"
+      ]
+    },
+    {
+      "id": 12,
+      "ele": "<checkbox bound_box=72,969,1008,1090>Title</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "title_type",
+      "desc": "a checkbox \"Title\"; used to sort the items of the current checklist by title",
+      "func": "select or unselect the type of sorting the items of the current checklist",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(sort_checklist_items)"
+      ]
+    },
+    {
+      "id": 13,
+      "ele": "<checkbox bound_box=72,1090,1008,1211>Date created</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "name": "date_created_type",
+      "desc": "a checkbox \"Date created\"; used to sort the items of the current checklist by Date created",
+      "func": "select or unselect the type of sorting the items of the current checklist",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(sort_checklist_items)"
+      ]
+    },
+    {
+      "id": 14,
+      "ele": "<checkbox status=selected bound_box=72,1211,1008,1332>Custom</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "name": "custom_type",
+      "desc": "a checkbox \"Custom\"; used to sort the items of the current checklist by Custom",
+      "func": "select or unselect the type of sorting the items of the current checklist",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(sort_checklist_items)"
+      ]
+    },
+    {
+      "id": 18,
+      "ele": "<button bound_box=843,1365,1019,1497>OK</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "sort_checklist_items_ok",
+      "desc": "a button \"OK\"; used to confirm the sort type of the current checklist",
+      "func": "tap to confirom the sort type of the current checklist and close the popup window",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(sort_checklist_items)"
+      ]
+    }
+  ],
+  "2024-04-19_171610": [],
+  "2024-04-19_171636": [],
+  "2024-04-19_171651": [
+    {
+      "id": 7,
+      "ele": "<button alt='Back' bound_box=0,147,154,301></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Back",
+      "name": "exit_settings",
+      "desc": "a button \"Back\"; used to exit the settings page",
+      "func": "tap to exit the settings page",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(settings)"
+      ]
+    },
+    {
+      "id": 10,
+      "ele": "<scrollbar bound_box=0,312,1080,2340></scrollbar>",
+      "action": [
+        "scroll up",
+        "scroll down"
+      ],
+      "type": "scrollbar",
+      "alt": null,
+      "name": "scroll_settings_page",
+      "desc": "a scrollbar; used to scroll the settings page",
+      "func": "swipe down to get more settings",
+      "args": "<direction>: 'up' | 'down'",
+      "return": "",
+      "dependency": [
+        "tap(settings)"
+      ]
+    },
+    {
+      "id": 14,
+      "ele": "<button bound_box=61,508,362,561>Customize colors</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "set_colors",
+      "desc": "a button \"Customize colors\"; used to customize the colors of the app",
+      "func": "tap to open a popup window to set colors of the app, including customize_theme, customize_text_color, customize_background_color, customize_primary_ok, customize_app_icon_color",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(settings)"
+      ]
+    },
+    {
+      "id": 16,
+      "ele": "<button bound_box=61,671,488,724>Customize widget colors</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "set_widget_colors",
+      "desc": "a button \"Customize widget colors\"; used to customize the colors of the widget",
+      "func": "tap to open a popup window to set colors of the widget",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(settings)"
+      ]
+    },
+    {
+      "id": 20,
+      "ele": "<button bound_box=61,966,219,1019>Font size</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "set_font_size",
+      "desc": "a button \"Font size\"; used to set the font size of the app",
+      "func": "tap to open a popup window to set the font size of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(settings)"
+      ]
+    },
+    {
+      "id": 21,
+      "ele": "<button bound_box=61,1019,1019,1072>60%</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "current_font_size",
+      "desc": "a button; used to show the current font size of the app",
+      "func": "tap to open a popup window to set current font size of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(settings)"
+      ]
+    },
+    {
+      "id": 25,
+      "ele": "<checkbox status=selected bound_box=61,1281,1019,1413>Show word count</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "set_show_word_count",
+      "desc": "a checkbox \"Show word count\"; used to show the word count of the app",
+      "func": "select or unselect to show the word count of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(settings)"
+      ]
+    },
+    {
+      "id": 27,
+      "ele": "<checkbox status=selected bound_box=61,1457,1019,1589>Make links and emails clickable</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "set_make_links_and_emails_clickable",
+      "desc": "a checkbox \"Make links and emails clickable\"; used to make links and emails clickable",
+      "func": "select or unselect to make links and emails clickable",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(settings)"
+      ]
+    },
+    {
+      "id": 29,
+      "ele": "<checkbox status=selected bound_box=61,1633,1019,1765>Use monospaced font</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "set_use_monospaced_font",
+      "desc": "a checkbox \"use monospaced font\"; used to use monospaced font",
+      "func": "select or unselect to use monospaced font",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(settings)"
+      ]
+    },
+    {
+      "id": 31,
+      "ele": "<checkbox bound_box=61,1809,1019,1941>Use Incognito mode of keyboards</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "set_use_incognito_mode_of_keyboards",
+      "desc": "a checkbox \"Use Incognito mode of keyboards\"; used to use Incognito mode of keyboards",
+      "func": "select or unselect to use Incognito mode of keyboards",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(settings)"
+      ]
+    },
+    {
+      "id": 33,
+      "ele": "<checkbox bound_box=61,1985,1019,2117>Enable line wrap</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "set_enable_line_wrap",
+      "desc": "a checkbox \"Enable line wrap\"; used to enable line wrap",
+      "func": "select or unselect to enable line wrap",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(settings)"
+      ]
+    },
+    {
+      "id": 35,
+      "ele": "<button bound_box=61,2183,238,2236>Alignment</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "set_alignment",
+      "desc": "a button \"Alignment\"; used to set the alignment of the app",
+      "func": "tap to open a popup window to set the alignment of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(settings)"
+      ]
+    }
+  ],
+  "2024-04-19_204513": [
+    {
+      "id": 7,
+      "ele": "<button alt='Close' bound_box=0,147,154,301></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Close",
+      "name": "close_set_colors",
+      "desc": "a button \"Close\"; used to close the popup window of setting colors",
+      "func": "tap to close the popup window",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_colors)"
+      ]
+    },
+    {
+      "id": 10,
+      "ele": "<button alt='Save' bound_box=948,158,1080,290></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Save",
+      "name": "save_set_colors",
+      "desc": "a button \"Save\"; used to save the colors of the app",
+      "func": "tap to save the colors of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_colors)"
+      ]
+    },
+    {
+      "id": 13,
+      "ele": "<button bound_box=44,389,934,442>Theme</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "set_theme_color",
+      "desc": "a button \"Theme\"; used to set the theme color of the app",
+      "func": "tap to open a popup window to set the theme color of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_colors)"
+      ]
+    },
+    {
+      "id": 14,
+      "ele": "<button bound_box=934,389,1014,442>Dark</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "",
+      "desc": "#todo::ignoring",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 16,
+      "ele": "<button bound_box=44,583,259,636>Text color</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "set_text_color",
+      "desc": "a button \"Text color\"; used to set the text color of the app",
+      "func": "tap to open a popup window to set the text color of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_colors)"
+      ]
+    },
+    {
+      "id": 19,
+      "ele": "<button bound_box=44,787,392,840>Background color</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "set_background_color",
+      "desc": "a button \"Background color\"; used to set the background color of the app",
+      "func": "tap to open a popup window to set the background color of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_colors)"
+      ]
+    },
+    {
+      "id": 22,
+      "ele": "<button bound_box=44,991,318,1044>Primary color</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "set_primary_color",
+      "desc": "a button \"Primary color\"; used to set the primary color of the app",
+      "func": "tap to open a popup window to set the primary color of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_colors)"
+      ]
+    },
+    {
+      "id": 25,
+      "ele": "<button bound_box=44,1195,336,1248>App icon color</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "set_app_icon_color",
+      "desc": "a button \"App icon color\"; used to set the app icon color of the app",
+      "func": "tap to open a popup window to set the app icon color of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_colors)"
+      ]
+    }
+  ],
+  "2024-04-19_210459": [
+    {
+      "id": 9,
+      "full_desc": "<div bound_box=28,715,1052,1628></div>",
+      "action": [],
+      "type": "element_tuple",
+      "alt": null,
+      "name": "theme_color_types",
+      "desc": "a element tuple including auto_light_drak, light, dark, dark_red, white, black_white, custom; used to show the theme color types of the app",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_theme_color)"
+      ]
+    },
+    {
+      "id": 10,
+      "ele": "<checkbox bound_box=72,748,1008,869>Auto light / dark</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "theme_color_auto_light_dark",
+      "desc": "a checkbox \"Auto light / dark\"; used to set the theme color of the app",
+      "func": "select or unselect to set the theme color of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_theme_color)"
+      ]
+    },
+    {
+      "id": 11,
+      "ele": "<checkbox bound_box=72,869,1008,990>Light</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "theme_color_light",
+      "desc": "a checkbox \"light\"; used to set the theme color of the app",
+      "func": "select or unselect to set the theme color of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_theme_color)"
+      ]
+    },
+    {
+      "id": 12,
+      "ele": "<checkbox status=selected bound_box=72,990,1008,1111>Dark</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "theme_color_dark",
+      "desc": "a checkbox \"Dark\"; used to set the theme color of the app",
+      "func": "select or unselect to set the theme color of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_theme_color)"
+      ]
+    },
+    {
+      "id": 13,
+      "ele": "<checkbox bound_box=72,1111,1008,1232>Dark red</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "theme_color_dark_red",
+      "desc": "a checkbox \"Dark red\"; used to set the theme color of the app",
+      "func": "select or unselect to set the theme color of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_theme_color)"
+      ]
+    },
+    {
+      "id": 14,
+      "ele": "<checkbox bound_box=72,1232,1008,1353>White</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "theme_color_white",
+      "desc": "a checkbox \"White\"; used to set the theme color of the app",
+      "func": "select or unselect to set the theme color of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_theme_color)"
+      ]
+    },
+    {
+      "id": 15,
+      "ele": "<checkbox bound_box=72,1353,1008,1474>Black & White</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "theme_color_black_white",
+      "desc": "a checkbox \"Black & White\"; used to set the theme color of the app",
+      "func": "select or unselect to set the theme color of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_theme_color)"
+      ]
+    },
+    {
+      "id": 16,
+      "ele": "<checkbox bound_box=72,1474,1008,1595>Custom</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "theme_color_custom",
+      "desc": "a checkbox \"Custom\"; used to set the theme color of the app",
+      "func": "select or unselect to set the theme color of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_theme_color)"
+      ]
+    }
+  ],
+  "2024-04-19_211217": [],
+  "2024-04-19_211549": [
+    {
+      "id": 9,
+      "ele": "<div bound_box=28,473,1052,1870></div>",
+      "action": [],
+      "type": "element_tuple",
+      "alt": null,
+      "name": "font_size_types",
+      "desc": "a element tuple including 50%, 60%, 75%, 90%, 100%, 125%, 150%, 175%, 200%, 250%, 300%; used to show the font size types of the app",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_font_size)",
+        "tap(current_font_size)"
+      ]
+    },
+    {
+      "id": 10,
+      "ele": "<checkbox bound_box=72,506,1008,627>50%</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "font_size_50%",
+      "desc": "a checkbox \"50%\"; used to set the font size of the app",
+      "func": "select or unselect to set the font size of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_font_size)",
+        "tap(current_font_size)"
+      ]
+    },
+    {
+      "id": 11,
+      "ele": "<checkbox status=selected bound_box=72,627,1008,748>60%</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "font_size_60%",
+      "desc": "a checkbox \"60%\"; used to set the font size of the app",
+      "func": "select or unselect to set the font size of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_font_size)",
+        "tap(current_font_size)"
+      ]
+    },
+    {
+      "id": 12,
+      "ele": "<checkbox bound_box=72,748,1008,869>75%</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "font_size_75%",
+      "desc": "a checkbox \"75%\"; used to set the font size of the app",
+      "func": "select or unselect to set the font size of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_font_size)",
+        "tap(current_font_size)"
+      ]
+    },
+    {
+      "id": 13,
+      "ele": "<checkbox bound_box=72,869,1008,990>90%</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "font_size_90%",
+      "desc": "a checkbox \"90%\"; used to set the font size of the app",
+      "func": "select or unselect to set the font size of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_font_size)",
+        "tap(current_font_size)"
+      ]
+    },
+    {
+      "id": 14,
+      "ele": "<checkbox bound_box=72,990,1008,1111>100%</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "font_size_100%",
+      "desc": "a checkbox \"100%\"; used to set the font size of the app",
+      "func": "select or unselect to set the font size of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_font_size)",
+        "tap(current_font_size)"
+      ]
+    },
+    {
+      "id": 15,
+      "ele": "<checkbox bound_box=72,1111,1008,1232>125%</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "font_size_125%",
+      "desc": "a checkbox \"125%\"; used to set the font size of the app",
+      "func": "select or unselect to set the font size of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_font_size)",
+        "tap(current_font_size)"
+      ]
+    },
+    {
+      "id": 16,
+      "ele": "<checkbox bound_box=72,1232,1008,1353>150%</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "font_size_150%",
+      "desc": "a checkbox \"150%\"; used to set the font size of the app",
+      "func": "select or unselect to set the font size of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_font_size)",
+        "tap(current_font_size)"
+      ]
+    },
+    {
+      "id": 17,
+      "ele": "<checkbox bound_box=72,1353,1008,1474>175%</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "font_size_175%",
+      "desc": "a checkbox \"175%\"; used to set the font size of the app",
+      "func": "select or unselect to set the font size of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_font_size)",
+        "tap(current_font_size)"
+      ]
+    },
+    {
+      "id": 18,
+      "ele": "<checkbox bound_box=72,1474,1008,1595>200%</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "font_size_200%",
+      "desc": "a checkbox \"200%\"; used to set the font size of the app",
+      "func": "select or unselect to set the font size of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_font_size)",
+        "tap(current_font_size)"
+      ]
+    },
+    {
+      "id": 19,
+      "ele": "<checkbox bound_box=72,1595,1008,1716>250%</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "font_size_250%",
+      "desc": "a checkbox \"250%\"; used to set the font size of the app",
+      "func": "select or unselect to set the font size of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_font_size)",
+        "tap(current_font_size)"
+      ]
+    },
+    {
+      "id": 20,
+      "ele": "<checkbox bound_box=72,1716,1008,1837>300%</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "font_size_300%",
+      "desc": "a checkbox \"300%\"; used to set the font size of the app",
+      "func": "select or unselect to set the font size of the app",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(set_font_size)",
+        "tap(current_font_size)"
+      ]
+    }
+  ],
+  "2024-04-19_211636": [],
+  "2024-04-19_211655": [],
+  "2024-04-19_211743": [
+    {
+      "id": 7,
+      "ele": "<button alt='Back' bound_box=0,147,154,301></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Back",
+      "name": "exit_settings",
+      "desc": "a button \"Back\"; used to exit the settings page",
+      "func": "tap to exit the settings page",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(settings)"
+      ]
+    },
+    {
+      "id": 10,
+      "ele": "<scrollbar bound_box=0,312,1080,2340></scrollbar>",
+      "action": [
+        "scroll up",
+        "scroll down"
+      ],
+      "type": "scrollbar",
+      "alt": null,
+      "name": "scroll_settings_page",
+      "desc": "a scrollbar; used to scroll the settings page",
+      "func": "swipe down to get more settings",
+      "args": "<direction>: 'up' | 'down'",
+      "return": "",
+      "dependency": [
+        "tap(settings)"
+      ]
+    },
+    {
+      "id": 40,
+      "ele": "<checkbox status=selected bound_box=61,419,1019,551>Place cursor to the end of note</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "set_place_cursor_to_the_end_of_note",
+      "desc": "a checkbox; used to set the place cursor to the end of note",
+      "func": "select or unselect to set the place cursor to the end of note",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(settings)"
+      ]
+    },
+    {
+      "id": 42,
+      "ele": "<checkbox bound_box=61,595,1019,727>Show keyboard on startup</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "set_show_keyboard_on_startup",
+      "desc": "a checkbox; used to set the show keyboard on startup",
+      "func": "select or unselect to set the show keyboard on startup",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(settings)"
+      ]
+    },
+    {
+      "id": 44,
+      "ele": "<checkbox bound_box=61,771,1019,903>Show a note picker on startup</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "set_show_a_note_picker_on_startup",
+      "desc": "a checkbox; used to set show a note picker on startup",
+      "func": "select or unselect to set show a note picker on startup",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(settings)"
+      ]
+      
+    },
+    {
+      "id": 48,
+      "ele": "<checkbox bound_box=61,1090,1019,1222>Autosave notes</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "set_autosave_notes",
+      "desc": "a checkbox; used to set autosave notes",
+      "func": "select or unselect to set autosave notes",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(settings)"
+      ]
+    },
+    {
+      "id": 50,
+      "ele": "<checkbox bound_box=61,1266,1019,1398>Display save success messages</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "set_display_save_success_messages",
+      "desc": "a checkbox; used to set display save success messages",
+      "func": "select or unselect to set display save success messages",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(settings)"
+      ]
+      
+    },
+    {
+      "id": 54,
+      "ele": "<button bound_box=61,1618,1019,1671>Export notes</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "export_notes",
+      "desc": "a button; used to export notes",
+      "func": "tap to export notes",
+      "args": "",
+      "return": "",
+      "dependency": ["tap(settings)"]
+    },
+    {
+      "id": 56,
+      "ele": "<button bound_box=61,1781,1019,1834>Import notes</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "import_notes",
+      "desc": "a button; used to import notes",
+      "func": "tap to import notes",
+      "args": "",
+      "return": "",
+      "dependency": ["tap(settings)"]
+    },
+    {
+      "id": 60,
+      "ele": "<checkbox bound_box=61,2054,1019,2186>Enable automatic backups</checkbox>",
+      "action": [
+        "select",
+        "unselect"
+      ],
+      "type": "checkbox",
+      "alt": null,
+      "name": "set_enable_automatic_backups",
+      "desc": "a checkbox; used to set enable automatic backups",
+      "func": "select or unselect to set enable automatic backups",
+      "args": "",
+      "return": "",
+      "dependency": [
+        "tap(settings)"
+      ]
+    }
+  ],
+  "2024-04-19_211907": [
+    {
+      "id": 7,
+      "ele": "<scrollbar bound_box=0,312,1080,2340></scrollbar>",
+      "action": [
+        "scroll up",
+        "scroll down"
+      ],
+      "type": "scrollbar",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 10,
+      "ele": "<button alt='Frequently asked questions' bound_box=66,499,154,587></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Frequently asked questions",
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 11,
+      "ele": "<button bound_box=220,510,1014,576>Frequently asked questions</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 13,
+      "ele": "<button alt='hello@simplemobiletools.com' bound_box=66,675,154,763></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "hello@simplemobiletools.com",
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 14,
+      "ele": "<button bound_box=220,686,1014,752>hello@simplemobiletools.com</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 15,
+      "ele": "<p bound_box=215,854,365,953>HELP US</p>",
+      "action": [
+        "touch"
+      ],
+      "type": "p",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 17,
+      "ele": "<button alt='Contributors' bound_box=66,997,154,1085></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Contributors",
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 18,
+      "ele": "<button bound_box=220,1008,1014,1074>Contributors</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 20,
+      "ele": "<button alt='Donate' bound_box=66,1173,154,1261></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Donate",
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 21,
+      "ele": "<button bound_box=220,1184,1014,1250>Donate</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 22,
+      "ele": "<p bound_box=215,1352,345,1451>SOCIAL</p>",
+      "action": [
+        "touch"
+      ],
+      "type": "p",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 24,
+      "ele": "<button alt='Facebook' bound_box=66,1495,154,1583></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Facebook",
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 25,
+      "ele": "<button bound_box=220,1506,1014,1572>Facebook</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 27,
+      "ele": "<button alt='GitHub' bound_box=66,1671,154,1759></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "GitHub",
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 28,
+      "ele": "<button bound_box=220,1682,1014,1748>GitHub</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 30,
+      "ele": "<button alt='Reddit' bound_box=66,1847,154,1935></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Reddit",
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 31,
+      "ele": "<button bound_box=220,1858,1014,1924>Reddit</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 33,
+      "ele": "<button alt='Telegram' bound_box=66,2023,154,2111></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Telegram",
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 34,
+      "ele": "<button bound_box=220,2034,1014,2100>Telegram</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 35,
+      "ele": "<p bound_box=215,2202,336,2301>OTHER</p>",
+      "action": [
+        "touch"
+      ],
+      "type": "p",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 39,
+      "ele": "<button alt='Back' bound_box=44,191,110,257></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Back",
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 40,
+      "ele": "<p bound_box=154,185,1058,262>About</p>",
+      "action": [
+        "touch"
+      ],
+      "type": "p",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    }
+  ],
+  "2024-04-19_214335": [
+    {
+      "id": 7,
+      "ele": "<scrollbar bound_box=0,312,1080,2340></scrollbar>",
+      "action": [
+        "scroll up",
+        "scroll down"
+      ],
+      "type": "scrollbar",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 10,
+      "ele": "<button alt='Donate' bound_box=66,373,154,461></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Donate",
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 11,
+      "ele": "<button bound_box=220,384,1014,450>Donate</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 12,
+      "ele": "<p bound_box=215,552,345,651>SOCIAL</p>",
+      "action": [
+        "touch"
+      ],
+      "type": "p",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 14,
+      "ele": "<button alt='Facebook' bound_box=66,695,154,783></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Facebook",
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 15,
+      "ele": "<button bound_box=220,706,1014,772>Facebook</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 17,
+      "ele": "<button alt='GitHub' bound_box=66,871,154,959></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "GitHub",
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 18,
+      "ele": "<button bound_box=220,882,1014,948>GitHub</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 20,
+      "ele": "<button alt='Reddit' bound_box=66,1047,154,1135></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Reddit",
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 21,
+      "ele": "<button bound_box=220,1058,1014,1124>Reddit</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 23,
+      "ele": "<button alt='Telegram' bound_box=66,1223,154,1311></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Telegram",
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 24,
+      "ele": "<button bound_box=220,1234,1014,1300>Telegram</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 25,
+      "ele": "<p bound_box=215,1402,336,1501>OTHER</p>",
+      "action": [
+        "touch"
+      ],
+      "type": "p",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 27,
+      "ele": "<button alt='Privacy policy' bound_box=66,1545,154,1633></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Privacy policy",
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 28,
+      "ele": "<button bound_box=220,1556,1014,1622>Privacy policy</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 30,
+      "ele": "<button alt='Third party licences' bound_box=66,1721,154,1809></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Third party licences",
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 31,
+      "ele": "<button bound_box=220,1732,1014,1798>Third party licences</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 33,
+      "ele": "<button alt='Version 6.17.0 Pro' bound_box=66,1897,154,1985></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Version 6.17.0 Pro",
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 34,
+      "ele": "<button bound_box=220,1908,1014,1974>Version 6.17.0 Pro</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 36,
+      "ele": "<button bound_box=220,2087,1014,2153>Made with \u2764\ufe0f in Slovakia</button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 39,
+      "ele": "<button alt='Back' bound_box=44,191,110,257></button>",
+      "action": [
+        "touch"
+      ],
+      "type": "button",
+      "alt": "Back",
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    },
+    {
+      "id": 40,
+      "ele": "<p bound_box=154,185,1058,262>About</p>",
+      "action": [
+        "touch"
+      ],
+      "type": "p",
+      "alt": null,
+      "name": "",
+      "desc": "",
+      "func": "",
+      "args": "",
+      "return": "",
+      "dependency": []
+    }
+  ]
+}
