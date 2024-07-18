@@ -1,18 +1,18 @@
-def autodroidv2_task_solution_code(verifier, code_policy, api_xpaths):
+def autodroidv2_task_solution_code(verifier, env, save_path, api_xpaths):
 	# check whether the current UI is the note picker page, if so, go back to the main page
 	ui_tree = verifier.get_ui_tree()
 	if '>Open note</p>' in ui_tree:
 	    # go back to the main screen
 	    verifier.back()
 	
-	scroll_settings_page = ElementList('scroll_settings_page', None, code_policy, api_xpaths, verifier)
+	scroll_settings_page = ElementList('scroll_settings_page', None, env, save_path, api_xpaths, verifier)
 	verifier.scroll(scroll_settings_page, "up")
-	set_colors = ElementList('set_colors', None, code_policy, api_xpaths, verifier)
+	set_colors = ElementList('set_colors', None, env, save_path, api_xpaths, verifier)
 	verifier.tap(set_colors)
-	set_theme_color = ElementList('set_theme_color', None, code_policy, api_xpaths, verifier)
+	set_theme_color = ElementList('set_theme_color', None, env, save_path, api_xpaths, verifier)
 	verifier.tap(set_theme_color)
-	theme_color_types = ElementList('theme_color_types', None, code_policy, api_xpaths, verifier)
+	theme_color_types = ElementList('theme_color_types', None, env, save_path, api_xpaths, verifier)
 	verifier.tap(theme_color_types.match("White"))
-	save_set_colors = ElementList('save_set_colors', None, code_policy, api_xpaths, verifier)
+	save_set_colors = ElementList('save_set_colors', None, env, save_path, api_xpaths, verifier)
 	verifier.tap(save_set_colors)
-autodroidv2_task_solution_code(verifier, code_policy, api_xpaths)
+autodroidv2_task_solution_code(verifier, env, save_path, api_xpaths)
