@@ -849,7 +849,7 @@ class Verifier:
         '''
     global ACTION_COUNT
     if ACTION_COUNT == 0:
-      self.env.execute_action(
+      self.env.execute_action( # maybe it's unnecessary
           json_action.JSONAction(**{
               "action_type": "open_app",
               "app_name": self.app_name
