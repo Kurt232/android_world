@@ -17,7 +17,7 @@ from android_world.env import json_action
 
 from android_world.agents.agent_utils import ElementTree
 
-from android_world.script_utils.ui_apis import Verifier, regenerate_script
+from android_world.script_utils.ui_apis import Verifier, ElementList, regenerate_script
 from android_world.script_utils import tools
 from android_world.script_utils.bug_processor import BugProcessorv2
 from android_world.script_utils.solution_generator import SolutionGenerator
@@ -154,8 +154,6 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
   MAX_RETRY_TIMES = 3
   # QUERY_FIRSTTIME = True
 
-  # QUERY_FIRSTTIME = True
-
   def __init__(self,
                env: interface.AsyncEnv,
                llm: infer.LlmWrapper,
@@ -167,7 +165,7 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
     self.save_path = save_path
 
   def step(self, goal: str) -> base_agent.AgentInteractionResult:
-    # tools.write_txt_file('tmp/task.txt', goal)
+    tools.write_txt_file('tmp/task.txt', goal)
     """
     only execute once for code script
     """
@@ -185,28 +183,30 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
             }))
         time.sleep(self.WAIT_AFTER_ACTION_SECONDS)
 
-        # if there is no solution code yet at the first time, we need to generate one
-        task = tools.load_txt_file('tmp/task.txt')
-        solution_generator = SolutionGenerator('tmp/apis/notes.json', self.llm) # todo:: app_name
-        formatted_apis = format_apis(self.env, api_xpaths)
-        solution_code = solution_generator.get_solution(
-            app_name=app_name,
-            prompt_answer_path=os.path.join(self.save_path, f'solution.json'),
-            task=task,
-            ui_elements=formatted_apis,
-            enable_dependency=False,
-            model_name='gpt-4o')
-        tools.write_txt_file('tmp/code.txt', solution_code)
-
-      code = tools.load_txt_file('tmp/code.txt')
+      # generate solution code for each try
+      task = tools.load_txt_file('tmp/task.txt')
+      solution_generator = SolutionGenerator('tmp/apis/notes.json', self.llm) # todo:: app_name
+      formatted_apis = format_apis(self.env, api_xpaths)
+      solution_code = solution_generator.get_solution(
+          app_name=app_name,
+          prompt_answer_path=os.path.join(self.save_path, f'solution.json'),
+          task=task,
+          ui_elements=formatted_apis,
+          enable_dependency=False,
+          model_name='gpt-4o')
+      tools.write_txt_file('tmp/code.txt', solution_code)
+      code = solution_code
+      # code = tools.load_txt_file('tmp/code.txt')
       code = tools.get_combined_code('tmp/preparation/notes.txt', code) # todo:: app_name
       tools.write_txt_file('tmp/combined_code.txt', code)
       dependencies = tools.load_json_file('tmp/api_paths.json') # todo:: app_name
-      verifier = Verifier(self, self.env, self.save_path, api_xpaths, api_data,
+      env = self.env
+      save_path = self.save_path
+      verifier = Verifier(env, save_path, app_name, api_xpaths, api_data,
                           dependencies)
       code_script, line_mappings = regenerate_script(code, 'verifier',
-                                                     'self.device',
-                                                     'code_policy',
+                                                     'env',
+                                                     'save_path',
                                                      'api_xpaths')
       tools.write_txt_file('tmp/compiled_code.txt', code_script)
       tools.dump_json_file('tmp/line_mappings.json', line_mappings)
