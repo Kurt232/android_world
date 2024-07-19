@@ -316,7 +316,7 @@ class BugProcessorv2:
     script_comments = self._get_comments_of_all_steps()
     # code_pre = tools.load_txt_file('data/notes_preparation.txtnotes_preparation.txt')
     # combined_script = preparation_code + '\n' + code
-    code = tools.get_combined_code('data/notes_preparation.txt',
+    code = tools.get_combined_code('tmp/preparation/notes.txt', # todo:: app_name
                                    self.raw_solution)
     code_lines = code.split('\n')
 
@@ -330,7 +330,7 @@ class BugProcessorv2:
           lineno] = f'{leading_spaces}{_get_formatted_comment(comment)}\n{code_dict[lineno]}\n'
 
     commented_code = '\n'.join([code_dict[i] for i in range(len(code_dict))])
-    commented_code = tools.get_code_without_prefix('data/notes_preparation.txt',
+    commented_code = tools.get_code_without_prefix('tmp/preparation/notes.txt', # todo:: app_name
                                                    commented_code)
     return commented_code
 
