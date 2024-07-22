@@ -25,7 +25,7 @@ from typing import Any, Optional
 from lxml import etree
 from PIL import Image
 from absl import logging
-from lxml import etree
+from bs4 import BeautifulSoup, Tag, NavigableString
 
 from android_world.env.representation_utils import UIElement, _accessibility_node_to_ui_element
 
@@ -333,6 +333,7 @@ class ElementTree(object):
     self.size = len(self.ele_map)
     # result
     self.str = self.get_str()
+    self.skeleton = HTMLSkeleton(self.str)
 
   def get_ele_by_id(self, index: int):
     return self.ele_map.get(index, None)
@@ -452,8 +453,8 @@ class ElementTree(object):
     eles = root.xpath(xpath)
     if not eles:
       return None
-    ele_desc = etree.tostring(eles[0], pretty_print=True).decode(
-        'utf-8')  # only for father node
+    ele_desc = etree.tostring(
+        eles[0], pretty_print=True).decode('utf-8')  # only for father node
     id_str = re.search(r' id="(\d+)"', ele_desc).group(1)
     try:
       id = int(id_str)
@@ -756,3 +757,96 @@ def convert_action(action_type: str, ele: EleAttr, text: str):
     action_details['direction'] = direction
     return action_details
   return action_details
+
+
+class HTMLSkeleton():
+
+  def __init__(self, html: str | BeautifulSoup, is_formatted=False):
+    if isinstance(html, str):
+      self.soup = BeautifulSoup(html, 'html.parser')
+    else:
+      self.soup = html
+
+    if not is_formatted:
+      self._remove_attributes()
+      self._clean_repeated_siblings()
+
+    self.str = self.soup.prettify()
+
+  def _remove_attributes(self):
+    '''
+    use bs4 to remove all other attributes except for the tag name and resource_id from the html
+    '''
+
+    soup = self.soup
+    for tag in soup.find_all(True):
+      # Remove all attributes except for 'resource_id'
+      attributes = tag.attrs.copy()
+      for attr in attributes:
+        if attr != 'resource_id':
+          del tag.attrs[attr]
+
+      # Remove all text nodes within tags
+      for content in tag.contents:
+        if isinstance(content, NavigableString):
+          content.extract()
+
+  def _clean_repeated_siblings(self):
+    '''
+    use bs4 to remove all repeated siblings from the html
+    '''
+
+    def _remove_repeated_siblings(tag):
+      if not isinstance(tag, Tag):
+        return
+      unique_children = []
+      seen_tags = set()
+      for child in tag.find_all(recursive=False):
+        child_signature = (child.name, tuple(sorted(child.attrs.items())))
+        if child_signature not in seen_tags:
+          unique_children.append(child)
+          seen_tags.add(child_signature)
+      tag.clear()
+      for child in unique_children:
+        tag.append(child)
+        _remove_repeated_siblings(child)
+
+    _remove_repeated_siblings(self.soup)
+
+  def count(self):
+    """
+    Count the number of tags in the HTML skeleton.
+    For comparing the complexity of two HTML skeletons.
+    """
+    return len(self.soup.find_all(recursive=True))
+
+  def extract_common_skeleton(self, skeleton):
+    '''
+    Extract the common structure from two HTMLSkeleton, return the 
+    common structure as a new HTMLSkeleton.
+    '''
+
+    def compare_and_extract_common(node1, node2):
+      if not (node1 and node2):
+        return None
+      if node1.name != node2.name:
+        return None
+      common_node = Tag(name=node1.name)
+      for attr in node1.attrs:
+        if attr in node2.attrs and node1.attrs[attr] == node2.attrs[attr]:
+          common_node[attr] = node1.attrs[attr]
+      common_children = []
+      for child1, child2 in zip(
+          node1.find_all(recursive=False), node2.find_all(recursive=False)):
+        common_child = compare_and_extract_common(child1, child2)
+        if common_child:
+          common_children.append(common_child)
+      common_node.extend(common_children)
+      return common_node
+
+    soup1 = self.soup
+    soup2 = skeleton.soup
+
+    common_structure = compare_and_extract_common(soup1.contents[0],
+                                                  soup2.contents[0])
+    return HTMLSkeleton(common_structure, is_formatted=True)
