@@ -27,7 +27,6 @@ from android_world import checkpointer as checkpointer_lib
 from android_world import constants
 from android_world import episode_runner
 from android_world.agents import base_agent
-from android_world.agents import verifier
 from android_world.env import adb_utils
 from android_world.env import interface
 from android_world.task_evals import task_eval
