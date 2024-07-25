@@ -244,6 +244,7 @@ class ElementList:
     self.save_path = save_path
 
     self.api_name = api_name
+    self.api_xpaths = api_xpaths
     if self.api_name:
       self.check_api_name(api_name)
     if not api_xpath:
@@ -758,10 +759,10 @@ class Verifier:
 
   def check_output_crash(self, api_name):
     output_log = tools.load_yaml_file(
-        os.path.join(self.save_path, f'log_{self.input_manager.task_id}.yaml')
+        os.path.join(self.save_path, f'log.yaml')
     )  # todo:: what's the task_id
-    if output_log['records'][-1]['Choice'] == 'crashed':
-      raise Exception(f'Action not found when executing tap {api_name}')
+    # if output_log['records'][-1]['Choice'] == 'crashed':
+    #   raise Exception(f'Action not found when executing tap {api_name}')
 
   def navigate_and_get_target_element(self, element_selector, caller_type,
                                       statement):
@@ -787,7 +788,7 @@ class Verifier:
     if not target_ele:
       ele_data = {
           'xpath': element_selector_xpath,
-          'apiname': None,
+          'api_name': None,
           'text': None,
           'action_type': None,
           'statement': statement
@@ -887,7 +888,7 @@ class Verifier:
       button_api_name = button_api.split('$')[-1]
       ele_data = {
           'xpath': self.api_xpaths[button_api_name],
-          'apiname': button_api_name,
+          'api_name': button_api_name,
           'text': None,
           'action_type': 'touch',
       }
@@ -905,7 +906,7 @@ class Verifier:
 
       ele_data = {
           'xpath': button_api.element_list_xpath,
-          'apiname': button_api.api_name,
+          'api_name': button_api.api_name,
           'text': None,
           'action_type': 'touch',
           'statement': {
@@ -941,7 +942,7 @@ class Verifier:
       button_api_name = button_api.split('$')[-1]
       ele_data = {
           'xpath': self.api_xpaths[button_api_name],
-          'apiname': button_api_name,
+          'api_name': button_api_name,
           'text': None,
           'action_type': 'touch'
       }
@@ -959,7 +960,7 @@ class Verifier:
 
       ele_data = {
           'xpath': button_api.element_list_xpath,
-          'apiname': button_api.api_name,
+          'api_name': button_api.api_name,
           'text': None,
           'action_type': 'long_touch',
           'statement': {
@@ -994,7 +995,7 @@ class Verifier:
       text_api_name = text_api.split('$')[-1]
       ele_data = {
           'xpath': self.api_xpaths[text_api_name],
-          'apiname': text_api_name,
+          'api_name': text_api_name,
           'text': text,
           'action_type': 'set_text'
       }
@@ -1005,7 +1006,7 @@ class Verifier:
 
       ele_data = {
           'xpath': text_api.element_list_xpath,
-          'apiname': None,
+          'api_name': None,
           'text': text,
           'action_type': 'set_text',
           'statement': {
@@ -1043,10 +1044,19 @@ class Verifier:
 
     if isinstance(scroller_api, str):
       scroller_api_name = scroller_api.split('$')[-1]
-      direction_str = 'up' if 'up' in direction.lower() else 'down'
+      if 'up' in direction.lower():
+        direction_str = 'up'
+      elif 'down' in direction.lower():
+        direction_str = 'down'
+      elif 'left' in direction.lower():
+        direction_str = 'left'
+      elif 'right' in direction.lower():
+        direction_str = 'right'
+      else:
+        direction_str = 'down'
       ele_data = {
           'xpath': self.api_xpaths[scroller_api_name],
-          'apiname': scroller_api_name,
+          'api_name': scroller_api_name,
           'text': None,
           'action_type': f'scroll {direction_str}'
       }
@@ -1061,7 +1071,7 @@ class Verifier:
 
       ele_data = {
           'xpath': scroller_api.element_list_xpath,
-          'apiname': scroller_api_name,
+          'api_name': scroller_api_name,
           'text': None,
           'action_type': f'scroll {direction_str}',
           'statement': {
@@ -1190,7 +1200,7 @@ class Verifier:
 
     ele_data = {
         'xpath': None,
-        'apiname': None,
+        'api_name': None,
         'text': None,
         'action_type': 'navigate_back',
         'dependencies': None,

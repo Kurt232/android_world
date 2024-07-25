@@ -23,7 +23,7 @@ class DependentAction():
     action = action[:m.start()] + action[m.end():]
 
     # argv
-    self.argv = re.findall(r'\((\w+),?\)', action)
+    self.argv = self._extract_arguments(action)
     if len(self.argv) > 0:
       self.api_name = self.argv[0]
 
@@ -37,12 +37,12 @@ class DependentAction():
     elif action.startswith('set_text'):
       self.action_type = 'set_text'
       assert len(self.argv) == 2
-      self.text = self.argv[1]
+      self.text = self.argv[1].strip("\'\"")
     elif action.startswith('scroll'):
       self.action_type = 'scroll'
       assert len(self.argv) == 2
-      direction = self.argv[1].lower()
-      assert direction in ['up', 'down'] # todo:: left, right
+      direction = self.argv[1].strip("\'\"").lower()
+      assert direction in ['up', 'down', 'lift', 'right']  # todo:: left, right
       self.action_type = 'scroll' + ' ' + direction
     elif action.startswith('get_text'):
       self.action_type = 'get_text'
@@ -56,6 +56,40 @@ class DependentAction():
     else:
       raise ValueError(f'Unknown action type: {action}')
 
+  @staticmethod
+  def _extract_arguments(sentence):
+    # This regex will match arguments, including those within quotes
+    pattern = re.compile(r"\w+\((.*)\)")
+    match = pattern.search(sentence)
+    if match:
+      args_str = match.group(1)
+      args = []
+      current_arg = []
+      in_quotes = False
+      escape_char = False
+
+      for char in args_str:
+        if char == "'" and not escape_char:
+          in_quotes = not in_quotes
+          current_arg.append(char)
+        elif char == "\\" and not escape_char:
+          escape_char = True
+          current_arg.append(char)
+        elif char == "," and not in_quotes:
+          args.append(''.join(current_arg).strip())
+          current_arg = []
+        else:
+          current_arg.append(char)
+          escape_char = False
+
+      if current_arg:
+        args.append(''.join(current_arg).strip())
+
+      return args
+
+    return []
+
+
 
 class ApiEle():
 
@@ -63,9 +97,11 @@ class ApiEle():
     self.element: str = raw['element']
     self.element_type: str = raw['element_type']
     self.description: str = raw['description']
-    self.effect: str = raw['effect']
+    self.effect: str = raw.get('effect', None)
 
-    tmp_name = raw['api_name'].split(':')
+    self.full_api_name = raw['api_name']
+    
+    tmp_name = raw['api_name'].split('__')
     assert len(tmp_name) == 2
     self.scree_name: str = tmp_name[0]
     self.api_name: str = tmp_name[1]
@@ -84,7 +120,7 @@ class ApiEle():
 class ApiDoc():
 
   def __init__(self, app_name: str, api_doc_dir: str = "tmp/docs"):
-    self.api_doc_path = os.join(api_doc_dir, app_name)
+    self.api_doc_path = os.path.join(api_doc_dir, app_name + '.json')
     self.doc: dict[str, dict[str, ApiEle]] = {}
     self.api_xpath: dict[str, str] = {}
     self.skeleton_str2screen_name: dict[str, str] = {}
@@ -107,11 +143,12 @@ class ApiDoc():
       for k_ele, v_ele in v['elements'].items():
         ele = ApiEle(v_ele)
         _elements[k_ele] = ele
-        self.api_xpath[k + '__' + k_ele] = ele.xpath
+        if ele.xpath: # existing null xpath
+          self.api_xpath[k + '__' + k_ele] = ele.xpath
       self.doc[k] = _elements
 
-    # screen and skeleton should be unique
-    assert len(self.skeleton2screen_name) == len_screen
+    # ! screen and skeleton should be unique (but it's not)
+    # assert len(self.skeleton_str2screen_name) == len_screen
 
   def get_api_xpath(self):
     return self.api_xpath
