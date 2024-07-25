@@ -21,6 +21,7 @@ from android_world.script_utils.ui_apis import Verifier, ElementList, regenerate
 from android_world.script_utils import tools
 from android_world.script_utils.bug_processor import BugProcessorv2
 from android_world.script_utils.solution_generator import SolutionGenerator
+from android_world.script_utils.api_doc import ApiDoc
 
 
 def process_error_info(original_script, compiled_script, traceback, error,
@@ -80,7 +81,7 @@ def process_error_info(original_script, compiled_script, traceback, error,
   }
 
 
-def format_apis(env: interface.AsyncEnv, api_xpaths):
+def format_apis(env: interface.AsyncEnv, doc: ApiDoc):
 
   def _recursively_get_ele_property(ele_tree: ElementTree, ele):
     ele_text = ele_tree.get_ele_text(ele)
@@ -94,8 +95,8 @@ def format_apis(env: interface.AsyncEnv, api_xpaths):
       eles = root.xpath(api_xpath)
       if not eles:
         continue
-      ele_desc = etree.tostring(eles[0], pretty_print=True).decode(
-          'utf-8')  # only for father node
+      ele_desc = etree.tostring(
+          eles[0], pretty_print=True).decode('utf-8')  # only for father node
       id_str = re.search(r' id="(\d+)"', ele_desc).group(1)
       id = int(id_str)
 
@@ -128,7 +129,8 @@ def format_apis(env: interface.AsyncEnv, api_xpaths):
   element_tree = agent_utils.forest_to_element_tree(current_state.forest)
 
   state_desc = element_tree.get_str(is_color=False)
-  ui_apis_ordered = _get_ordered_ui_apis(element_tree, state_desc, api_xpaths)
+  ui_apis_ordered = _get_ordered_ui_apis(element_tree, state_desc,
+                                         doc.api_xpath)
   ui_apis_str = ''
   for ui_api in ui_apis_ordered:
     ui_apis_str += f'\nelement: {ui_api["name"]}\n'
@@ -152,6 +154,7 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
   # Wait a few seconds for the screen to stabilize after executing an action.
   WAIT_AFTER_ACTION_SECONDS = 2.0
   MAX_RETRY_TIMES = 3
+
   # QUERY_FIRSTTIME = True
 
   def __init__(self,
@@ -171,9 +174,9 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
     """
     # todo:: add a config
     app_name = tools.load_txt_file('tmp/app_name.txt')
+    app_doc = ApiDoc(app_name)
+    raw_log_path = tools.load__file(os.path('tmp/raw_log', app_name + '.json'))
     for retry_time in range(self.MAX_RETRY_TIMES):
-      api_xpaths = tools.load_json_file('tmp/api_xpaths_checked.json')
-      api_data = tools.load_json_file('tmp/apis/notes.json') # todo:: app_name
       if retry_time == 0:
         # restart the app first in case the script couldn't run and the app has not been start
         self.env.execute_action(
@@ -184,30 +187,27 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
         time.sleep(self.WAIT_AFTER_ACTION_SECONDS)
 
       # generate solution code for each try
-      task = tools.load_txt_file('tmp/task.txt')
-      solution_generator = SolutionGenerator('tmp/apis/notes.json', self.llm) # todo:: app_name
-      formatted_apis = format_apis(self.env, api_xpaths)
-      solution_code = solution_generator.get_solution(
+      task = goal
+      # formatted_apis = format_apis(self.env, app_doc)
+      ele_data_path = os.path.join('tmp/elements/', app_name + '.json')
+      solution_code = SolutionGenerator.get_solution(
           app_name=app_name,
           prompt_answer_path=os.path.join(self.save_path, f'solution.json'),
           task=task,
-          ui_elements=formatted_apis,
-          enable_dependency=False,
+          ele_data_path=ele_data_path,
           model_name='gpt-4o')
       tools.write_txt_file('tmp/code.txt', solution_code)
       code = solution_code
       # code = tools.load_txt_file('tmp/code.txt')
-      code = tools.get_combined_code('tmp/preparation/notes.txt', code) # todo:: app_name
+      # code = tools.get_combined_code('tmp/preparation/notes.txt', code) # todo:: app_name
       tools.write_txt_file('tmp/combined_code.txt', code)
-      dependencies = tools.load_json_file('tmp/api_paths.json') # todo:: app_name
+      doc = app_doc
       env = self.env
       save_path = self.save_path
-      verifier = Verifier(env, save_path, app_name, api_xpaths, api_data,
-                          dependencies)
-      code_script, line_mappings = regenerate_script(code, 'verifier',
-                                                     'env',
-                                                     'save_path',
-                                                     'api_xpaths')
+      api_xpaths = app_doc.api_xpath
+      verifier = Verifier(env, save_path, app_name, api_xpaths, doc)
+      code_script, line_mappings = regenerate_script(code, 'verifier', 'env',
+                                                     'save_path', 'api_xpaths')  
       tools.write_txt_file('tmp/compiled_code.txt', code_script)
       tools.dump_json_file('tmp/line_mappings.json', line_mappings)
       # in case some silly scripts include no UI actions at all, we make an empty log for batch_verifying
@@ -230,15 +230,16 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
             error_log_path=error_path,
             task=tools.load_txt_file('tmp/task.txt'),
             raw_solution=tools.load_txt_file('tmp/code.txt'),
-            apis_path='tmp/apis/notes.json', # todo:: app_name
+            apis_path=raw_log_path,
             api_xpath_file='tmp/api_xpaths_checked.json')
 
         stuck_apis_str = format_apis(self.env, api_xpaths)
-        script = bug_processor.process_bug(prompt_answer_path=os.path.join(
-            self.save_path, f'debug_task_turn{retry_time}.json'),
-                                           enable_dependency=False,
-                                           model_name='gpt-4o',
-                                           stuck_ui_apis=stuck_apis_str)
+        script = bug_processor.process_bug(
+            prompt_answer_path=os.path.join(
+                self.save_path, f'debug_task_turn{retry_time}.json'),
+            enable_dependency=False,
+            model_name='gpt-4o',
+            stuck_ui_apis=stuck_apis_str)
         tools.write_txt_file('tmp/code.txt', script)
 
     result = {}
