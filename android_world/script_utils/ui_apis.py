@@ -13,6 +13,7 @@ from android_world.env import interface
 from android_world.env import json_action
 
 from android_world.script_utils import tools
+from android_world.script_utils.api_doc import ApiDoc
 
 # Constants
 MAX_SCROLL_NUM = 4
@@ -104,24 +105,6 @@ def regenerate_script(script, verifier_instant_name, android_env_name,
                             f'{verifier_instant_name}.{api_name}(')
   script = script.replace(f'long_{verifier_instant_name}.tap(', 'long_tap(')
   return script, line_mappings
-
-
-def get_api_semantic_dependency(dependency_paths, api_xpaths):
-  ele_semantic_dependencies = []
-  for dependency_path in dependency_paths:
-    ele_semantic_dependencies.append([])
-    for dep_id, dependency_api_data in enumerate(dependency_path):
-      if dependency_api_data == 'root' or dep_id == len(dependency_path) - 1:
-        continue
-      dependency_xpath = api_xpaths[dependency_api_data['name']]
-      xpath_apiname_action_dict = {
-          'xpath': dependency_xpath,
-          'apiname': dependency_api_data['name'],
-          'action_type': dependency_api_data['action_type'],
-          'text': None
-      }
-      ele_semantic_dependencies[-1].append(xpath_apiname_action_dict)
-  return ele_semantic_dependencies
 
 
 def _save2yaml(file_name,
@@ -260,7 +243,6 @@ class ElementList:
     self.env = env
     self.save_path = save_path
 
-    self.api_xpaths = api_xpaths
     self.api_name = api_name
     if self.api_name:
       self.check_api_name(api_name)
@@ -546,17 +528,14 @@ class Verifier:
   WAIT_AFTER_ACTION_SECONDS = 2.0
 
   def __init__(self, env: interface.AsyncEnv,
-               save_path: str, app_name: str, api_xpaths, api_data,
-               dependencies) -> None:
+               save_path: str, app_name: str, api_xpaths, doc: ApiDoc) -> None:
     # android world
     self.env = env
     self.save_path = save_path
     self.app_name = app_name
-
-    # autodroid
     self.api_xpaths = api_xpaths
-    self.api_data = api_data
-    self.dependencies = dependencies
+    self.doc = doc
+    # autodroid
 
   def get_action_from_xpath(self, element_tree: ElementTree, xpath: str,
                             action_type: str, input_text: str):
@@ -674,6 +653,11 @@ class Verifier:
 
   def execute_action(self, ele_data: dict):
     global ACTION_COUNT
+    
+    api_name = ele_data['api_name']
+    if not api_name:
+      return
+    
     if ACTION_COUNT == 0:
       self.env.execute_action(
           json_action.JSONAction(**{
@@ -692,8 +676,6 @@ class Verifier:
     text = code_to_be_executed['text']
 
     if action_type == None:
-      self.executing_dependency_id = -1
-      self.selected_dependency_path = []
       return
 
     executable_action = self.get_action_from_xpath(element_tree, xpath,
@@ -714,55 +696,64 @@ class Verifier:
       time.sleep(self.WAIT_AFTER_ACTION_SECONDS)
       return
 
+    ## dependency
     # we have executed all the dependencies, but still not found the target element
     done = False
-    while not done:
-      for root_to_ele_path in code_to_be_executed['dependencies']:
-        executing_dependency_id = -1
-        for idx, xpath_data in enumerate(
-            root_to_ele_path[::-1]):  # todo:: check
-          xpath = xpath_data['xpath']
-          action_type = xpath_data['action_type']
-          text = xpath_data['text']
+    while not done: # todo:: limit the max number of retry
+      state = self.env.get_state()
+      element_tree = agent_utils.forest_to_element_tree(state.forest)
+      current_skeleton = element_tree.skeleton
+      _, dependency_action = self.doc.get_dependency(current_skeleton, api_name)
+      
+      count = 0
+      for action_list in dependency_action:
+        count += 1
+        
+        is_match = False
+        dep_id = -1
+        for idx, action in enumerate(reversed(action_list)):
+          _screen_name = action.screen_name
+          target_skeleton = self.doc.screen_name2skeleton[_screen_name]
+          
+          # use `is` to judge whether the two skeletons are the same one
+          # use `==` to judge whether the two skeletons are the same skeleton
+          if current_skeleton != current_skeleton.extract_common_skeleton(target_skeleton):
+            if is_match:
+              break
+            else:
+              continue
+          
+          action_type = action.action_type
+          text = action.text
+          xpath = self.doc.get_xpath_by_name(_screen_name, action.api_name)
           executable_action = self.get_action_from_xpath(
               element_tree, xpath, action_type, text)
-          if executable_action.get('goal_status', None) != 'infeasible':
-            ele_xpath_idx = len(root_to_ele_path) - idx - 1
-            # next time we will start from the next dependency
-            executing_dependency_id = ele_xpath_idx + 1  # todo:: check id
-            self.env.execute_action(json_action.JSONAction(**executable_action))
-            time.sleep(self.WAIT_AFTER_ACTION_SECONDS)
-            break
-
-        if executing_dependency_id == -1:  # not find the possible xpath
-          continue
-
-        for xpath_data in root_to_ele_path[executing_dependency_id:]:
-          state = self.env.get_state()
-          element_tree = agent_utils.forest_to_element_tree(state.forest)
-
-          xpath = xpath_data['xpath']
-          action_type = xpath_data['action_type']
-          text = xpath_data['text']
-          executable_action = self.get_action_from_xpath(
-              element_tree, xpath, action_type, text)
-          if executable_action.get('goal_status', None) != 'infeasible':
-            executing_dependency_id += 1
-            self.env.execute_action(json_action.JSONAction(**executable_action))
-            time.sleep(self.WAIT_AFTER_ACTION_SECONDS)
-          else:
-            # find the next dependency
-            break
-
-        if executing_dependency_id == len(root_to_ele_path):
+          
+          if executable_action.get('goal_status', None) == 'infeasible':
+            if is_match:
+              break
+            else:
+              continue
+          
+          # execute the action
+          is_match = True
+          dep_id = idx
+          self.env.execute_action(json_action.JSONAction(**executable_action))
+          time.sleep(self.WAIT_AFTER_ACTION_SECONDS)
+        
+        if dep_id == len(action_list) - 1:
           done = True
+        
+        # executed action and changed the screen, we need to find new dependency
+        if is_match:
           break
-
-      # not found the target element in all the dependencies
-      break
-
+        
+      if count == len(dependency_action) and not done:
+        # fail to solve the dependency
+        break
+    
     if not done:
-      raise Exception(f'Action not found when executing {xpath}')
+      raise Exception(f'Action not found when executing tap {api_name}')
     return
 
   def check_output_crash(self, api_name):
@@ -782,8 +773,6 @@ class Verifier:
     # for actions like getting length, indexing, or matching, the element_selector is a string
     if isinstance(element_selector, str):
       element_selector = element_selector.split('$')[-1]
-      ele_semantical_dependencies = get_api_semantic_dependency(
-          self.dependencies[element_selector], self.api_xpaths)
 
       element_selector_xpath = self.api_xpaths[element_selector]
       element_selector_api_name = element_selector
@@ -793,11 +782,6 @@ class Verifier:
       element_selector_xpath = element_selector.element_list_xpath
       element_selector_api_name = element_selector.api_name if element_selector.api_name else element_selector.element_list_xpath
 
-      ele_semantical_dependencies = None
-      if element_selector.api_name and element_selector.api_name in self.dependencies.keys(
-      ):
-        ele_semantical_dependencies = get_api_semantic_dependency(
-            self.dependencies[element_selector.api_name], self.api_xpaths)
     target_ele = element_tree.get_ele_by_xpath(element_selector_xpath)
     # print(f'get target element time: {time.time() - t2}')
     if not target_ele:
@@ -806,7 +790,6 @@ class Verifier:
           'apiname': None,
           'text': None,
           'action_type': None,
-          'dependencies': ele_semantical_dependencies,
           'statement': statement
       }
 
@@ -902,15 +885,11 @@ class Verifier:
     if isinstance(button_api, str):
       print(f'try to tap: {button_api}, current action account: {ACTION_COUNT}')
       button_api_name = button_api.split('$')[-1]
-      # ele_xpaths not only contains the xpath of the button, but also the xpath of its dependencies
-      ele_semantical_dependencies = get_api_semantic_dependency(
-          self.dependencies[button_api_name], self.api_xpaths)
       ele_data = {
           'xpath': self.api_xpaths[button_api_name],
           'apiname': button_api_name,
           'text': None,
           'action_type': 'touch',
-          'dependencies': ele_semantical_dependencies
       }
 
     else:
@@ -923,19 +902,12 @@ class Verifier:
           f'try to tap: {button_api_name}, current action account: {ACTION_COUNT}'
       )
 
-      if button_api.api_name and button_api.api_name in self.dependencies.keys(
-      ):
-        ele_semantical_dependencies = get_api_semantic_dependency(
-            self.dependencies[button_api.api_name], self.api_xpaths)
-      else:
-        ele_semantical_dependencies = None
 
       ele_data = {
           'xpath': button_api.element_list_xpath,
           'apiname': button_api.api_name,
           'text': None,
           'action_type': 'touch',
-          'dependencies': ele_semantical_dependencies,
           'statement': {
               'current_code': current_code_line,
               'original_lineno': lineno_in_original_script,
@@ -967,15 +939,11 @@ class Verifier:
     if isinstance(button_api, str):
       print(f'try to tap: {button_api}, current action account: {ACTION_COUNT}')
       button_api_name = button_api.split('$')[-1]
-      # ele_xpaths not only contains the xpath of the button, but also the xpath of its dependencies
-      ele_semantical_dependencies = get_api_semantic_dependency(
-          self.dependencies[button_api_name], self.api_xpaths)
       ele_data = {
           'xpath': self.api_xpaths[button_api_name],
           'apiname': button_api_name,
           'text': None,
-          'action_type': 'touch',
-          'dependencies': ele_semantical_dependencies
+          'action_type': 'touch'
       }
 
     else:
@@ -988,19 +956,12 @@ class Verifier:
           f'try to tap: {button_api_name}, current action account: {ACTION_COUNT}'
       )
 
-      if button_api.api_name and button_api.api_name in self.dependencies.keys(
-      ):
-        ele_semantical_dependencies = get_api_semantic_dependency(
-            self.dependencies[button_api.api_name], self.api_xpaths)
-      else:
-        ele_semantical_dependencies = None
 
       ele_data = {
           'xpath': button_api.element_list_xpath,
           'apiname': button_api.api_name,
           'text': None,
           'action_type': 'long_touch',
-          'dependencies': ele_semantical_dependencies,
           'statement': {
               'current_code': current_code_line,
               'original_lineno': lineno_in_original_script,
@@ -1031,32 +992,22 @@ class Verifier:
 
     if isinstance(text_api, str):
       text_api_name = text_api.split('$')[-1]
-      ele_semantical_dependencies = get_api_semantic_dependency(
-          self.dependencies[text_api_name], self.api_xpaths)
       ele_data = {
           'xpath': self.api_xpaths[text_api_name],
           'apiname': text_api_name,
           'text': text,
-          'action_type': 'set_text',
-          'dependencies': ele_semantical_dependencies
+          'action_type': 'set_text'
       }
     else:
       if isinstance(text_api, list):
         text_api = text_api[0]
       text_api_name = text_api.api_name if text_api.api_name else text_api.element_list_xpath
 
-      if text_api.api_name and text_api.api_name in self.dependencies.keys():
-        ele_semantical_dependencies = get_api_semantic_dependency(
-            self.dependencies[text_api.api_name], self.api_xpaths)
-      else:
-        ele_semantical_dependencies = None
-
       ele_data = {
           'xpath': text_api.element_list_xpath,
           'apiname': None,
           'text': text,
           'action_type': 'set_text',
-          'dependencies': ele_semantical_dependencies,
           'statement': {
               'current_code': current_code_line,
               'original_lineno': lineno_in_original_script,
@@ -1092,16 +1043,12 @@ class Verifier:
 
     if isinstance(scroller_api, str):
       scroller_api_name = scroller_api.split('$')[-1]
-      # ele_xpaths not only contains the xpath of the button, but also the xpath of its dependencies
-      ele_semantical_dependencies = get_api_semantic_dependency(
-          self.dependencies[scroller_api_name], self.api_xpaths)
       direction_str = 'up' if 'up' in direction.lower() else 'down'
       ele_data = {
           'xpath': self.api_xpaths[scroller_api_name],
           'apiname': scroller_api_name,
           'text': None,
-          'action_type': f'scroll {direction_str}',
-          'dependencies': ele_semantical_dependencies
+          'action_type': f'scroll {direction_str}'
       }
 
     else:
@@ -1111,19 +1058,12 @@ class Verifier:
       scroller_api_name = scroller_api.api_name if scroller_api.api_name else scroller_api.element_list_xpath
       direction_str = 'up' if 'up' in direction.lower() else 'down'
 
-      if scroller_api.api_name and scroller_api.api_name in self.dependencies.keys(
-      ):
-        ele_semantical_dependencies = get_api_semantic_dependency(
-            self.dependencies[scroller_api.api_name], self.api_xpaths)
-      else:
-        ele_semantical_dependencies = None
 
       ele_data = {
           'xpath': scroller_api.element_list_xpath,
           'apiname': scroller_api_name,
           'text': None,
           'action_type': f'scroll {direction_str}',
-          'dependencies': ele_semantical_dependencies,
           'statement': {
               'current_code': current_code_line,
               'original_lineno': lineno_in_original_script,
