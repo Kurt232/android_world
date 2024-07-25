@@ -408,7 +408,7 @@ class ElementTree(object):
         ele.children[i] = idx_map[child]
       _ele_map[idx] = ele
     # update the valid_ele_ids
-    _valid_ele_ids = set([idx_map[idx] for idx in valid_ele_ids])
+    _valid_ele_ids = set([idx_map.get(idx, None) for idx in valid_ele_ids])
     # update the node
     for node in dfs_order:
       node.id = idx_map[node.id]

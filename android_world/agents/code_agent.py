@@ -81,7 +81,7 @@ def process_error_info(original_script, compiled_script, traceback, error,
   }
 
 
-def format_apis(env: interface.AsyncEnv, doc: ApiDoc):
+def format_apis(env: interface.AsyncEnv, api_xpaths):
 
   def _recursively_get_ele_property(ele_tree: ElementTree, ele):
     ele_text = ele_tree.get_ele_text(ele)
@@ -130,7 +130,7 @@ def format_apis(env: interface.AsyncEnv, doc: ApiDoc):
 
   state_desc = element_tree.get_str(is_color=False)
   ui_apis_ordered = _get_ordered_ui_apis(element_tree, state_desc,
-                                         doc.api_xpath)
+                                         api_xpaths)
   ui_apis_str = ''
   for ui_api in ui_apis_ordered:
     ui_apis_str += f'\nelement: {ui_api["name"]}\n'
@@ -175,7 +175,6 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
     # todo:: add a config
     app_name = tools.load_txt_file('tmp/app_name.txt')
     app_doc = ApiDoc(app_name)
-    raw_log_path = tools.load__file(os.path('tmp/raw_log', app_name + '.json'))
     for retry_time in range(self.MAX_RETRY_TIMES):
       if retry_time == 0:
         # restart the app first in case the script couldn't run and the app has not been start
@@ -224,23 +223,22 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
 
         tools.dump_json_file(error_path, error_info)
 
-        bug_processor = BugProcessorv2(
-            app_name=app_name,
-            log_path=log_path,
-            error_log_path=error_path,
-            task=tools.load_txt_file('tmp/task.txt'),
-            raw_solution=tools.load_txt_file('tmp/code.txt'),
-            apis_path=raw_log_path,
-            api_xpath_file='tmp/api_xpaths_checked.json')
+        # bug_processor = BugProcessorv2(
+        #     app_name=app_name,
+        #     log_path=log_path,
+        #     error_log_path=error_path,
+        #     task=tools.load_txt_file('tmp/task.txt'),
+        #     raw_solution=tools.load_txt_file('tmp/code.txt'),
+        #     api_xpath_file='tmp/api_xpaths_checked.json')
 
-        stuck_apis_str = format_apis(self.env, api_xpaths)
-        script = bug_processor.process_bug(
-            prompt_answer_path=os.path.join(
-                self.save_path, f'debug_task_turn{retry_time}.json'),
-            enable_dependency=False,
-            model_name='gpt-4o',
-            stuck_ui_apis=stuck_apis_str)
-        tools.write_txt_file('tmp/code.txt', script)
+        # stuck_apis_str = format_apis(self.env, api_xpaths)
+        # script = bug_processor.process_bug(
+        #     prompt_answer_path=os.path.join(
+        #         self.save_path, f'debug_task_turn{retry_time}.json'),
+        #     enable_dependency=False,
+        #     model_name='gpt-4o',
+        #     stuck_ui_apis=stuck_apis_str)
+        # tools.write_txt_file('tmp/code.txt', script)
 
     result = {}
 

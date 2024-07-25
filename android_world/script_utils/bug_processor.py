@@ -208,15 +208,12 @@ Now please return the corrected script to complete the task. Your answer should 
 
 class BugProcessorv2:
 
-  def __init__(self, app_name, log_path, error_log_path, task, raw_solution,
-               apis_path, api_xpath_file):
+  def __init__(self, app_name, log_path, error_log_path, task, raw_solution, api_xpath_file):
     self.app_name = app_name
     self.raw_log = tools.load_yaml_file(log_path)
     self.error_log = tools.load_json_file(error_log_path)
-    self.apis = tools.load_json_file(apis_path)
     self.task = task
     self.raw_solution = raw_solution
-    self.apis_path = apis_path
     self.api_xpaths = tools.load_json_file(api_xpath_file)
 
   def _get_view_without_id(self, view):
