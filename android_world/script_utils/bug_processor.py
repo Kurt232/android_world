@@ -3,7 +3,7 @@ from lxml import etree
 
 from android_world.script_utils import tools
 from android_world.script_utils.gen_dependency_tree import get_semantic_dependencies
-
+from android_world.script_utils.api_doc import ApiDoc
 
 class BugProcessor:
 
@@ -208,13 +208,14 @@ Now please return the corrected script to complete the task. Your answer should 
 
 class BugProcessorv2:
 
-  def __init__(self, app_name, log_path, error_log_path, task, raw_solution, api_xpath_file):
+  def __init__(self, app_name, log_path, error_log_path, task: str, raw_solution: str, ele_data_path, api_xpaths: dict[str, str]):
     self.app_name = app_name
     self.raw_log = tools.load_yaml_file(log_path)
     self.error_log = tools.load_json_file(error_log_path)
+    self.ele_data = tools.load_json_file(ele_data_path)
     self.task = task
     self.raw_solution = raw_solution
-    self.api_xpaths = tools.load_json_file(api_xpath_file)
+    self.api_xpaths = api_xpaths
 
   def _get_view_without_id(self, view):
     modified_view = re.sub(r" id='\d+'", '', view)
@@ -287,7 +288,7 @@ class BugProcessorv2:
 
     for record_id, ui_record in enumerate(records):
       # TODO: this is specific to the notes app, please modify it accordingly
-      if (record_id == 0 and ui_record['Action'] == 'go back') or (
+      if (record_id == 0 and ui_record['Action'] == 'go back') or ( # todo::
           record_id == 1 and ui_record['Action'] == 'scroll DOWN'):
         continue
 
@@ -313,8 +314,9 @@ class BugProcessorv2:
     script_comments = self._get_comments_of_all_steps()
     # code_pre = tools.load_txt_file('data/notes_preparation.txtnotes_preparation.txt')
     # combined_script = preparation_code + '\n' + code
-    code = tools.get_combined_code('tmp/preparation/notes.txt', # todo:: app_name
-                                   self.raw_solution)
+    # code = tools.get_combined_code('tmp/preparation/notes.txt', # todo:: app_name
+    #                                self.raw_solution)
+    code = self.raw_solution
     code_lines = code.split('\n')
 
     code_dict = {}
@@ -327,32 +329,17 @@ class BugProcessorv2:
           lineno] = f'{leading_spaces}{_get_formatted_comment(comment)}\n{code_dict[lineno]}\n'
 
     commented_code = '\n'.join([code_dict[i] for i in range(len(code_dict))])
-    commented_code = tools.get_code_without_prefix('tmp/preparation/notes.txt', # todo:: app_name
-                                                   commented_code)
+    # commented_code = tools.get_code_without_prefix('tmp/preparation/notes.txt', # todo:: app_name
+    #                                                commented_code)
     return commented_code
 
   def format_all_apis(self, enable_dependency):
-    apis_data = tools.load_json_file(self.apis_path)
-    apis_description = ''
-    api_names = []
-    for _, v in apis_data.items():
-      for e in v:
-        if e["name"] == "" or e["name"] in api_names:
-          continue
-        api_names.append(e["name"])
-        name = e["name"]
-        if enable_dependency:
-          dep = e['dependency']
-          semantic_dep = get_semantic_dependencies(dep)
-        desc = e["desc"]
-        func = e["func"]
-
-        if enable_dependency:
-          apis_description += f'element: {name}\n\tDescription: {desc}\n\t Function: {func} \n\tDependency: {semantic_dep}. \n\n'
-        else:
-          apis_description += f'element: {name}\n\tDescription: {desc}\n\t Function: {func} \n\n'
-    # print(f'Generated description for {len(api_names)} APIs')
-    return apis_description
+    all_elements_desc = ''
+    for element in self.ele_data['elements']:
+      all_elements_desc += f"\n\nelement: {element['api_name']} \n\tDescription: {element['description']} \n\tType: {element['element_type']}"
+      if 'effect' in element.keys():
+        all_elements_desc += f"\n\tEffect: {element['effect']}"
+    return all_elements_desc
 
   def make_prompt(self, enable_dependency=False, stuck_ui_apis=None):
 

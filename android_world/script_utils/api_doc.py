@@ -42,7 +42,7 @@ class DependentAction():
       self.action_type = 'scroll'
       assert len(self.argv) == 2
       direction = self.argv[1].strip("\'\"").lower()
-      assert direction in ['up', 'down', 'lift', 'right']  # todo:: left, right
+      assert direction in ['up', 'down', 'lift', 'right']
       self.action_type = 'scroll' + ' ' + direction
     elif action.startswith('get_text'):
       self.action_type = 'get_text'

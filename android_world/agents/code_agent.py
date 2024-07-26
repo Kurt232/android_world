@@ -175,6 +175,7 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
     # todo:: add a config
     app_name = tools.load_txt_file('tmp/app_name.txt')
     app_doc = ApiDoc(app_name)
+    ele_data_path = os.path.join('tmp/elements/', app_name + '.json')
     for retry_time in range(self.MAX_RETRY_TIMES):
       if retry_time == 0:
         # restart the app first in case the script couldn't run and the app has not been start
@@ -185,18 +186,19 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
             }))
         time.sleep(self.WAIT_AFTER_ACTION_SECONDS)
 
-      # generate solution code for each try
-      task = goal
-      # formatted_apis = format_apis(self.env, app_doc)
-      ele_data_path = os.path.join('tmp/elements/', app_name + '.json')
-      solution_code = SolutionGenerator.get_solution(
-          app_name=app_name,
-          prompt_answer_path=os.path.join(self.save_path, f'solution.json'),
-          task=task,
-          ele_data_path=ele_data_path,
-          model_name='gpt-4o')
-      tools.write_txt_file('tmp/code.txt', solution_code)
-      code = solution_code
+      # generate solution code for first try
+      if retry_time == 0:
+        task = goal
+        # formatted_apis = format_apis(self.env, app_doc)
+        solution_code = SolutionGenerator.get_solution(
+            app_name=app_name,
+            prompt_answer_path=os.path.join(self.save_path, f'solution.json'),
+            task=task,
+            ele_data_path=ele_data_path,
+            model_name='gpt-4o')
+        tools.write_txt_file('tmp/code.txt', solution_code)
+        code = solution_code
+      
       # code = tools.load_txt_file('tmp/code.txt')
       # code = tools.get_combined_code('tmp/preparation/notes.txt', code) # todo:: app_name
       tools.write_txt_file('tmp/combined_code.txt', code)
@@ -223,22 +225,25 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
 
         tools.dump_json_file(error_path, error_info)
 
-        # bug_processor = BugProcessorv2(
-        #     app_name=app_name,
-        #     log_path=log_path,
-        #     error_log_path=error_path,
-        #     task=tools.load_txt_file('tmp/task.txt'),
-        #     raw_solution=tools.load_txt_file('tmp/code.txt'),
-        #     api_xpath_file='tmp/api_xpaths_checked.json')
+        bug_processor = BugProcessorv2(
+            app_name=app_name,
+            log_path=log_path,
+            error_log_path=error_path,
+            task=task,
+            raw_solution=code,
+            ele_data_path=ele_data_path,
+            api_xpaths=api_xpaths)
 
-        # stuck_apis_str = format_apis(self.env, api_xpaths)
-        # script = bug_processor.process_bug(
-        #     prompt_answer_path=os.path.join(
-        #         self.save_path, f'debug_task_turn{retry_time}.json'),
-        #     enable_dependency=False,
-        #     model_name='gpt-4o',
-        #     stuck_ui_apis=stuck_apis_str)
-        # tools.write_txt_file('tmp/code.txt', script)
+        stuck_apis_str = format_apis(self.env, api_xpaths)
+        script = bug_processor.process_bug(
+            prompt_answer_path=os.path.join(
+                self.save_path, f'debug_task_turn{retry_time}.json'),
+            enable_dependency=False,
+            model_name='gpt-4o',
+            stuck_ui_apis=stuck_apis_str)
+        
+        tools.write_txt_file('tmp/code.txt', script)
+        code = script
 
     result = {}
 
