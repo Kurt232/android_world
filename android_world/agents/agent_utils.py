@@ -674,6 +674,46 @@ def save_screenshot(save_path: str, tag: str, pixels: np.ndarray):
   image.save(file_path, format='JPEG')
 
 
+def save_raw_state(save_path: str, tag: str, forest: Any):
+  if not save_path:
+    return
+
+  output_dir = os.path.join(save_path, 'states')
+  if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
+  file_path = os.path.join(output_dir, f"state_{tag}.json")
+  if len(forest.windows) == 0:
+    return
+  state_list = []
+  # only windows[0] is showing the main activity
+  for node in forest.windows[0].tree.nodes:
+    element = _accessibility_node_to_ui_element(node, None)
+    state_list.append({
+        'id': int(node.unique_id),
+        'child_ids': [idx for idx in node.child_ids],
+        'text': element.text,
+        'content_description': element.content_description,
+        'class_name': element.class_name,
+        'bound_box': [[element.bbox_pixels.x_min, element.bbox_pixels.y_min],
+                      [element.bbox_pixels.x_max, element.bbox_pixels.y_max]],
+        'is_checked': element.is_checked,
+        'is_checkable': element.is_checkable,
+        'is_clickable': element.is_clickable,
+        'is_editable': element.is_editable,
+        'is_enabled': element.is_enabled,
+        'is_focused': element.is_focused,
+        'is_focusable': element.is_focusable,
+        'is_long_clickable': element.is_long_clickable,
+        'is_scrollable': element.is_scrollable,
+        'is_selected': element.is_selected,
+        'is_visible': element.is_visible,
+        'package_name': element.package_name,
+        'resource_id': element.resource_name
+    })
+
+  json.dump(state_list, open(file_path, 'w'), indent=2)
+  
+
 # todo
 # def get_state_str(forest: Any):
 #   view_signatures = set()
