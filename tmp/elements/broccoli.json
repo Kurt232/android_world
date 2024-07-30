@@ -707,7 +707,16 @@
       "effect": "The screen transitions to the new recipe creation screen, displaying a navigation button, a title indicating 'New Recipe', a save button, and a form for entering recipe details including photo, title, categories, description, source, servings, preparation time, ingredients, and directions.",
       "api_name": "recipe_details_more_options_popup__edit_button",
       "state_tag": "2024-07-07_T112746",
-      "xpath": "//listview//linearlayout//p[@resource_id='title']"
+      "xpath": "//listview//linearlayout//p[@resource_id='title' and text()='Edit']"
+    },
+    {
+      "element": "<p id=\"7\" resource_id=\"title\">\n Delete\n</p>\n",
+      "element_type": "p",
+      "description": "The 'Delete' button in the popup window.",
+      "effect": "The screen transitions to the new recipe creation screen, displaying a navigation button, a title indicating 'New Recipe', a save button, and a form for entering recipe details including photo, title, categories, description, source, servings, preparation time, ingredients, and directions.",
+      "api_name": "recipe_details_more_options_popup__delete_button",
+      "state_tag": "2024-07-07_T112746",
+      "xpath": "//listview//linearlayout//p[@resource_id='title' text()='Delete']"
     },
     {
       "element": "<button id=\"3\" resource_id=\"button2\">\n CANCEL\n</button>\n",

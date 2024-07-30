@@ -6,6 +6,8 @@ import yaml
 import inspect
 import time
 
+from absl import logging
+
 from android_world.agents.agent_utils import ElementTree, EleAttr
 from android_world.agents import agent_utils
 from android_world.agents import infer
@@ -146,7 +148,7 @@ def _save2yaml(file_name,
   }
   t1 = time.time()
   with open(file_name, 'w', encoding='utf-8') as f:
-    yaml.dump(data, f)
+    yaml.safe_dump(data, f)
   print(f'save to yaml time: {time.time() - t1}')
 
 
@@ -310,7 +312,8 @@ class ElementList:
     elementlist = ElementList(
         api_name=None,
         api_xpath=ele_xpath,
-        input_policy=self.input_policy,
+        env=self.env,
+        save_path=self.save_path,
         api_xpaths=self.api_xpaths,
         verifier=self.verifier)
     return ele_xpath, elementlist
@@ -322,6 +325,7 @@ class ElementList:
       target_ele, element_tree = self.verifier.navigate_and_get_target_element(
           api_name, caller_type, statement)
       if not target_ele:
+        logging.error(f'Element {api_name} not found! ')
         raise Exception(f'Element {api_name} not found! ')
 
   def __getitem__(self, selector):
@@ -371,7 +375,7 @@ class ElementList:
     '''
         in order to support iteration, we need to return an iterator object from __iter__() method.
         '''
-    return self
+    return self  
 
   def __next__(self):
     '''
@@ -665,12 +669,13 @@ class Verifier:
             currently_executing_code=statement)
 
         if target_ele:
+          dir = direction.lower()
           self.env.execute_action(
               json_action.JSONAction(
                   **{
                       "action_type": "scroll",
                       "index": target_ele.local_id,
-                      "direction": direction
+                      "direction": dir
                   }))
           time.sleep(self.WAIT_AFTER_ACTION_SECONDS)
     return {"action_type": "status", "goal_status": "infeasible"}
@@ -678,9 +683,10 @@ class Verifier:
   def execute_action(self, ele_data: dict):
     global ACTION_COUNT
 
+    logging.info(f'execute action: {ele_data}')
     api_name = ele_data['api_name']
-    if not api_name:
-      return
+    # if not api_name:
+    #   return
 
     if ACTION_COUNT == 0:
       self.env.execute_action(
@@ -786,9 +792,9 @@ class Verifier:
 
   def check_output_crash(self, api_name):
     output_log = tools.load_yaml_file(
-        os.path.join(self.save_path, f'log.yaml'))  # todo:: what's the task_id
-    # if output_log['records'][-1]['Choice'] == 'crashed':
-    #   raise Exception(f'Action not found when executing tap {api_name}')
+        os.path.join(self.save_path, f'log.yaml'))
+    if output_log['records'][-1]['Choice'] == 'crashed':
+      raise Exception(f'Action not found when executing tap {api_name}')
 
   def navigate_and_get_target_element(self, element_selector, caller_type,
                                       statement):
@@ -814,7 +820,7 @@ class Verifier:
     if not target_ele:
       ele_data = {
           'xpath': element_selector_xpath,
-          'api_name': None,
+          'api_name': element_selector_api_name,
           'text': None,
           'action_type': None,
           'statement': statement
@@ -826,12 +832,26 @@ class Verifier:
       element_tree = agent_utils.forest_to_element_tree(state.forest)
       target_ele = element_tree.get_ele_by_xpath(element_selector_xpath)
 
+    _save2yaml(
+      file_name=os.path.join(self.save_path, f'log.yaml'),
+      state_prompt=element_tree.str,
+      idx=target_ele.id if target_ele else None,
+      inputs=None,
+      action_type=caller_type,
+      api_name=element_selector_api_name,
+      xpath=element_selector_xpath,
+      skeleton=element_tree.skeleton.str,
+      tag="todo",  # todo::
+      raw_prompt=None,
+      raw_answer=None,
+      currently_executing_code=statement
+    )
     return target_ele, element_tree
 
   def _save_getting_info_action(self, action_type, api_name, xpath,
                                 current_code_line, lineno_in_original_script,
                                 original_code_line):
-    yaml_path = os.path.join(self.save_path, f'log.yaml')
+    yaml_path = os.path.join(self.save_path, 'log.yaml')
     state = self.env.get_state()
     element_tree = agent_utils.forest_to_element_tree(state.forest)
     state_desc = element_tree.str
@@ -1138,7 +1158,7 @@ class Verifier:
             'original_code': original_code_line
         })
 
-    self._save_getting_info_action('get_text', element_selector, None,
+    self._save_getting_info_action('get_text', None, None,
                                    current_code_line, lineno_in_original_script,
                                    original_code_line)
 

@@ -8,6 +8,7 @@ import re
 import traceback
 
 from lxml import etree
+from absl import logging
 
 from android_world.agents import base_agent
 from android_world.agents import agent_utils
@@ -153,9 +154,9 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
 
   # Wait a few seconds for the screen to stabilize after executing an action.
   WAIT_AFTER_ACTION_SECONDS = 2.0
-  MAX_RETRY_TIMES = 3
+  MAX_RETRY_TIMES = 1
 
-  # QUERY_FIRSTTIME = True
+  FREEZED_CODE = True
 
   def __init__(self,
                env: interface.AsyncEnv,
@@ -173,6 +174,8 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
     only execute once for code script
     """
     # todo:: add a config
+    task = goal
+    logging.info(f'Executing task: {task}')
     app_name = tools.load_txt_file('tmp/app_name.txt')
     app_doc = ApiDoc(app_name)
     ele_data_path = os.path.join('tmp/elements/', app_name + '.json')
@@ -187,8 +190,7 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
         time.sleep(self.WAIT_AFTER_ACTION_SECONDS)
 
       # generate solution code for first try
-      if retry_time == 0:
-        task = goal
+      if retry_time == 0 and not self.FREEZED_CODE:
         # formatted_apis = format_apis(self.env, app_doc)
         solution_code = SolutionGenerator.get_solution(
             app_name=app_name,
@@ -199,9 +201,9 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
         tools.write_txt_file('tmp/code.txt', solution_code)
         code = solution_code
       
-      # code = tools.load_txt_file('tmp/code.txt')
-      # code = tools.get_combined_code('tmp/preparation/notes.txt', code) # todo:: app_name
-      tools.write_txt_file('tmp/combined_code.txt', code)
+      if self.FREEZED_CODE:
+        code = tools.load_txt_file('tmp/code.txt')
+
       doc = app_doc
       env = self.env
       save_path = self.save_path
@@ -242,12 +244,13 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
             model_name='gpt-4o',
             stuck_ui_apis=stuck_apis_str)
         
-        tools.write_txt_file('tmp/code.txt', script)
+        if not self.FREEZED_CODE:
+          tools.write_txt_file('tmp/code.txt', script)
         code = script
 
     result = {}
-
-    if retry_time == self.MAX_RETRY_TIMES - 1:
+    
+    if retry_time == self.MAX_RETRY_TIMES:
       result['result'] = 'failed'
     else:
       result['result'] = 'succeed'

@@ -8,7 +8,7 @@
         "effect": "The screen transitions to a new recipe creation screen, displaying a navigation button, a title indicating 'New Recipe', a save button, and a form for entering recipe details including photo, title, categories, description, source, servings, preparation time, ingredients, and directions.",
         "api_name": "main_screen__new_recipe_button",
         "state_tag": "2024-07-07_T113151",
-        "xpath": "//*[@resource-id='fab_recipes']",
+        "xpath": "//*[@resource_id='fab_recipes']",
         "paths": [
           [
             "recipe_details_screen__back()"
@@ -342,7 +342,7 @@
         "effect": "The screen transitions to a detailed view of the selected recipe, displaying the recipe photo, title, servings, preparation time, description, source, ingredients, and directions.",
         "api_name": "main_screen__recipe_title",
         "state_tag": "2024-07-07_T114559",
-        "xpath": "//*[@resource-id='card_text_view_title']",
+        "xpath": "//*[@resource_id='card_text_view_title']",
         "paths": [
           [
             "tap(navigation_drawer_screen__recipes_option)"
@@ -678,7 +678,7 @@
         "effect": "The screen transitions to a detailed view of the selected recipe, displaying the recipe photo, title, and a button to mark as favorite. There is also a button for more options and a floating action button for starting the cooking assistant.",
         "api_name": "main_screen__recipe_photo",
         "state_tag": "2024-07-07_T112136",
-        "xpath": "//*[@resource-id='card_image']",
+        "xpath": "//*[@resource_id='card_image']",
         "paths": [
           [
             "recipe_details_screen__back()"
@@ -1004,7 +1004,7 @@
         "effect": "A dropdown menu appears with options to filter recipes by different categories, including 'All recipes', 'Seasonal recipes', 'Recipes without category', and 'Favorites'.",
         "api_name": "main_screen__category_spinner_button",
         "state_tag": "2024-07-07_T112246",
-        "xpath": "//*[@resource-id='spinner']",
+        "xpath": "//*[@resource_id='spinner']",
         "paths": [
           [
             "tap(delete_confirmation_dialog__delete_button)"
@@ -1356,7 +1356,7 @@
         "effect": "The screen transitions to a search view. The search bar is expanded, and an input field appears for entering search queries. The list of recipes remains visible.",
         "api_name": "main_screen__search_button",
         "state_tag": "2024-07-07_T113927",
-        "xpath": "//*[@resource-id='action_search']",
+        "xpath": "//*[@resource_id='action_search']",
         "paths": [
           [
             "tap(category_selection_screen__all_recipes_checkbox)"
@@ -1720,7 +1720,7 @@
         "effect": "The search input field is updated with the text 'apple'. A clear query button appears next to the input field. The list of recipes is filtered to show only those that match the search query.",
         "api_name": "main_screen__search_input",
         "state_tag": "2024-07-07_T113946",
-        "xpath": "//*[@resource-id='search_src_text']",
+        "xpath": "//*[@resource_id='search_src_text']",
         "paths": [
           [
             "tap(main_screen__search_button)"
@@ -2122,7 +2122,7 @@
         "effect": "Clears the search input field and resets the search bar to its default state.",
         "api_name": "main_screen__clear_query_button",
         "state_tag": "2024-07-07_T112331",
-        "xpath": "//*[@resource-id='search_close_btn']",
+        "xpath": "//*[@resource_id='search_close_btn']",
         "paths": [
           [
             "set_text(main_screen__search_input, 'Pie')"
@@ -3300,7 +3300,7 @@
         "effect": "The screen transitions to a detailed view of the selected recipe, displaying the recipe photo, title, servings, preparation time, description, source, ingredients, and directions.",
         "api_name": "main_screen__recipe_description_text",
         "state_tag": "2024-07-07_T114539",
-        "xpath": "//*[@resource-id='card_text_view_description']",
+        "xpath": "//*[@resource_id='card_text_view_description']",
         "paths": [
           [
             "tap(main_screen_filtered_no_recipes__beans_checkbox)"
@@ -3766,9 +3766,6 @@
         "state_tag": "2024-07-07_T110543",
         "xpath": "/html/body/framelayout/drawerlayout/viewgroup/p",
         "paths": [
-          [
-            "open_app"
-          ]
         ]
       },
       "recipe_card_list": {
@@ -3777,7 +3774,7 @@
         "description": "Container for the list of recipe cards.",
         "api_name": "main_screen__recipe_card_list",
         "state_tag": "2024-07-07_T114410",
-        "xpath": "//*[@resource-id='recycler_view']",
+        "xpath": "//*[@resource_id='recycler_view']",
         "paths": [
           [
             "tap(main_screen_filtered__apples_checkbox)"
@@ -4176,7 +4173,7 @@
         "description": "The title of a recipe displayed on the recipe card.",
         "api_name": "main_screen__recipe_card_title",
         "state_tag": "2024-07-07_T111632",
-        "xpath": "//*[@resource-id='card_text_view_title']",
+        "xpath": "//*[@resource_id='card_text_view_title']",
         "paths": [
           [
             "tap(recipe_details_screen__navigate_up_button)"
@@ -4219,7 +4216,7 @@
         "description": "A short description of the recipe displayed on the recipe card.",
         "api_name": "main_screen__recipe_card_description",
         "state_tag": "2024-07-07_T111632",
-        "xpath": "//*[@resource-id='card_text_view_description']",
+        "xpath": "//*[@resource_id='card_text_view_description']",
         "paths": [
           [
             "tap(recipe_details_screen__navigate_up_button)"
@@ -4262,7 +4259,7 @@
         "description": "The source of the recipe displayed on the recipe card.",
         "api_name": "main_screen__recipe_card_source",
         "state_tag": "2024-07-07_T111632",
-        "xpath": "//*[@resource-id='card_text_view_source']",
+        "xpath": "//*[@resource_id='card_text_view_source']",
         "paths": [
           [
             "tap(recipe_details_screen__navigate_up_button)"
@@ -4311,7 +4308,7 @@
         "effect": "A popup window appears with options to pick a photo or take a photo.",
         "api_name": "new_recipe_screen__change_photo_button",
         "state_tag": "2024-07-07_T110553",
-        "xpath": "//*[@resource-id='new_image']",
+        "xpath": "//*[@resource_id='new_image']",
         "paths": [
           [
             "tap(main_screen__new_recipe_button)"
@@ -4671,7 +4668,7 @@
         "effect": "The description input field is updated with the text provided by the user.",
         "api_name": "new_recipe_screen__description_input",
         "state_tag": "2024-07-07_T113251",
-        "xpath": "//*[@resource-id='new_description']",
+        "xpath": "//*[@resource_id='new_description']",
         "paths": [
           [
             "set_text(new_recipe_screen__title_input, 'Pie')"
@@ -5364,7 +5361,7 @@
         "effect": "The screen transitions to a detailed view of the saved recipe, displaying the recipe photo, title, servings, preparation time, description, source, ingredients, and directions.",
         "api_name": "new_recipe_screen__save_button",
         "state_tag": "2024-07-07_T113354",
-        "xpath": "//*[@resource-id='button_save_recipe']",
+        "xpath": "//*[@resource_id='button_save_recipe']",
         "paths": [
           [
             "set_text(new_recipe_screen__directions_input, 'mix flour and water and suger, add apple, bake for 15min')"
@@ -6388,7 +6385,7 @@
         "description": "Input field for entering the title of the recipe.",
         "api_name": "new_recipe_screen__title_input",
         "state_tag": "2024-07-07_T110553",
-        "xpath": "//*[@resource-id='new_title']",
+        "xpath": "//*[@resource_id='new_title']",
         "paths": [
           [
             "tap(main_screen__new_recipe_button)"
@@ -6732,7 +6729,7 @@
         "description": "Input field for entering the categories of the recipe.",
         "api_name": "new_recipe_screen__categories_input",
         "state_tag": "2024-07-07_T110553",
-        "xpath": "//*[@resource-id='new_categories']",
+        "xpath": "//*[@resource_id='new_categories']",
         "paths": [
           [
             "tap(main_screen__new_recipe_button)"
@@ -7048,7 +7045,7 @@
         "description": "Input field for entering the source of the recipe.",
         "api_name": "new_recipe_screen__source_input",
         "state_tag": "2024-07-07_T110553",
-        "xpath": "//*[@resource-id='new_source']",
+        "xpath": "//*[@resource_id='new_source']",
         "paths": [
           [
             "tap(main_screen__new_recipe_button)"
@@ -7384,7 +7381,7 @@
         "description": "Input field for entering the number of servings for the recipe.",
         "api_name": "new_recipe_screen__servings_input",
         "state_tag": "2024-07-07_T110553",
-        "xpath": "//*[@resource-id='new_servings']",
+        "xpath": "//*[@resource_id='new_servings']",
         "paths": [
           [
             "tap(main_screen__new_recipe_button)"
@@ -7724,7 +7721,7 @@
         "description": "Input field for entering the preparation time of the recipe.",
         "api_name": "new_recipe_screen__preparation_time_input",
         "state_tag": "2024-07-07_T110553",
-        "xpath": "//*[@resource-id='new_preparation_time']",
+        "xpath": "//*[@resource_id='new_preparation_time']",
         "paths": [
           [
             "tap(main_screen__new_recipe_button)"
@@ -8068,7 +8065,7 @@
         "description": "Input field for entering the ingredients of the recipe.",
         "api_name": "new_recipe_screen__ingredients_input",
         "state_tag": "2024-07-07_T110553",
-        "xpath": "//*[@resource-id='new_ingredients']",
+        "xpath": "//*[@resource_id='new_ingredients']",
         "paths": [
           [
             "tap(main_screen__new_recipe_button)"
@@ -8412,7 +8409,7 @@
         "description": "Input field for entering the directions for the recipe.",
         "api_name": "new_recipe_screen__directions_input",
         "state_tag": "2024-07-07_T110553",
-        "xpath": "//*[@resource-id='new_directions']",
+        "xpath": "//*[@resource_id='new_directions']",
         "paths": [
           [
             "tap(main_screen__new_recipe_button)"
@@ -8762,7 +8759,7 @@
         "effect": "The screen transitions to a file picker screen displaying options to browse files from different apps, recent images, and various filters.",
         "api_name": "change_photo_popup__pick_photo_button",
         "state_tag": "2024-07-07_T110601",
-        "xpath": "//*[@resource-id='text1']",
+        "xpath": "//*[@resource_id='text1']",
         "paths": [
           [
             "tap(new_recipe_screen__change_photo_button)"
@@ -9133,7 +9130,7 @@
         "description": "Title of the popup indicating the purpose, which is for changing a photo.",
         "api_name": "change_photo_popup__popup_title",
         "state_tag": "2024-07-07_T110601",
-        "xpath": "//*[@resource-id='alertTitle']",
+        "xpath": "//*[@resource_id='alertTitle']",
         "paths": [
           [
             "tap(new_recipe_screen__change_photo_button)"
@@ -9515,7 +9512,7 @@
         "description": "Button used by the user to take a new photo using the camera.",
         "api_name": "change_photo_popup__take_photo_button",
         "state_tag": "2024-07-07_T110601",
-        "xpath": "//*[@resource-id='text1']",
+        "xpath": "//*[@resource_id='text1']",
         "paths": [
           [
             "tap(new_recipe_screen__change_photo_button)"
@@ -9903,7 +9900,7 @@
         "effect": "The screen transitions to a view displaying folders from the Gallery app. It includes a search bar, a button for more options, and a recycler view showing folders with their names and photo counts.",
         "api_name": "file_picker_screen__gallery_button",
         "state_tag": "2024-07-07_T110608",
-        "xpath": "//*[@resource-id='title']",
+        "xpath": "//*[@resource_id='title']",
         "paths": [
           [
             "tap(change_photo_popup__pick_photo_button)"
@@ -11029,7 +11026,7 @@
         "description": "Header title indicating the section for recent images.",
         "api_name": "file_picker_screen__recent_images_header",
         "state_tag": "2024-07-07_T110608",
-        "xpath": "//*[@resource-id='header_title']",
+        "xpath": "//*[@resource_id='header_title']",
         "paths": [
           [
             "tap(change_photo_popup__pick_photo_button)"
@@ -11408,7 +11405,7 @@
         "description": "Button to switch the current view to a list view.",
         "api_name": "file_picker_screen__list_view_button",
         "state_tag": "2024-07-07_T110608",
-        "xpath": "//*[@resource-id='sub_menu_list']",
+        "xpath": "//*[@resource_id='sub_menu_list']",
         "paths": [
           [
             "tap(change_photo_popup__pick_photo_button)"
@@ -12166,7 +12163,7 @@
         "description": "Button to initiate a file search.",
         "api_name": "file_picker_screen__search_button",
         "state_tag": "2024-07-07_T110608",
-        "xpath": "//*[@resource-id='option_menu_search']",
+        "xpath": "//*[@resource_id='option_menu_search']",
         "paths": [
           [
             "tap(change_photo_popup__pick_photo_button)"
@@ -12930,7 +12927,7 @@
         "effect": "The screen transitions to display the contents of the 'Pictures' folder. It includes a back button, a search bar with an input field for searching within the folder, a button to toggle filename visibility, a button to sort items, and a button for more options. Below the search bar, there is a recycler view showing the items in the folder with their names.",
         "api_name": "gallery_folders_screen__dir_name",
         "state_tag": "2024-07-07_T110615",
-        "xpath": "//*[@resource-id='dir_name']",
+        "xpath": "//*[@resource_id='dir_name']",
         "paths": [
           [
             "tap(file_picker_screen__gallery_button)"
@@ -13292,7 +13289,7 @@
         "description": "Button to initiate the search function for the current screen.",
         "api_name": "gallery_folders_screen__search_button",
         "state_tag": "2024-07-07_T110615",
-        "xpath": "//*[@resource-id='top_toolbar_search_icon']",
+        "xpath": "//*[@resource_id='top_toolbar_search_icon']",
         "paths": [
           [
             "tap(file_picker_screen__gallery_button)"
@@ -13665,7 +13662,7 @@
         "description": "Input field for entering search queries to find specific folders.",
         "api_name": "gallery_folders_screen__search_input_field",
         "state_tag": "2024-07-07_T110615",
-        "xpath": "//*[@resource-id='top_toolbar_search']",
+        "xpath": "//*[@resource_id='top_toolbar_search']",
         "paths": [
           [
             "tap(file_picker_screen__gallery_button)"
@@ -14411,7 +14408,7 @@
         "description": "Thumbnail image representing a preview of the folder contents.",
         "api_name": "gallery_folders_screen__folder_thumbnail",
         "state_tag": "2024-07-07_T110615",
-        "xpath": "//*[@resource-id='thumbIV']",
+        "xpath": "//*[@resource_id='thumbIV']",
         "paths": [
           [
             "tap(file_picker_screen__gallery_button)"
@@ -14790,7 +14787,7 @@
         "effect": "The screen transitions to the new recipe creation screen, displaying a navigation button, a title indicating 'New Recipe', a save button, and a form for entering recipe details including photo, title, categories, description, source, servings, preparation time, ingredients, and directions.",
         "api_name": "folder_contents_screen__media_item",
         "state_tag": "2024-07-07_T110622",
-        "xpath": "//*[@resource-id='medium_name']",
+        "xpath": "//*[@resource_id='medium_name']",
         "paths": [
           [
             "tap(gallery_folders_screen__dir_name)"
@@ -15104,7 +15101,7 @@
         "description": "Button to navigate back to the previous screen.",
         "api_name": "folder_contents_screen__navigation_back_button",
         "state_tag": "2024-07-07_T110622",
-        "xpath": "//*[@resource-id='top_toolbar_search_icon']",
+        "xpath": "//*[@resource_id='top_toolbar_search_icon']",
         "paths": [
           [
             "tap(gallery_folders_screen__dir_name)"
@@ -15429,7 +15426,7 @@
         "description": "Input field to search within the folder contents.",
         "api_name": "folder_contents_screen__folder_search_input",
         "state_tag": "2024-07-07_T110622",
-        "xpath": "//*[@resource-id='top_toolbar_search']",
+        "xpath": "//*[@resource_id='top_toolbar_search']",
         "paths": [
           [
             "tap(gallery_folders_screen__dir_name)"
@@ -15754,7 +15751,7 @@
         "description": "Button to toggle the visibility of filenames in the folder content list.",
         "api_name": "folder_contents_screen__toggle_filename_visibility_button",
         "state_tag": "2024-07-07_T110622",
-        "xpath": "//*[@resource-id='toggle_filename']",
+        "xpath": "//*[@resource_id='toggle_filename']",
         "paths": [
           [
             "tap(gallery_folders_screen__dir_name)"
@@ -16079,7 +16076,7 @@
         "description": "Button to sort the folder contents by different criteria.",
         "api_name": "folder_contents_screen__sort_items_button",
         "state_tag": "2024-07-07_T110622",
-        "xpath": "//*[@resource-id='sort']",
+        "xpath": "//*[@resource_id='sort']",
         "paths": [
           [
             "tap(gallery_folders_screen__dir_name)"
@@ -16729,7 +16726,7 @@
         "description": "Image thumbnail for items in the folder list.",
         "api_name": "folder_contents_screen__folder_item_thumbnail",
         "state_tag": "2024-07-07_T110622",
-        "xpath": "//*[@resource-id='thumbIV']",
+        "xpath": "//*[@resource_id='thumbIV']",
         "paths": [
           [
             "tap(gallery_folders_screen__dir_name)"
@@ -17060,7 +17057,7 @@
         "effect": "The screen transitions to the cooking assistant view, displaying the ingredients and controls for navigating through the cooking steps. There are buttons to cancel and adjust ingredients.",
         "api_name": "recipe_details_screen__cook_button",
         "state_tag": "2024-07-07_T110955",
-        "xpath": "//*[@resource-id='fab_cooking_assistant']",
+        "xpath": "//*[@resource_id='fab_cooking_assistant']",
         "paths": [
           [
             "tap(new_recipe_screen__save_button)"
@@ -17433,7 +17430,7 @@
         "effect": "A popup window appears with options including Share, Share as file, Edit, and Delete. Each option is presented as a button within a list view.",
         "api_name": "recipe_details_screen__more_options_button",
         "state_tag": "2024-07-07_T112740",
-        "xpath": "/html/body/framelayout/scrollbar/button",
+        "xpath": "//*[@alt='More options']",
         "paths": [
           [
             "tap(main_screen__recipe_title)"
@@ -17764,7 +17761,7 @@
         "effect": "The recipe is marked as favorite, and the button changes to allow removing it from favorites.",
         "api_name": "recipe_details_screen__mark_as_favorite_button",
         "state_tag": "2024-07-07_T112729",
-        "xpath": "//*[@resource-id='action_details_like']",
+        "xpath": "//*[@resource_id='action_details_like']",
         "paths": [
           [
             "tap(main_screen__recipe_title)"
@@ -18127,7 +18124,7 @@
         "description": "Toolbar layout container holding the navigation elements.",
         "api_name": "recipe_details_screen__toolbar_layout",
         "state_tag": "2024-07-07_T110955",
-        "xpath": "//*[@resource-id='toolbar_layout']",
+        "xpath": "//*[@resource_id='toolbar_layout']",
         "paths": [
           [
             "tap(new_recipe_screen__save_button)"
@@ -18463,7 +18460,7 @@
         "description": "Button to display the recipe photo.",
         "api_name": "recipe_details_screen__recipe_photo_button",
         "state_tag": "2024-07-07_T110955",
-        "xpath": "//*[@resource-id='backdrop']",
+        "xpath": "//*[@resource_id='backdrop']",
         "paths": [
           [
             "tap(new_recipe_screen__save_button)"
@@ -19135,7 +19132,7 @@
         "description": "Displays the title of the recipe in the details section.",
         "api_name": "recipe_details_screen__details_title",
         "state_tag": "2024-07-07_T110955",
-        "xpath": "//*[@resource-id='details_title']",
+        "xpath": "//*[@resource_id='details_title']",
         "paths": [
           [
             "tap(new_recipe_screen__save_button)"
@@ -19471,7 +19468,7 @@
         "description": "Icon indicating the number of servings.",
         "api_name": "recipe_details_screen__details_servings_icon",
         "state_tag": "2024-07-07_T110955",
-        "xpath": "//*[@resource-id='details_icon_servings']",
+        "xpath": "//*[@resource_id='details_icon_servings']",
         "paths": [
           [
             "tap(new_recipe_screen__save_button)"
@@ -19807,7 +19804,7 @@
         "description": "Displays the number of servings.",
         "api_name": "recipe_details_screen__details_servings",
         "state_tag": "2024-07-07_T110955",
-        "xpath": "//*[@resource-id='details_servings']",
+        "xpath": "//*[@resource_id='details_servings']",
         "paths": [
           [
             "tap(new_recipe_screen__save_button)"
@@ -20143,7 +20140,7 @@
         "description": "Icon indicating the preparation time.",
         "api_name": "recipe_details_screen__details_preparation_time_icon",
         "state_tag": "2024-07-07_T110955",
-        "xpath": "//*[@resource-id='details_icon_preparation_time']",
+        "xpath": "//*[@resource_id='details_icon_preparation_time']",
         "paths": [
           [
             "tap(new_recipe_screen__save_button)"
@@ -20479,7 +20476,7 @@
         "description": "Displays the preparation time.",
         "api_name": "recipe_details_screen__details_preparation_time",
         "state_tag": "2024-07-07_T110955",
-        "xpath": "//*[@resource-id='details_preparation_time']",
+        "xpath": "//*[@resource_id='details_preparation_time']",
         "paths": [
           [
             "tap(new_recipe_screen__save_button)"
@@ -20815,7 +20812,7 @@
         "description": "Displays the description of the recipe.",
         "api_name": "recipe_details_screen__details_description",
         "state_tag": "2024-07-07_T110955",
-        "xpath": "//*[@resource-id='details_description']",
+        "xpath": "//*[@resource_id='details_description']",
         "paths": [
           [
             "tap(new_recipe_screen__save_button)"
@@ -21151,7 +21148,7 @@
         "description": "Icon indicating the source of the recipe.",
         "api_name": "recipe_details_screen__details_source_icon",
         "state_tag": "2024-07-07_T110955",
-        "xpath": "//*[@resource-id='details_icon_source']",
+        "xpath": "//*[@resource_id='details_icon_source']",
         "paths": [
           [
             "tap(new_recipe_screen__save_button)"
@@ -21487,7 +21484,7 @@
         "description": "Displays the source of the recipe.",
         "api_name": "recipe_details_screen__details_source",
         "state_tag": "2024-07-07_T110955",
-        "xpath": "//*[@resource-id='details_source']",
+        "xpath": "//*[@resource_id='details_source']",
         "paths": [
           [
             "tap(new_recipe_screen__save_button)"
@@ -22159,7 +22156,7 @@
         "description": "Displays the list of ingredients.",
         "api_name": "recipe_details_screen__ingredients_text",
         "state_tag": "2024-07-07_T110955",
-        "xpath": "//*[@resource-id='ingredient_text']",
+        "xpath": "//*[@resource_id='ingredient_text']",
         "paths": [
           [
             "tap(new_recipe_screen__save_button)"
@@ -22831,7 +22828,7 @@
         "description": "Displays the step position in the directions.",
         "api_name": "recipe_details_screen__direction_position",
         "state_tag": "2024-07-07_T110955",
-        "xpath": "//*[@resource-id='direction_position']",
+        "xpath": "//*[@resource_id='direction_position']",
         "paths": [
           [
             "tap(new_recipe_screen__save_button)"
@@ -23167,7 +23164,7 @@
         "description": "Displays the instruction text for each step in the directions.",
         "api_name": "recipe_details_screen__direction_text",
         "state_tag": "2024-07-07_T110955",
-        "xpath": "//*[@resource-id='direction_text']",
+        "xpath": "//*[@resource_id='direction_text']",
         "paths": [
           [
             "tap(new_recipe_screen__save_button)"
@@ -24580,7 +24577,7 @@
         "effect": "A popup window appears with options to adjust the ingredients. It includes a title indicating 'Adjust ingredients', checkboxes for selecting scaling modes (SIMPLE and PRO), an input field for the number of servings, and buttons to cancel or confirm the adjustments.",
         "api_name": "cooking_assistant_screen__adjust_ingredients_button",
         "state_tag": "2024-07-07_T111031",
-        "xpath": "//*[@resource-id='button_scaling']",
+        "xpath": "//*[@resource_id='button_scaling']",
         "paths": [
           [
             "tap(recipe_details_screen__cook_button)"
@@ -24950,7 +24947,7 @@
         "effect": "The screen transitions to display the first step of the cooking instructions. It includes a title indicating the step number, a text button showing the step instructions, and two control buttons for navigating through the steps. The cancel and adjust ingredients buttons remain visible.",
         "api_name": "cooking_assistant_screen__scroll_right",
         "state_tag": "2024-07-07_T111211",
-        "xpath": "//*[@resource-id='cooking_assistant_pager']",
+        "xpath": "//*[@resource_id='cooking_assistant_pager']",
         "paths": [
           [
             "tap(adjust_ingredients_popup__cancel_button)"
@@ -24973,7 +24970,7 @@
         "effect": "The popup window closes, and the screen returns to the detailed view of the saved recipe, displaying the recipe photo, title, servings, preparation time, description, source, ingredients, and directions.",
         "api_name": "cooking_assistant_screen__cancel_button",
         "state_tag": "2024-07-07_T111222",
-        "xpath": "//*[@resource-id='button_cancel']",
+        "xpath": "//*[@resource_id='button_cancel']",
         "paths": [
           [
             "scroll(cooking_assistant_screen__scroll_right, 'right')"
@@ -25001,7 +24998,7 @@
         "description": "Title indicating the current section of the recipe, showing the step number or ingredients.",
         "api_name": "cooking_assistant_screen__section_title",
         "state_tag": "2024-07-07_T111031",
-        "xpath": "//*[@resource-id='cooking_assistant_title']",
+        "xpath": "//*[@resource_id='cooking_assistant_title']",
         "paths": [
           [
             "tap(recipe_details_screen__cook_button)"
@@ -25370,7 +25367,7 @@
         "description": "Text button displaying the current step instructions or list of ingredients in the recipe.",
         "api_name": "cooking_assistant_screen__current_step_text_button",
         "state_tag": "2024-07-07_T111031",
-        "xpath": "//*[@resource-id='cooking_assistant_text']",
+        "xpath": "//*[@resource_id='cooking_assistant_text']",
         "paths": [
           [
             "tap(recipe_details_screen__cook_button)"
@@ -25739,7 +25736,7 @@
         "description": "Control button used for navigating to the previous step of the cooking process.",
         "api_name": "cooking_assistant_screen__previous_step_button",
         "state_tag": "2024-07-07_T111031",
-        "xpath": "//*[@resource-id='cooking_assistant_control']",
+        "xpath": "//*[@resource_id='cooking_assistant_control']",
         "paths": [
           [
             "tap(recipe_details_screen__cook_button)"
@@ -26108,7 +26105,7 @@
         "description": "Control button used for navigating to the next step of the cooking process.",
         "api_name": "cooking_assistant_screen__next_step_button",
         "state_tag": "2024-07-07_T111031",
-        "xpath": "//*[@resource-id='cooking_assistant_control']",
+        "xpath": "//*[@resource_id='cooking_assistant_control']",
         "paths": [
           [
             "tap(recipe_details_screen__cook_button)"
@@ -26483,7 +26480,7 @@
         "effect": "The number of servings is updated from '2' to '23'.",
         "api_name": "adjust_ingredients_popup__number_of_servings_input",
         "state_tag": "2024-07-07_T111132",
-        "xpath": "//*[@resource-id='number_of_servings']",
+        "xpath": "//*[@resource_id='number_of_servings']",
         "paths": [
           [
             "tap(adjust_ingredients_popup__simple_scaling_checkbox)"
@@ -26497,7 +26494,7 @@
         "effect": "The popup window closes, and the screen returns to the cooking assistant view, displaying the ingredients and controls for navigating through the cooking steps. There are buttons to cancel and adjust ingredients.",
         "api_name": "adjust_ingredients_popup__cancel_button",
         "state_tag": "2024-07-07_T111149",
-        "xpath": "//*[@resource-id='button2']",
+        "xpath": "//*[@resource_id='button2']",
         "paths": [
           [
             "set_text(adjust_ingredients_popup__number_of_servings_input, '3')"
@@ -26514,7 +26511,7 @@
         "description": "Input field where the user sets the scaling factor when 'PRO' checkbox is selected.",
         "api_name": "adjust_ingredients_popup__scaling_factor_input",
         "state_tag": "2024-07-07_T111121",
-        "xpath": "//*[@resource-id='scale_factor']",
+        "xpath": "//*[@resource_id='scale_factor']",
         "paths": [
           [
             "tap(adjust_ingredients_popup__pro_scaling_checkbox)"
@@ -26876,7 +26873,356 @@
         "effect": "The screen transitions to the new recipe creation screen, displaying a navigation button, a title indicating 'New Recipe', a save button, and a form for entering recipe details including photo, title, categories, description, source, servings, preparation time, ingredients, and directions.",
         "api_name": "recipe_details_more_options_popup__edit_button",
         "state_tag": "2024-07-07_T112746",
-        "xpath": "//*[@resource-id='title']",
+        "xpath": "//*[@resource_id='title' and text()='Edit']",
+        "paths": [
+          [
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(new_recipe_screen__navigate_up_button)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(delete_confirmation_dialog__cancel_button)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(main_screen__recipe_photo)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(recipe_details_screen__mark_as_favorite_button)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(navigation_drawer_screen__recipes_option)",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "recipe_details_screen__back()",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(recipe_details_more_options_popup__delete_button)",
+            "tap(delete_confirmation_dialog__cancel_button)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(settings_screen__open_navigation_drawer_button)",
+            "tap(navigation_drawer_screen__recipes_option)",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(categories_screen__open_navigation_drawer_button)",
+            "tap(navigation_drawer_screen__recipes_option)",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "new_recipe_screen__back()",
+            "recipe_details_screen__back()",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(new_recipe_screen__save_button)",
+            "recipe_details_screen__back()",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(languages_of_recipes_popup__ok_button)",
+            "tap(settings_screen__open_navigation_drawer_button)",
+            "tap(navigation_drawer_screen__recipes_option)",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "welcome_screen__back()",
+            "tap(settings_screen__open_navigation_drawer_button)",
+            "tap(navigation_drawer_screen__recipes_option)",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(add_category_popup__save_button)",
+            "tap(categories_screen__open_navigation_drawer_button)",
+            "tap(navigation_drawer_screen__recipes_option)",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(sharing_options_screen__broccoli_option)",
+            "new_recipe_screen__back()",
+            "recipe_details_screen__back()",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(no_categories_popup__ok_button)",
+            "new_recipe_screen__back()",
+            "recipe_details_screen__back()",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "set_text(new_recipe_screen__directions_input, 'mix flour and water and suger, add apple, bake for 15min')",
+            "tap(new_recipe_screen__save_button)",
+            "recipe_details_screen__back()",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "set_text(new_recipe_screen__title_input, 'sandwich')",
+            "tap(new_recipe_screen__save_button)",
+            "recipe_details_screen__back()",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "set_text(new_recipe_screen__description_input, '1')",
+            "tap(new_recipe_screen__save_button)",
+            "recipe_details_screen__back()",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(languages_of_recipes_popup__chinese_checkbox)",
+            "tap(languages_of_recipes_popup__ok_button)",
+            "tap(settings_screen__open_navigation_drawer_button)",
+            "tap(navigation_drawer_screen__recipes_option)",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "set_text(add_category_popup__category_name_input, 'American food')",
+            "tap(add_category_popup__save_button)",
+            "tap(categories_screen__open_navigation_drawer_button)",
+            "tap(navigation_drawer_screen__recipes_option)",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(recipe_details_more_options_popup__share_button)",
+            "tap(sharing_options_screen__broccoli_option)",
+            "new_recipe_screen__back()",
+            "recipe_details_screen__back()",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(new_recipe_screen__categories_input)",
+            "tap(no_categories_popup__ok_button)",
+            "new_recipe_screen__back()",
+            "recipe_details_screen__back()",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(main_screen__new_recipe_button)",
+            "set_text(new_recipe_screen__directions_input, 'mix flour and water and suger, add apple, bake for 15min')",
+            "tap(new_recipe_screen__save_button)",
+            "recipe_details_screen__back()",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "scroll(new_recipe_screen__scroll_down, 'down')",
+            "set_text(new_recipe_screen__directions_input, 'mix flour and water and suger, add apple, bake for 15min')",
+            "tap(new_recipe_screen__save_button)",
+            "recipe_details_screen__back()",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(folder_contents_screen__media_item)",
+            "set_text(new_recipe_screen__title_input, 'sandwich')",
+            "tap(new_recipe_screen__save_button)",
+            "recipe_details_screen__back()",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(categories_popup__ok_button)",
+            "set_text(new_recipe_screen__description_input, '1')",
+            "tap(new_recipe_screen__save_button)",
+            "recipe_details_screen__back()",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(languages_of_recipes_popup__english_checkbox)",
+            "tap(languages_of_recipes_popup__chinese_checkbox)",
+            "tap(languages_of_recipes_popup__ok_button)",
+            "tap(settings_screen__open_navigation_drawer_button)",
+            "tap(navigation_drawer_screen__recipes_option)",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(categories_screen__add_category_button)",
+            "set_text(add_category_popup__category_name_input, 'American food')",
+            "tap(add_category_popup__save_button)",
+            "tap(categories_screen__open_navigation_drawer_button)",
+            "tap(navigation_drawer_screen__recipes_option)",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "set_text(new_recipe_screen__ingredients_input, 'apple, flour, sugger, water')",
+            "scroll(new_recipe_screen__scroll_down, 'down')",
+            "set_text(new_recipe_screen__directions_input, 'mix flour and water and suger, add apple, bake for 15min')",
+            "tap(new_recipe_screen__save_button)",
+            "recipe_details_screen__back()",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(gallery_folders_screen__dir_name)",
+            "tap(folder_contents_screen__media_item)",
+            "set_text(new_recipe_screen__title_input, 'sandwich')",
+            "tap(new_recipe_screen__save_button)",
+            "recipe_details_screen__back()",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(categories_popup__category_checkbox)",
+            "tap(categories_popup__ok_button)",
+            "set_text(new_recipe_screen__description_input, '1')",
+            "tap(new_recipe_screen__save_button)",
+            "recipe_details_screen__back()",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(navigation_drawer_screen__categories_option)",
+            "tap(categories_screen__add_category_button)",
+            "set_text(add_category_popup__category_name_input, 'American food')",
+            "tap(add_category_popup__save_button)",
+            "tap(categories_screen__open_navigation_drawer_button)",
+            "tap(navigation_drawer_screen__recipes_option)",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "set_text(new_recipe_screen__preparation_time_input, '20min')",
+            "set_text(new_recipe_screen__ingredients_input, 'apple, flour, sugger, water')",
+            "scroll(new_recipe_screen__scroll_down, 'down')",
+            "set_text(new_recipe_screen__directions_input, 'mix flour and water and suger, add apple, bake for 15min')",
+            "tap(new_recipe_screen__save_button)",
+            "recipe_details_screen__back()",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(file_picker_screen__gallery_button)",
+            "tap(gallery_folders_screen__dir_name)",
+            "tap(folder_contents_screen__media_item)",
+            "set_text(new_recipe_screen__title_input, 'sandwich')",
+            "tap(new_recipe_screen__save_button)",
+            "recipe_details_screen__back()",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(main_screen__open_navigation_drawer_button)",
+            "tap(navigation_drawer_screen__categories_option)",
+            "tap(categories_screen__add_category_button)",
+            "set_text(add_category_popup__category_name_input, 'American food')",
+            "tap(add_category_popup__save_button)",
+            "tap(categories_screen__open_navigation_drawer_button)",
+            "tap(navigation_drawer_screen__recipes_option)",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "set_text(new_recipe_screen__servings_input, '2')",
+            "set_text(new_recipe_screen__preparation_time_input, '20min')",
+            "set_text(new_recipe_screen__ingredients_input, 'apple, flour, sugger, water')",
+            "scroll(new_recipe_screen__scroll_down, 'down')",
+            "set_text(new_recipe_screen__directions_input, 'mix flour and water and suger, add apple, bake for 15min')",
+            "tap(new_recipe_screen__save_button)",
+            "recipe_details_screen__back()",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(change_photo_popup__pick_photo_button)",
+            "tap(file_picker_screen__gallery_button)",
+            "tap(gallery_folders_screen__dir_name)",
+            "tap(folder_contents_screen__media_item)",
+            "set_text(new_recipe_screen__title_input, 'sandwich')",
+            "tap(new_recipe_screen__save_button)",
+            "recipe_details_screen__back()",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(main_screen__collapse_button)",
+            "tap(main_screen__open_navigation_drawer_button)",
+            "tap(navigation_drawer_screen__categories_option)",
+            "tap(categories_screen__add_category_button)",
+            "set_text(add_category_popup__category_name_input, 'American food')",
+            "tap(add_category_popup__save_button)",
+            "tap(categories_screen__open_navigation_drawer_button)",
+            "tap(navigation_drawer_screen__recipes_option)",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(main_screen_search__collapse_button)",
+            "tap(main_screen__open_navigation_drawer_button)",
+            "tap(navigation_drawer_screen__categories_option)",
+            "tap(categories_screen__add_category_button)",
+            "set_text(add_category_popup__category_name_input, 'American food')",
+            "tap(add_category_popup__save_button)",
+            "tap(categories_screen__open_navigation_drawer_button)",
+            "tap(navigation_drawer_screen__recipes_option)",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "set_text(new_recipe_screen__source_input, 'Google')",
+            "set_text(new_recipe_screen__servings_input, '2')",
+            "set_text(new_recipe_screen__preparation_time_input, '20min')",
+            "set_text(new_recipe_screen__ingredients_input, 'apple, flour, sugger, water')",
+            "scroll(new_recipe_screen__scroll_down, 'down')",
+            "set_text(new_recipe_screen__directions_input, 'mix flour and water and suger, add apple, bake for 15min')",
+            "tap(new_recipe_screen__save_button)",
+            "recipe_details_screen__back()",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ],
+          [
+            "tap(new_recipe_screen__change_photo_button)",
+            "tap(change_photo_popup__pick_photo_button)",
+            "tap(file_picker_screen__gallery_button)",
+            "tap(gallery_folders_screen__dir_name)",
+            "tap(folder_contents_screen__media_item)",
+            "set_text(new_recipe_screen__title_input, 'sandwich')",
+            "tap(new_recipe_screen__save_button)",
+            "recipe_details_screen__back()",
+            "tap(main_screen__recipe_title)",
+            "tap(recipe_details_screen__more_options_button)"
+          ]
+        ]
+      },
+      "delete_button": {
+        "element": "<p id=\"7\" resource_id=\"title\">\n Delete\n</p>\n",
+        "element_type": "p",
+        "description": "The 'Delete' button in the popup window.",
+        "effect": "The screen transitions to the new recipe creation screen, displaying a navigation button, a title indicating 'New Recipe', a save button, and a form for entering recipe details including photo, title, categories, description, source, servings, preparation time, ingredients, and directions.",
+        "api_name": "recipe_details_more_options_popup__delete_button",
+        "state_tag": "2024-07-07_T112746",
+        "xpath": "//*[@resource_id='title' and text()='Delete']",
         "paths": [
           [
             "tap(recipe_details_screen__more_options_button)"
@@ -27230,7 +27576,7 @@
         "effect": "The popup window closes, and the screen returns to the detailed view of the saved recipe, displaying the recipe photo, title, servings, preparation time, description, source, ingredients, and directions.",
         "api_name": "delete_confirmation_dialog__cancel_button",
         "state_tag": "2024-07-07_T111757",
-        "xpath": "//*[@resource-id='button2']",
+        "xpath": "//*[@resource_id='button2']",
         "paths": [
           [
             "tap(recipe_details_more_options_popup__delete_button)"
@@ -27569,7 +27915,7 @@
         "effect": "The recipe is deleted, and the screen transitions to the main screen of the app, displaying a navigation drawer button, a title indicating 'Recipes', a category spinner showing 'All recipes', a search button, and a list of recipes. A floating action button for adding a new recipe is also present.",
         "api_name": "delete_confirmation_dialog__delete_button",
         "state_tag": "2024-07-07_T112207",
-        "xpath": "//*[@resource-id='button1']",
+        "xpath": "//*[@resource_id='button1']",
         "paths": [
           [
             "tap(recipe_details_more_options_popup__delete_button)"
@@ -27912,7 +28258,7 @@
         "description": "Message prompting the user to confirm deletion of the recipe.",
         "api_name": "delete_confirmation_dialog__deletion_message",
         "state_tag": "2024-07-07_T111757",
-        "xpath": "//*[@resource-id='message']",
+        "xpath": "//*[@resource_id='message']",
         "paths": [
           [
             "tap(recipe_details_more_options_popup__delete_button)"
@@ -28261,7 +28607,7 @@
         "effect": "The screen transitions to the new recipe creation screen, displaying a navigation button, a title indicating 'New Recipe', a save button, and a form for entering recipe details including photo, title, categories, description, source, servings, preparation time, ingredients, and directions.",
         "api_name": "sharing_options_screen__broccoli_option",
         "state_tag": "2024-07-07_T111920",
-        "xpath": "//*[@resource-id='text1']",
+        "xpath": "//*[@resource_id='text1']",
         "paths": [
           [
             "tap(recipe_details_more_options_popup__share_button)"
@@ -28593,7 +28939,7 @@
         "description": "Button to initiate sharing with nearby devices.",
         "api_name": "sharing_options_screen__nearby_button",
         "state_tag": "2024-07-07_T111920",
-        "xpath": "//*[@resource-id='chooser_nearby_button']",
+        "xpath": "//*[@resource_id='chooser_nearby_button']",
         "paths": [
           [
             "tap(recipe_details_more_options_popup__share_button)"
@@ -28933,7 +29279,7 @@
         "description": "Button to edit the sharing details.",
         "api_name": "sharing_options_screen__edit_button",
         "state_tag": "2024-07-07_T111920",
-        "xpath": "//*[@resource-id='chooser_edit_button']",
+        "xpath": "//*[@resource_id='chooser_edit_button']",
         "paths": [
           [
             "tap(recipe_details_more_options_popup__share_button)"
@@ -29273,7 +29619,7 @@
         "description": "Message indicating there are no recommended people to share with.",
         "api_name": "sharing_options_screen__no_recommendation_message",
         "state_tag": "2024-07-07_T111920",
-        "xpath": "//*[@resource-id='chooser_row_text_option']",
+        "xpath": "//*[@resource_id='chooser_row_text_option']",
         "paths": [
           [
             "tap(recipe_details_more_options_popup__share_button)"
@@ -29613,7 +29959,7 @@
         "description": "Option to share through Notes app.",
         "api_name": "sharing_options_screen__notes_option",
         "state_tag": "2024-07-07_T111920",
-        "xpath": "//*[@resource-id='text1']",
+        "xpath": "//*[@resource_id='text1']",
         "paths": [
           [
             "tap(recipe_details_more_options_popup__share_button)"
@@ -29953,7 +30299,7 @@
         "description": "Option to share through Bluetooth.",
         "api_name": "sharing_options_screen__bluetooth_option",
         "state_tag": "2024-07-07_T111920",
-        "xpath": "//*[@resource-id='text1']",
+        "xpath": "//*[@resource_id='text1']",
         "paths": [
           [
             "tap(recipe_details_more_options_popup__share_button)"
@@ -30293,7 +30639,7 @@
         "description": "Option to create a new task while sharing.",
         "api_name": "sharing_options_screen__tasks_option",
         "state_tag": "2024-07-07_T111920",
-        "xpath": "//*[@resource-id='text1']",
+        "xpath": "//*[@resource_id='text1']",
         "paths": [
           [
             "tap(recipe_details_more_options_popup__share_button)"
@@ -30639,7 +30985,7 @@
         "effect": "The screen transitions to the main screen of the app, displaying a navigation drawer button, a title indicating 'Recipes', a category spinner showing 'All recipes', a search button, and a list of recipes. A floating action button for adding a new recipe is also present.",
         "api_name": "category_selection_screen__all_recipes_checkbox",
         "state_tag": "2024-07-07_T112256",
-        "xpath": "//*[@resource-id='text1']",
+        "xpath": "//*[@resource_id='text1']",
         "paths": [
           [
             "tap(main_screen__category_spinner_button)"
@@ -30994,7 +31340,7 @@
         "description": "Checkbox for selecting 'Recipes without category' option.",
         "api_name": "category_selection_screen__no_category_recipes_checkbox",
         "state_tag": "2024-07-07_T112238",
-        "xpath": "//*[@resource-id='text1']",
+        "xpath": "//*[@resource_id='text1']",
         "paths": [
           [
             "tap(main_screen__category_spinner_button)"
@@ -31349,7 +31695,7 @@
         "description": "Checkbox for selecting 'Favorites' category.",
         "api_name": "category_selection_screen__favorites_recipes_checkbox",
         "state_tag": "2024-07-07_T112238",
-        "xpath": "//*[@resource-id='text1']",
+        "xpath": "//*[@resource_id='text1']",
         "paths": [
           [
             "tap(main_screen__category_spinner_button)"
@@ -31710,7 +32056,7 @@
         "effect": "The screen transitions to the seasonal calendar view, displaying a navigation drawer button, a title indicating 'Seasonal calendar', a scrollbar with month buttons, and a list of seasonal ingredients for the selected month.",
         "api_name": "navigation_drawer_screen__seasonal_calendar_option",
         "state_tag": "2024-07-07_T114444",
-        "xpath": "//*[@resource-id='design_menu_item_text']",
+        "xpath": "//*[@resource_id='design_menu_item_text']",
         "paths": [
           [
             "tap(main_screen__open_navigation_drawer_button)"
@@ -32504,7 +32850,7 @@
         "description": "Text element displaying the subtitle in the navigation drawer header.",
         "api_name": "navigation_drawer_screen__header_subtitle",
         "state_tag": "2024-07-07_T112443",
-        "xpath": "//*[@resource-id='header_subtitle']",
+        "xpath": "//*[@resource_id='header_subtitle']",
         "paths": [
           [
             "tap(main_screen__open_navigation_drawer_button)"
@@ -32917,7 +33263,7 @@
         "effect": "The screen transitions to a welcome screen for an email application. It displays a title indicating 'Welcome to Gmail', a subtitle indicating 'One app for all of your email', an image icon, a promotion text, and two buttons: 'SKIP' and 'Next'.",
         "api_name": "settings_screen__send_feedback_option",
         "state_tag": "2024-07-07_T114120",
-        "xpath": "//*[@resource-id='title']",
+        "xpath": "//*[@resource_id='title']",
         "paths": [
           [
             "tap(region_selection_popup__north_america_colder_checkbox)"
@@ -33387,7 +33733,7 @@
         "effect": "The theme is changed to 'Light', and the popup window closes, returning to the settings screen. The 'Theme' option now shows 'Light' as the selected theme.",
         "api_name": "theme_selection_popup__light_checkbox",
         "state_tag": "2024-07-07_T112507",
-        "xpath": "//*[@resource-id='text1']",
+        "xpath": "//*[@resource_id='text1']",
         "paths": [
           [
             "tap(settings_screen__theme_option)"
@@ -33400,7 +33746,7 @@
         "description": "Title indicating the purpose of the popup, which is to select a theme.",
         "api_name": "theme_selection_popup__popup_title",
         "state_tag": "2024-07-07_T112507",
-        "xpath": "//*[@resource-id='alertTitle']",
+        "xpath": "//*[@resource_id='alertTitle']",
         "paths": [
           [
             "tap(settings_screen__theme_option)"
@@ -33413,7 +33759,7 @@
         "description": "Checkbox to select the dark theme.",
         "api_name": "theme_selection_popup__dark_theme_checkbox",
         "state_tag": "2024-07-07_T112507",
-        "xpath": "//*[@resource-id='text1']",
+        "xpath": "//*[@resource_id='text1']",
         "paths": [
           [
             "tap(settings_screen__theme_option)"
@@ -33426,7 +33772,7 @@
         "description": "Checkbox to select the system default theme, currently selected.",
         "api_name": "theme_selection_popup__system_default_theme_checkbox",
         "state_tag": "2024-07-07_T112507",
-        "xpath": "//*[@resource-id='text1']",
+        "xpath": "//*[@resource_id='text1']",
         "paths": [
           [
             "tap(settings_screen__theme_option)"
@@ -33439,7 +33785,7 @@
         "description": "Button to cancel the theme selection and close the popup.",
         "api_name": "theme_selection_popup__cancel_button",
         "state_tag": "2024-07-07_T112507",
-        "xpath": "//*[@resource-id='button2']",
+        "xpath": "//*[@resource_id='button2']",
         "paths": [
           [
             "tap(settings_screen__theme_option)"
@@ -33458,7 +33804,7 @@
         "effect": "The preferred category is set to 'All recipes', and the popup window closes, returning to the settings screen. The 'Preferred category' option now shows 'All recipes' as the selected category.",
         "api_name": "preferred_category_popup__all_recipes_checkbox",
         "state_tag": "2024-07-07_T112531",
-        "xpath": "//*[@resource-id='text1']",
+        "xpath": "//*[@resource_id='text1']",
         "paths": [
           [
             "tap(settings_screen__preferred_category_option)"
@@ -33480,7 +33826,7 @@
         "description": "Title indicating the preference selection category.",
         "api_name": "preferred_category_popup__preference_category_title",
         "state_tag": "2024-07-07_T112531",
-        "xpath": "//*[@resource-id='alertTitle']",
+        "xpath": "//*[@resource_id='alertTitle']",
         "paths": [
           [
             "tap(settings_screen__preferred_category_option)"
@@ -33502,7 +33848,7 @@
         "description": "Checkbox for selecting 'Seasonal recipes' as the preferred category.",
         "api_name": "preferred_category_popup__seasonal_recipes_checkbox",
         "state_tag": "2024-07-07_T112531",
-        "xpath": "//*[@resource-id='text1']",
+        "xpath": "//*[@resource_id='text1']",
         "paths": [
           [
             "tap(settings_screen__preferred_category_option)"
@@ -33524,7 +33870,7 @@
         "description": "Checkbox for selecting 'Favorites' as the preferred category.",
         "api_name": "preferred_category_popup__favorites_checkbox",
         "state_tag": "2024-07-07_T112531",
-        "xpath": "//*[@resource-id='text1']",
+        "xpath": "//*[@resource_id='text1']",
         "paths": [
           [
             "tap(settings_screen__preferred_category_option)"
@@ -33546,7 +33892,7 @@
         "description": "Button to cancel the preferred category selection and close the popup.",
         "api_name": "preferred_category_popup__cancel_button",
         "state_tag": "2024-07-07_T112531",
-        "xpath": "//*[@resource-id='button2']",
+        "xpath": "//*[@resource_id='button2']",
         "paths": [
           [
             "tap(settings_screen__preferred_category_option)"
@@ -33574,7 +33920,7 @@
         "effect": "The popup window closes, and the screen returns to the settings view, displaying various settings options including General settings, Preferred category, Theme, Seasonal calendar, Region, Languages of recipes, and Send feedback.",
         "api_name": "region_selection_popup__cancel_button",
         "state_tag": "2024-07-07_T112558",
-        "xpath": "//*[@resource-id='button2']",
+        "xpath": "//*[@resource_id='button2']",
         "paths": [
           [
             "tap(settings_screen__region_option)"
@@ -34061,7 +34407,7 @@
         "effect": "The selected region is updated to 'North America (colder)', and the popup window closes, returning to the settings screen.",
         "api_name": "region_selection_popup__north_america_colder_checkbox",
         "state_tag": "2024-07-07_T114109",
-        "xpath": "//*[@resource-id='text1']",
+        "xpath": "//*[@resource_id='text1']",
         "paths": [
           [
             "tap(settings_screen__region_option)"
@@ -34547,7 +34893,7 @@
         "description": "The title of the popup window indicating the selection of regions.",
         "api_name": "region_selection_popup__region_title",
         "state_tag": "2024-07-07_T112558",
-        "xpath": "//*[@resource-id='alertTitle']",
+        "xpath": "//*[@resource_id='alertTitle']",
         "paths": [
           [
             "tap(settings_screen__region_option)"
@@ -35033,7 +35379,7 @@
         "description": "Checkbox for selecting the region 'Central Europe'. Allows users to select or deselect this region.",
         "api_name": "region_selection_popup__central_europe_checkbox",
         "state_tag": "2024-07-07_T112558",
-        "xpath": "//*[@resource-id='text1']",
+        "xpath": "//*[@resource_id='text1']",
         "paths": [
           [
             "tap(settings_screen__region_option)"
@@ -35519,7 +35865,7 @@
         "description": "Checkbox for selecting the region 'North America (warmer)'. Allows users to select or deselect this region.",
         "api_name": "region_selection_popup__north_america_warmer_checkbox",
         "state_tag": "2024-07-07_T112558",
-        "xpath": "//*[@resource-id='text1']",
+        "xpath": "//*[@resource_id='text1']",
         "paths": [
           [
             "tap(settings_screen__region_option)"
@@ -36011,7 +36357,7 @@
         "effect": "The checkbox for Chinese becomes selected.",
         "api_name": "languages_of_recipes_popup__chinese_checkbox",
         "state_tag": "2024-07-07_T112625",
-        "xpath": "//*[@resource-id='text1']",
+        "xpath": "//*[@resource_id='text1']",
         "paths": [
           [
             "tap(languages_of_recipes_popup__english_checkbox)"
@@ -36025,7 +36371,7 @@
         "effect": "The popup window closes, and the screen returns to the settings view. The 'Languages of recipes' option now shows 'en, zh' as the selected languages.",
         "api_name": "languages_of_recipes_popup__ok_button",
         "state_tag": "2024-07-07_T112632",
-        "xpath": "//*[@resource-id='button1']",
+        "xpath": "//*[@resource_id='button1']",
         "paths": [
           [
             "tap(languages_of_recipes_popup__chinese_checkbox)"
@@ -36042,7 +36388,7 @@
         "description": "Title of the popup indicating the purpose of the popup.",
         "api_name": "languages_of_recipes_popup__popup_title",
         "state_tag": "2024-07-07_T112616",
-        "xpath": "//*[@resource-id='alertTitle']",
+        "xpath": "//*[@resource_id='alertTitle']",
         "paths": [
           [
             "tap(settings_screen__languages_of_recipes_option)"
@@ -36424,7 +36770,7 @@
         "description": "Checkbox to select or deselect the option for Spanish.",
         "api_name": "languages_of_recipes_popup__spanish_checkbox",
         "state_tag": "2024-07-07_T112616",
-        "xpath": "//*[@resource-id='text1']",
+        "xpath": "//*[@resource_id='text1']",
         "paths": [
           [
             "tap(settings_screen__languages_of_recipes_option)"
@@ -36806,7 +37152,7 @@
         "description": "Checkbox to select or deselect the option for French.",
         "api_name": "languages_of_recipes_popup__french_checkbox",
         "state_tag": "2024-07-07_T112616",
-        "xpath": "//*[@resource-id='text1']",
+        "xpath": "//*[@resource_id='text1']",
         "paths": [
           [
             "tap(settings_screen__languages_of_recipes_option)"
@@ -37188,7 +37534,7 @@
         "description": "Checkbox to select or deselect the option for German.",
         "api_name": "languages_of_recipes_popup__german_checkbox",
         "state_tag": "2024-07-07_T112616",
-        "xpath": "//*[@resource-id='text1']",
+        "xpath": "//*[@resource_id='text1']",
         "paths": [
           [
             "tap(settings_screen__languages_of_recipes_option)"
@@ -37570,7 +37916,7 @@
         "description": "Checkbox to select or deselect the option for Polish.",
         "api_name": "languages_of_recipes_popup__polish_checkbox",
         "state_tag": "2024-07-07_T112616",
-        "xpath": "//*[@resource-id='text1']",
+        "xpath": "//*[@resource_id='text1']",
         "paths": [
           [
             "tap(settings_screen__languages_of_recipes_option)"
@@ -37952,7 +38298,7 @@
         "description": "Checkbox to select or deselect the option for Italian.",
         "api_name": "languages_of_recipes_popup__italian_checkbox",
         "state_tag": "2024-07-07_T112616",
-        "xpath": "//*[@resource-id='text1']",
+        "xpath": "//*[@resource_id='text1']",
         "paths": [
           [
             "tap(settings_screen__languages_of_recipes_option)"
@@ -38334,7 +38680,7 @@
         "description": "Button to cancel the selection and close the popup.",
         "api_name": "languages_of_recipes_popup__cancel_button",
         "state_tag": "2024-07-07_T112616",
-        "xpath": "//*[@resource-id='button2']",
+        "xpath": "//*[@resource_id='button2']",
         "paths": [
           [
             "tap(settings_screen__languages_of_recipes_option)"
@@ -38722,7 +39068,7 @@
         "effect": "The popup window closes, and the screen returns to the new recipe creation screen, displaying a navigation button, a title indicating 'New Recipe', a save button, and a form for entering recipe details including photo, title, categories, description, source, servings, preparation time, ingredients, and directions.",
         "api_name": "no_categories_popup__ok_button",
         "state_tag": "2024-07-07_T112802",
-        "xpath": "//*[@resource-id='button1']",
+        "xpath": "//*[@resource_id='button1']",
         "paths": [
           [
             "tap(new_recipe_screen__categories_input)"
@@ -39054,7 +39400,7 @@
         "description": "Title indicating the popup window is for categories.",
         "api_name": "no_categories_popup__popup_title",
         "state_tag": "2024-07-07_T112802",
-        "xpath": "//*[@resource-id='alertTitle']",
+        "xpath": "//*[@resource_id='alertTitle']",
         "paths": [
           [
             "tap(new_recipe_screen__categories_input)"
@@ -39393,7 +39739,7 @@
         "description": "Message indicating that no categories have been created yet.",
         "api_name": "no_categories_popup__popup_message",
         "state_tag": "2024-07-07_T112802",
-        "xpath": "//*[@resource-id='message']",
+        "xpath": "//*[@resource_id='message']",
         "paths": [
           [
             "tap(new_recipe_screen__categories_input)"
@@ -39738,7 +40084,7 @@
         "effect": "A popup window appears with a title indicating 'Add category', an input field for the category name, and buttons to cancel or save the new category.",
         "api_name": "categories_screen__add_category_button",
         "state_tag": "2024-07-07_T112921",
-        "xpath": "//*[@resource-id='fab_categories']",
+        "xpath": "//*[@resource_id='fab_categories']",
         "paths": [
           [
             "tap(navigation_drawer_screen__categories_option)"
@@ -40999,7 +41345,7 @@
         "description": "Label for the recycler view containing the list of categories.",
         "api_name": "categories_screen__categories_list_label",
         "state_tag": "2024-07-07_T112921",
-        "xpath": "//*[@resource-id='recycler_view']",
+        "xpath": "//*[@resource_id='recycler_view']",
         "paths": [
           [
             "tap(navigation_drawer_screen__categories_option)"
@@ -41450,7 +41796,7 @@
         "description": "Message prompting the user to create custom categories if none exist.",
         "api_name": "categories_screen__empty_categories_message",
         "state_tag": "2024-07-07_T112921",
-        "xpath": "//*[@resource-id='categories_empty']",
+        "xpath": "//*[@resource_id='categories_empty']",
         "paths": [
           [
             "tap(navigation_drawer_screen__categories_option)"
@@ -41901,7 +42247,7 @@
         "description": "Name of an individual category within the list of categories.",
         "api_name": "categories_screen__category_name_text",
         "state_tag": "2024-07-07_T113119",
-        "xpath": "//*[@resource-id='card_text_view_category_name']",
+        "xpath": "//*[@resource_id='card_text_view_category_name']",
         "paths": [
           [
             "tap(add_category_popup__save_button)"
@@ -42287,7 +42633,7 @@
         "effect": "The input field is updated with the text provided by the user.",
         "api_name": "add_category_popup__category_name_input",
         "state_tag": "2024-07-07_T113059",
-        "xpath": "//*[@resource-id='category_name']",
+        "xpath": "//*[@resource_id='category_name']",
         "paths": [
           [
             "tap(categories_screen__add_category_button)"
@@ -42746,7 +43092,7 @@
         "effect": "The popup window closes, and the screen transitions to the categories view, displaying the newly added category.",
         "api_name": "add_category_popup__save_button",
         "state_tag": "2024-07-07_T113107",
-        "xpath": "//*[@resource-id='button1']",
+        "xpath": "//*[@resource_id='button1']",
         "paths": [
           [
             "set_text(add_category_popup__category_name_input, 'American food')"
@@ -43194,7 +43540,7 @@
         "description": "Title of the popup window indicating the purpose of the dialog.",
         "api_name": "add_category_popup__popup_title",
         "state_tag": "2024-07-07_T113059",
-        "xpath": "//*[@resource-id='alertTitle']",
+        "xpath": "//*[@resource_id='alertTitle']",
         "paths": [
           [
             "tap(categories_screen__add_category_button)"
@@ -43663,7 +44009,7 @@
         "description": "Button to cancel the action and close the popup without saving.",
         "api_name": "add_category_popup__cancel_button",
         "state_tag": "2024-07-07_T113059",
-        "xpath": "//*[@resource-id='button2']",
+        "xpath": "//*[@resource_id='button2']",
         "paths": [
           [
             "tap(categories_screen__add_category_button)"
@@ -44138,7 +44484,7 @@
         "effect": "The checkbox becomes selected.",
         "api_name": "categories_popup__category_checkbox",
         "state_tag": "2024-07-07_T113232",
-        "xpath": "//*[@resource-id='text1']",
+        "xpath": "//*[@resource_id='text1']",
         "paths": [
           [
             "tap(new_recipe_screen__categories_input)"
@@ -44469,7 +44815,7 @@
         "effect": "The popup window closes, and the screen returns to the new recipe creation screen, displaying a navigation button, a title indicating 'New Recipe', a save button, and a form for entering recipe details including photo, title, categories, description, source, servings, preparation time, ingredients, and directions.",
         "api_name": "categories_popup__ok_button",
         "state_tag": "2024-07-07_T113238",
-        "xpath": "//*[@resource-id='button1']",
+        "xpath": "//*[@resource_id='button1']",
         "paths": [
           [
             "tap(categories_popup__category_checkbox)"
@@ -44798,7 +45144,7 @@
         "description": "The title of the popup window indicating that the user can select categories.",
         "api_name": "categories_popup__popup_title",
         "state_tag": "2024-07-07_T113232",
-        "xpath": "//*[@resource-id='alertTitle']",
+        "xpath": "//*[@resource_id='alertTitle']",
         "paths": [
           [
             "tap(new_recipe_screen__categories_input)"
@@ -46382,7 +46728,7 @@
         "description": "Input field for entering search queries.",
         "api_name": "main_screen_search__search_input_field",
         "state_tag": "2024-07-07_T113957",
-        "xpath": "//*[@resource-id='search_src_text']",
+        "xpath": "//*[@resource_id='search_src_text']",
         "paths": [
           [
             "set_text(main_screen__search_input, 'apple')"
@@ -46795,7 +47141,7 @@
         "description": "Button to clear the current search query from the input field.",
         "api_name": "main_screen_search__clear_query_button",
         "state_tag": "2024-07-07_T113957",
-        "xpath": "//*[@resource-id='search_close_btn']",
+        "xpath": "//*[@resource_id='search_close_btn']",
         "paths": [
           [
             "set_text(main_screen__search_input, 'apple')"
@@ -47208,7 +47554,7 @@
         "description": "Image associated with the recipe.",
         "api_name": "main_screen_search__recipe_card_image",
         "state_tag": "2024-07-07_T113957",
-        "xpath": "//*[@resource-id='card_image']",
+        "xpath": "//*[@resource_id='card_image']",
         "paths": [
           [
             "set_text(main_screen__search_input, 'apple')"
@@ -47621,7 +47967,7 @@
         "description": "Title of the recipe displayed in the card.",
         "api_name": "main_screen_search__recipe_card_title",
         "state_tag": "2024-07-07_T113957",
-        "xpath": "//*[@resource-id='card_text_view_title']",
+        "xpath": "//*[@resource_id='card_text_view_title']",
         "paths": [
           [
             "set_text(main_screen__search_input, 'apple')"
@@ -48034,7 +48380,7 @@
         "description": "Description of the recipe displayed in the card.",
         "api_name": "main_screen_search__recipe_card_description",
         "state_tag": "2024-07-07_T113957",
-        "xpath": "//*[@resource-id='card_text_view_description']",
+        "xpath": "//*[@resource_id='card_text_view_description']",
         "paths": [
           [
             "set_text(main_screen__search_input, 'apple')"
@@ -48447,7 +48793,7 @@
         "description": "Source of the recipe displayed in the card.",
         "api_name": "main_screen_search__recipe_card_source",
         "state_tag": "2024-07-07_T113957",
-        "xpath": "//*[@resource-id='card_text_view_source']",
+        "xpath": "//*[@resource_id='card_text_view_source']",
         "paths": [
           [
             "set_text(main_screen__search_input, 'apple')"
@@ -48860,7 +49206,7 @@
         "description": "Floating action button for adding a new recipe.",
         "api_name": "main_screen_search__add_new_recipe_button",
         "state_tag": "2024-07-07_T113957",
-        "xpath": "//*[@resource-id='fab_recipes']",
+        "xpath": "//*[@resource_id='fab_recipes']",
         "paths": [
           [
             "set_text(main_screen__search_input, 'apple')"
@@ -49273,7 +49619,7 @@
         "description": "Container for the list of recipe card items.",
         "api_name": "main_screen_search__recipe_card_list",
         "state_tag": "2024-07-07_T113957",
-        "xpath": "//*[@resource-id='recycler_view']",
+        "xpath": "//*[@resource_id='recycler_view']",
         "paths": [
           [
             "set_text(main_screen__search_input, 'apple')"
@@ -49692,7 +50038,7 @@
         "effect": "The screen transitions to the settings view, displaying various settings options including General settings, Preferred category, Theme, Seasonal calendar, Region, Languages of recipes, and Send feedback.",
         "api_name": "seasonal_calendar_screen__configure_button",
         "state_tag": "2024-07-07_T114034",
-        "xpath": "//*[@resource-id='seasons_configure']",
+        "xpath": "//*[@resource_id='seasons_configure']",
         "paths": [
           [
             "tap(navigation_drawer_screen__seasonal_calendar_option)"
@@ -50580,7 +50926,7 @@
         "effect": "The screen transitions to display a list of recipes filtered by the selected seasonal ingredient. The screen includes a navigation drawer button, a title indicating 'Recipes', a checkbox for the selected ingredient, a search button, and a message indicating no recipes found. There are options to create a new recipe or import a recipe from a website. A floating action button for adding a new recipe is also present.",
         "api_name": "seasonal_calendar_screen__seasonal_food_name_beans",
         "state_tag": "2024-07-07_T114456",
-        "xpath": "//*[@resource-id='seasonal_food_name']",
+        "xpath": "//*[@resource_id='seasonal_food_name']",
         "paths": [
           [
             "tap(navigation_drawer_screen__seasonal_calendar_option)"
@@ -51909,7 +52255,7 @@
         "description": "Message indicating the status of the seasonal calendar configuration.",
         "api_name": "seasonal_calendar_screen__seasons_status_message",
         "state_tag": "2024-07-07_T114034",
-        "xpath": "//*[@resource-id='seasons_message']",
+        "xpath": "//*[@resource_id='seasons_message']",
         "paths": [
           [
             "tap(navigation_drawer_screen__seasonal_calendar_option)"
@@ -52352,7 +52698,7 @@
         "description": "A scrollbar containing buttons for each month from January to December.",
         "api_name": "seasonal_calendar_screen__month_button_scroll",
         "state_tag": "2024-07-07_T114304",
-        "xpath": "//*[@resource-id='seasons_tablayout']",
+        "xpath": "//*[@resource_id='seasons_tablayout']",
         "paths": [
           [
             "tap(navigation_drawer_screen__seasonal_calendar_option)"
@@ -57668,7 +58014,7 @@
         "description": "A scrollbar displaying a list of seasonal ingredients for the selected month, including their names, terms, and the months they are in season.",
         "api_name": "seasonal_calendar_screen__ingredients_scrollbar",
         "state_tag": "2024-07-07_T114304",
-        "xpath": "//*[@resource-id='seasons_pager']",
+        "xpath": "//*[@resource_id='seasons_pager']",
         "paths": [
           [
             "tap(navigation_drawer_screen__seasonal_calendar_option)"
@@ -58116,7 +58462,7 @@
         "description": "Main title of the welcome screen.",
         "api_name": "welcome_screen__welcome_title",
         "state_tag": "2024-07-07_T114136",
-        "xpath": "//*[@resource-id='welcome_tour_title']",
+        "xpath": "//*[@resource_id='welcome_tour_title']",
         "paths": [
           [
             "tap(settings_screen__send_feedback_option)"
@@ -58498,7 +58844,7 @@
         "description": "Subtitle below the main title describing the app.",
         "api_name": "welcome_screen__subtitle",
         "state_tag": "2024-07-07_T114136",
-        "xpath": "//*[@resource-id='welcome_tour_text']",
+        "xpath": "//*[@resource_id='welcome_tour_text']",
         "paths": [
           [
             "tap(settings_screen__send_feedback_option)"
@@ -59268,7 +59614,7 @@
         "effect": "The screen updates to display all recipes, removing the filter for the selected ingredient. The list of recipes now includes all available recipes.",
         "api_name": "main_screen_filtered__apples_checkbox",
         "state_tag": "2024-07-07_T114346",
-        "xpath": "//*[@resource-id='chip']",
+        "xpath": "//*[@resource_id='chip']",
         "paths": [
           [
             "tap(seasonal_calendar_screen__seasonal_food_name)"
@@ -60654,7 +61000,7 @@
         "description": "Button to initiate a search operation.",
         "api_name": "main_screen_filtered__search_button",
         "state_tag": "2024-07-07_T114506",
-        "xpath": "//*[@resource-id='action_search']",
+        "xpath": "//*[@resource_id='action_search']",
         "paths": [
           [
             "tap(seasonal_calendar_screen__seasonal_food_name_beans)"
@@ -61115,7 +61461,7 @@
         "description": "List area for displaying recipes.",
         "api_name": "main_screen_filtered__recipes_list",
         "state_tag": "2024-07-07_T114506",
-        "xpath": "//*[@resource-id='recycler_view']",
+        "xpath": "//*[@resource_id='recycler_view']",
         "paths": [
           [
             "tap(seasonal_calendar_screen__seasonal_food_name_beans)"
@@ -62959,7 +63305,7 @@
         "description": "Floating action button for adding a new recipe.",
         "api_name": "main_screen_filtered__new_recipe_fab",
         "state_tag": "2024-07-07_T114506",
-        "xpath": "//*[@resource-id='fab_recipes']",
+        "xpath": "//*[@resource_id='fab_recipes']",
         "paths": [
           [
             "tap(seasonal_calendar_screen__seasonal_food_name_beans)"
@@ -63426,7 +63772,7 @@
         "effect": "The screen updates to display all recipes, removing the filter for the selected ingredient. The list of recipes now includes all available recipes.",
         "api_name": "main_screen_filtered_no_recipes__beans_checkbox",
         "state_tag": "2024-07-07_T114506",
-        "xpath": "//*[@resource-id='chip']",
+        "xpath": "//*[@resource_id='chip']",
         "paths": [
           [
             "tap(seasonal_calendar_screen__seasonal_food_name_beans)"
