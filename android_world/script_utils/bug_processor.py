@@ -223,9 +223,16 @@ class BugProcessorv2:
 
   def _get_ui_elements_of_stuck_ui(self):
     '''
-        get all the UI elements from the UI page where the bug happens, and return them in the order of appearance in the UI
-        '''
+    get all the UI elements from the UI page where the bug happens, and return them in the order of appearance in the UI
+    '''
+    # todo:: match current skeleton
+    # 1. current skeleton 2 screen_name
+    # 2. api in the screen
+    # 3. use xpaths to judge the api whether it is in the screen
+    # 4. show the apis
     ui_apis = {}
+    if len(self.raw_log['records'])==0:
+      return []
     ui_state = self.raw_log['records'][-1]['State']
     for api_name, api_xpath in self.api_xpaths.items():
 

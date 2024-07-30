@@ -179,6 +179,16 @@ class EleAttr(object):
     self.status = None
     self.content = None
 
+    # for checking the status of the element
+    self.selected = ele.is_selected if ele.is_selected else False
+    self.checked = ele.is_checked if ele.is_checked else False
+    
+    self.scrollable = ele.is_scrollable if ele.is_scrollable else False
+    self.editable = ele.is_editable if ele.is_editable else False
+    self.clickable = ele.is_clickable if ele.is_clickable else False
+    self.long_clickable = ele.is_long_clickable if ele.is_long_clickable else False
+    self.checkable = ele.is_checkable if ele.is_checkable else False
+    
     self.type_ = self.class_name.split(
         '.')[-1] if self.class_name else 'div'  # only existing init
 
@@ -308,15 +318,6 @@ class EleAttr(object):
     self.type = typ
     if typ in ['button', 'checkbox', 'input', 'scrollbar', 'p']:
       self.type_ = self.type
-
-  def is_match(self, value: str):
-    if value == self.alt:
-      return True
-    if value == self.content:
-      return True
-    if value == self.text:
-      return True
-    return False
 
   def check_action(self, action_type: str):
     return action_type in self.action_aw
@@ -702,7 +703,7 @@ def convert_action(action_type: str, ele: EleAttr, text: str):
     x, y = int(x), int(y)
     action_details['x'] = x
     action_details['y'] = y
-    if action_type == "click":
+    if action_type == "touch":
       action_details["action_type"] = "click"
     elif action_type == "long_touch":
       action_details["action_type"] = "long_press"
