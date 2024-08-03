@@ -19,32 +19,42 @@ class SolutionGenerator:
 Here is an example script to complete the task:
 
 ```python
-# task: Open a note or create a note if there is none, then set the cursor to be placed at the end of the note. 
-notes = $open_note_title_list
-if len(notes) == 0:
-    tap($create_note)
-    set_text($add_note_title, 'New Note')
-    tap($text_note_type)
-    tap($add_note_ok)
-else:
-    tap($open_note)
-    tap(notes[0])
-tap($more_options_note)
-tap($settings)
-if not get_attributes($set_place_cursor_to_the_end_of_note)['checked']:
-    tap($set_place_cursor_to_the_end_of_note)
+# task: Delete all but one of any recipes in the Broccoli app that are exact duplicates, ensuring at least one instance of each unique recipe remains
+done = False
+while not done:
+  current_recipes = $main_screen__recipe_card_list
+  current_recipe_details = {{}}
+  current_done = True
+  for i in range(len(current_recipes)):
+    recipe = current_recipes[i]
+    title = recipe.get_text($main_screen__recipe_card_title)
+    count = current_recipe_details.get(title, 0) + 1
+    current_recipe_details[title] = count
+    if count != 1:
+      tap(recipe.match(title))
+      tap($recipe_details_screen__more_options_button)
+      tap($recipe_details_more_options_popup__delete_button)
+      tap($delete_confirmation_dialog__delete_button)
+      current_done = False
+      break
+      # slide effect, delete one element will change the layout
+  
+  if current_done:
+    is_to_bottom = scroll($main_screen__recipe_card_list, "down")
+    if is_to_bottom:
+      done = True
 ```
 
 Above is an example. 
 **Your ultimate task is: {task}**
 
 In the script, except for the common python control flow (for, if-else, function def/calls, etc.), you can use the following APIs:
-- tap(<element_selector>): tap on the element. Almost all elements can be taped. If an element's attribute checked=false or selected=false, tapping it can make it checked or selected, vice versa.
-- long_tap(<element_selector>): long tap the element. 
-- set_text(<element_selector>, <text>): set the text of the element to <text>. Only editable text fields can be set text.
-- scroll(<element_selector>, <direction>): scroll the UI element in the specified direction, and direction is a str from "up", 'down", "left", "right". e.g. scroll($scroll_settings_page, "down")
-- get_text(<element_selector>): return the text of the element as a string.
-- get_attributes(<element_selector>): return the attributes of the element as a dict, dict keys include "selected", "checked", "scrollable", dict values are boolean. eg. get_attributes($files[3])["selected"].
+- tap(<element_selector>) -> None: tap on the element. Almost all elements can be taped. If an element's attribute checked=false or selected=false, tapping it can make it checked or selected, vice versa.
+- long_tap(<element_selector>) -> None: long tap the element. 
+- set_text(<element_selector>, <text>) -> None: set the text of the element to <text>. Only editable text fields can be set text.
+- scroll(<element_selector>, <direction>) -> bool: scroll the UI element in the specified direction, and direction is a str from "up", 'down", "left", "right". e.g. scroll($scroll_settings_page, "down")
+- get_text(<element_selector>) -> str: return the text of the element as a string.
+- get_attributes(<element_selector>) -> dict[str, str]: return the attributes of the element as a dict, dict keys include "selected", "checked", "scrollable", dict values are boolean. eg. get_attributes($files[3])["selected"].
 - back(): close the current window
 
 
@@ -56,6 +66,8 @@ The <element_list> primitive is used to select a list of elements, possible ways
 - <element_selector>: the items in the list element identified by <element_selector>. eg. $my_items
 - <element_list>.match(<text or attribute dict>): the elements in the element list that match the given text or attribute dict. eg. $my_items.match("key words") or $my_items.match({{"selected": true}})
 You can use len(<element_list>) to get the total number of items in an element list.
+
+Each <element_selector> can refer to a single element or an element contained multiple elements, especially in the case of complex items within an <element_list>. The following APIs are supported to be invoked as member functions to limit their effect domain: `tap`, `long_tap`, `set_text`, `scroll`, `get_text`, `get_attributes`, and `back`. Note that these APIs still need to satisfy the required arguments. If the APIs are invoked as member functions, they will only affect the element selected by the <element_selector>, while the APIs invoked as global functions will affect all elements in the phone screen. For example, `$note_list[1].tap($note_title)` will tap the title of the second note in the note list, whereas `tap($note_title)` will always tap the first note title in the note list.
 
 You can use the following important UI elements:
 {all_elements_desc}

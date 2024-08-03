@@ -627,6 +627,26 @@ class ElementTree(object):
       if matched:
         return ele.id
     return -1
+  
+  def extract_subtree(self, ele_id: int):
+    ele = self.ele_map.get(ele_id, None)
+    if not ele:
+      return None
+    
+    _ele_attr = {}
+    que = [ele_id]
+    while que:
+      ele_id = que.pop(0)
+      ele = self.ele_map.get(ele_id, None)
+      if not ele:
+        continue
+      _ele_attr[ele_id] = ele
+      for child in ele.children:
+        que.append(child)
+    
+    _valid_ele_ids = list(_ele_attr.keys() & self.valid_ele_ids)
+    return ElementTree(ele_attrs=_ele_attr, valid_ele_ids=_valid_ele_ids)
+    
 
 
 def save_to_yaml(save_path: str, html_view: str, tag: str, action_type: str,
