@@ -325,12 +325,12 @@ class EleAttr(object):
 
 class ElementTree(object):
 
-  def __init__(self, ele_attrs: dict[int, EleAttr], valid_ele_ids: list[int]):
+  def __init__(self, ele_attrs: dict[int, EleAttr], valid_ele_ids: list[int], root_id: int = 0):
     # member
     self.scrollable_ele_ids: list[int] = []
     # tree
     self.root, self.ele_map, self.valid_ele_ids = self._build_tree(
-        ele_attrs, valid_ele_ids)
+        ele_attrs, valid_ele_ids, root_id)
     self.size = len(self.ele_map)
     # result
     self.str = self.get_str()
@@ -372,8 +372,8 @@ class ElementTree(object):
 
   def _build_tree(
       self, ele_map: dict[int, EleAttr],
-      valid_ele_ids: list[int]) -> tuple[node, dict[int, EleAttr], set[int]]:
-    root = self.node(0, -1)
+      valid_ele_ids: list[int], root_id: int) -> tuple[node, dict[int, EleAttr], set[int]]:
+    root = self.node(root_id, -1)
     queue = [root]
     while queue:
       node = queue.pop(0)
@@ -389,18 +389,21 @@ class ElementTree(object):
 
     # get dfs order
     dfs_order = []
+    valid_node_ids = [] # it's maybe not continuous
     stack = [root]
     while stack:
       node = stack.pop()
       dfs_order.append(node)
+      valid_node_ids.append(node.id)
       stack.extend(reversed(
           node.children))  # Reverse to maintain the original order in a DFS
 
     # convert bfs order id to dfs order id
-    idx_map = {node.id: idx for idx, node in enumerate(dfs_order)}
+    valid_node_ids.sort()
+    idx_map = {node.id: idx for idx, node in zip(valid_node_ids, dfs_order)}
     # update the ele_map
     _ele_map = {}
-    for idx, node in enumerate(dfs_order):
+    for idx, node in zip(valid_node_ids, dfs_order):
       ele = ele_map[node.id]
       ele.id = idx
       if ele.ele.is_scrollable:
@@ -636,16 +639,16 @@ class ElementTree(object):
     _ele_attr = {}
     que = [ele_id]
     while que:
-      ele_id = que.pop(0)
-      ele = self.ele_map.get(ele_id, None)
+      idx = que.pop(0)
+      ele = self.ele_map.get(idx, None)
       if not ele:
         continue
-      _ele_attr[ele_id] = ele
+      _ele_attr[idx] = ele
       for child in ele.children:
         que.append(child)
     
     _valid_ele_ids = list(_ele_attr.keys() & self.valid_ele_ids)
-    return ElementTree(ele_attrs=_ele_attr, valid_ele_ids=_valid_ele_ids)
+    return ElementTree(ele_attrs=_ele_attr, valid_ele_ids=_valid_ele_ids, root_id=ele_id)
     
 
 
