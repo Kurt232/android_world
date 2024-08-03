@@ -16,3 +16,7 @@ pytest
 requests==2.31.0
 tenacity
 termcolor
+PyYAML==6.0.1
+lxml==5.2.2
+openai==1.35.14
+anthropic==0.31.2
