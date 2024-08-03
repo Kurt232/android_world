@@ -155,18 +155,27 @@ class ApiDoc():
 
   def get_dependency(self, skeleton: HTMLSkeleton, api_name: str):
     count = -1
-    _screen_name = None
-    for screen_name, screen_skeleton in self.screen_name2skeleton.items():
-      common = screen_skeleton.extract_common_skeleton(skeleton)
-      _count = common.count()
-      if _count > count:
-        count = _count
-        _screen_name = screen_name
+    
+    temp = api_name.split('__')
+    assert len(temp) == 2
+    _screen_name, _api_name = temp[0:2]
+    
+    screen_value = self.doc.get(_screen_name, None)
+    if not screen_value:
+      for screen_name, screen_skeleton in self.screen_name2skeleton.items():
+        common = screen_skeleton.extract_common_skeleton(skeleton)
+        _count = common.count()
+        if _count > count:
+          count = _count
+          _screen_name = screen_name
 
-    if not _screen_name:
-      _screen_name = self.main_screen
+      if not _screen_name:
+        _screen_name = self.main_screen
 
-    api = self.doc[_screen_name][api_name]
+    api = self.doc[_screen_name].get(_api_name, None)
+    if not api:
+      return None, None
+    
     return api.dependency, api.dependency_action 
   
   def get_xpath_by_name(self, screen_name: str, api_name: str):
