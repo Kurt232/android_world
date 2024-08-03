@@ -17,7 +17,7 @@ from android_world.env import json_action
 from android_world.script_utils import tools
 from android_world.script_utils.api_doc import ApiDoc
 
-from . import WAIT_AFTER_ACTION_SECONDS, MAX_SCROLL_NUM
+from . import WAIT_AFTER_ACTION_SECONDS, MAX_SCROLL_NUM, MAX_ACTION_COUNT
 
 api_names = [
     'long_tap', 'tap', 'set_text', 'scroll', 'get_text', 'get_attributes',
@@ -25,8 +25,6 @@ api_names = [
 ]
 
 ACTION_COUNT = 0
-MAX_ACTION_COUNT = 100
-
 
 def set_action_count(count):
   global ACTION_COUNT
@@ -104,6 +102,7 @@ def regenerate_script(script, verifier_instant_name, android_env_name,
   for api_name in api_names:
     script = script.replace(f'{api_name}(',
                             f'{verifier_instant_name}.{api_name}(')
+    script = script.replace(f'.{verifier_instant_name}.{api_name}(', f'.{api_name}(')
   script = script.replace(f'long_{verifier_instant_name}.tap(', 'long_tap(')
   return script, line_mappings
 
