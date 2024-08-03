@@ -1104,7 +1104,10 @@ class ElementList:
     global ACTION_COUNT
 
     # get the currently executing code
-    current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line('__getitem__', selector)
+    frame = inspect.currentframe()
+    caller_frame = frame.f_back
+    lineno = caller_frame.f_lineno
+    current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, '__getitem__', selector)
 
     self.navigate_to_api_name(
         self.api_name,
@@ -1145,7 +1148,11 @@ class ElementList:
         '''
     global ACTION_COUNT
     # get the currently executing code
-    current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line('__next__', self.api_name)
+    frame = inspect.currentframe()
+    caller_frame = frame.f_back
+    lineno = caller_frame.f_lineno
+    
+    current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, '__next__', self.api_name)
     self._save_getting_info_action('index', self.api_name,
                                    self.element_list_xpath, current_code_line,
                                    lineno_in_original_script,
@@ -1187,7 +1194,10 @@ class ElementList:
     global ACTION_COUNT
 
     # get the currently executing code
-    current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line('match', match_data)
+    frame = inspect.currentframe()
+    caller_frame = frame.f_back
+    lineno = caller_frame.f_lineno
+    current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, 'match', match_data)
 
     self._save_getting_info_action('match', self.api_name,
                                    self.element_list_xpath, current_code_line,
@@ -1230,7 +1240,11 @@ class ElementList:
     global ACTION_COUNT
 
     # get the currently executing code
-    current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line('__len__', self.api_name)
+    frame = inspect.currentframe()
+    caller_frame = frame.f_back
+    lineno = caller_frame.f_lineno
+    current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, '__len__', self.api_name)
+    
     self._save_getting_info_action('len', self.api_name,
                                    self.element_list_xpath, current_code_line,
                                    lineno_in_original_script,
@@ -1281,14 +1295,11 @@ class ElementList:
         raw_answer=None,
         currently_executing_code=statement)
 
-  def get_current_code_line(self, action, element_selector):
+  def get_current_code_line(self, lineno: int, action: str, element_selector_name: str):
     # get the currently executing code
     code_lines = tools.load_txt_file('tmp/compiled_code.txt').split('\n')
-    frame = inspect.currentframe()
-    caller_frame = frame.f_back
-    lineno = caller_frame.f_lineno
     print(
-        f"{action}: {element_selector} at line {lineno}, code is:{code_lines[lineno - 1]}"
+        f"{action}: {element_selector_name} at line {lineno}, code is:{code_lines[lineno - 1]}"
     )
     current_code_line = code_lines[lineno - 1]
     lineno_in_original_script = int(
@@ -1298,15 +1309,8 @@ class ElementList:
 
     return current_code_line, lineno_in_original_script, original_code_line
 
-  def find_target_element(self, action_type: str, element_selector_api_name: str, element_selector_xpath: str):
-
-    current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(action_type, element_selector)
-
-    self._save_getting_info_action(action_type, element_selector_api_name,
-                                   element_selector_xpath, current_code_line,
-                                   lineno_in_original_script,
-                                   original_code_line)
-
+  def find_target_element(self, element_selector_xpath: str):
+    
     target_ele = None
     state = self.env.get_state()
     element_tree = agent_utils.forest_to_element_tree(state.forest)
@@ -1332,7 +1336,16 @@ class ElementList:
       raise Exception(
           f'Error: button_api type is not supported: {type(button_api)}')
 
-    target_ele = self.find_target_element('touch', button_api_name, button_api_xpath)
+    frame = inspect.currentframe()
+    caller_frame = frame.f_back
+    lineno = caller_frame.f_lineno
+    current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, 'touch', button_api_name)
+    self._save_getting_info_action('touch', button_api_name,
+                                   button_api_xpath, current_code_line,
+                                   lineno_in_original_script,
+                                   original_code_line)
+    
+    target_ele = self.find_target_element(button_api_xpath)
 
     if not target_ele:
       raise Exception(f'{button_api_name} not found in {self.api_name} ')
@@ -1362,7 +1375,16 @@ class ElementList:
       raise Exception(
           f'Error: button_api type is not supported: {type(button_api)}')
 
-    target_ele = self.find_target_element('long_touch', button_api_name, button_api_xpath)
+    frame = inspect.currentframe()
+    caller_frame = frame.f_back
+    lineno = caller_frame.f_lineno
+    current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, 'long_touch', button_api_name)
+    self._save_getting_info_action('long_touch', button_api_name,
+                                   button_api_xpath, current_code_line,
+                                   lineno_in_original_script,
+                                   original_code_line)
+    
+    target_ele = self.find_target_element(button_api_xpath)
 
     if not target_ele:
       raise Exception(f'{button_api_name} not found in {self.api_name} ')
@@ -1391,7 +1413,16 @@ class ElementList:
       raise Exception(
           f'Error: input_api type is not supported: {type(input_api)}')
     
-    target_ele = self.find_target_element('set_text', input_api_name, input_api_xpath)
+    frame = inspect.currentframe()
+    caller_frame = frame.f_back
+    lineno = caller_frame.f_lineno
+    current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, 'set_text', input_api_name)
+    self._save_getting_info_action('set_text', input_api_name,
+                                   input_api_xpath, current_code_line,
+                                   lineno_in_original_script,
+                                   original_code_line)
+    
+    target_ele = self.find_target_element(input_api_xpath)
 
     if not target_ele:
       raise Exception(f'{input_api_name} not found in {self.api_name} ')
@@ -1424,7 +1455,16 @@ class ElementList:
       raise Exception(
           f'Error: element_selector type is not supported: {type(element_selector)}')
 
-    target_ele = self.find_target_element('get_text', element_selector_api_name, element_selector_xpath)
+    frame = inspect.currentframe()
+    caller_frame = frame.f_back
+    lineno = caller_frame.f_lineno
+    current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, 'get_text', element_selector_api_name)
+    self._save_getting_info_action('get_text', element_selector_api_name,
+                                   element_selector_xpath, current_code_line,
+                                   lineno_in_original_script,
+                                   original_code_line)
+    
+    target_ele = self.find_target_element(element_selector_xpath)
 
     if not target_ele:
       raise Exception(f'{element_selector_api_name} not found in {self.api_name} ')
@@ -1455,7 +1495,16 @@ class ElementList:
       raise Exception(
           f'Error: element_selector type is not supported: {type(element_selector)}')
 
-    target_ele = self.find_target_element('get_attributes', element_selector_api_name, element_selector_xpath)
+    frame = inspect.currentframe()
+    caller_frame = frame.f_back
+    lineno = caller_frame.f_lineno
+    current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, 'get_attributes', element_selector_api_name)
+    self._save_getting_info_action('get_attributes', element_selector_api_name,
+                                   element_selector_xpath, current_code_line,
+                                   lineno_in_original_script,
+                                   original_code_line)
+    
+    target_ele = self.find_target_element(element_selector_xpath)
 
     if not target_ele:
       raise Exception(f'{element_selector_api_name} not found in {self.api_name} ')
