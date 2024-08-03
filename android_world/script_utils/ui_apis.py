@@ -421,8 +421,11 @@ class Verifier:
       state = self.env.get_state()
       element_tree = agent_utils.forest_to_element_tree(state.forest)
       current_skeleton = element_tree.skeleton
-      _, dependency_action = self.doc.get_dependency(current_skeleton, api_name)
+      _, dependency_action = self.doc.get_dependency(current_skeleton, api_name) # todo:: which priority is higher compared the skeleton and the screen_name
 
+      if not dependency_action:
+        break
+      
       count = 0
       for action_list in dependency_action:
         count += 1
@@ -614,7 +617,7 @@ class Verifier:
   def tap(self, button_api):
     global ACTION_COUNT
     # get the currently executing code
-    code_lines = tools.load_txt_file('tmp/compiled_code.txt').split('\n')
+    code_lines = tools.load_txt_file(f'{self.save_path}/compiled_code.txt').split('\n')
     frame = inspect.currentframe()
     caller_frame = frame.f_back
     lineno = caller_frame.f_lineno
@@ -622,8 +625,8 @@ class Verifier:
         f"Tap: {button_api} at line {lineno}, code is:{code_lines[lineno - 1]}")
     current_code_line = code_lines[lineno - 1]
     lineno_in_original_script = int(
-        tools.load_json_file('tmp/line_mappings.json')[str(lineno - 1)])
-    original_code_line = tools.load_txt_file('tmp/combined_code.txt').split(
+        tools.load_json_file(f'{self.save_path}/line_mappings.json')[str(lineno - 1)])
+    original_code_line = tools.load_txt_file(f'{self.save_path}/code.txt').split(
         '\n')[lineno_in_original_script]
 
     if isinstance(button_api, str):
@@ -667,7 +670,7 @@ class Verifier:
   def long_tap(self, button_api):
     global ACTION_COUNT
     # get the currently executing code
-    code_lines = tools.load_txt_file('tmp/compiled_code.txt').split('\n')
+    code_lines = tools.load_txt_file(f'{self.save_path}/compiled_code.txt').split('\n')
     frame = inspect.currentframe()
     caller_frame = frame.f_back
     lineno = caller_frame.f_lineno
@@ -676,8 +679,8 @@ class Verifier:
     )
     current_code_line = code_lines[lineno - 1]
     lineno_in_original_script = int(
-        tools.load_json_file('tmp/line_mappings.json')[str(lineno - 1)])
-    original_code_line = tools.load_txt_file('tmp/combined_code.txt').split(
+        tools.load_json_file(f'{self.save_path}/line_mappings.json')[str(lineno - 1)])
+    original_code_line = tools.load_txt_file(f'{self.save_path}/code.txt').split(
         '\n')[lineno_in_original_script]
 
     if isinstance(button_api, str):
@@ -721,7 +724,7 @@ class Verifier:
   def set_text(self, text_api, text):
     global ACTION_COUNT
     # get the currently executing code
-    code_lines = tools.load_txt_file('tmp/compiled_code.txt').split('\n')
+    code_lines = tools.load_txt_file(f'{self.save_path}/compiled_code.txt').split('\n')
     frame = inspect.currentframe()
     caller_frame = frame.f_back
     lineno = caller_frame.f_lineno
@@ -730,8 +733,8 @@ class Verifier:
     )
     current_code_line = code_lines[lineno - 1]
     lineno_in_original_script = int(
-        tools.load_json_file('tmp/line_mappings.json')[str(lineno - 1)])
-    original_code_line = tools.load_txt_file('tmp/combined_code.txt').split(
+        tools.load_json_file(f'{self.save_path}/line_mappings.json')[str(lineno - 1)])
+    original_code_line = tools.load_txt_file(f'{self.save_path}/code.txt').split(
         '\n')[lineno_in_original_script]
 
     if isinstance(text_api, str):
@@ -773,7 +776,7 @@ class Verifier:
   def scroll(self, scroller_api, direction):
     global ACTION_COUNT
     # get the currently executing code
-    code_lines = tools.load_txt_file('tmp/compiled_code.txt').split('\n')
+    code_lines = tools.load_txt_file(f'{self.save_path}/compiled_code.txt').split('\n')
     frame = inspect.currentframe()
     caller_frame = frame.f_back
     lineno = caller_frame.f_lineno
@@ -782,8 +785,8 @@ class Verifier:
     )
     current_code_line = code_lines[lineno - 1]
     lineno_in_original_script = int(
-        tools.load_json_file('tmp/line_mappings.json')[str(lineno - 1)])
-    original_code_line = tools.load_txt_file('tmp/combined_code.txt').split(
+        tools.load_json_file(f'{self.save_path}/line_mappings.json')[str(lineno - 1)])
+    original_code_line = tools.load_txt_file(f'{self.save_path}/code.txt').split(
         '\n')[lineno_in_original_script]
 
     if isinstance(scroller_api, str):
@@ -838,7 +841,7 @@ class Verifier:
     '''
 
     # get the currently executing code
-    code_lines = tools.load_txt_file('tmp/compiled_code.txt').split('\n')
+    code_lines = tools.load_txt_file(f'{self.save_path}/compiled_code.txt').split('\n')
     frame = inspect.currentframe()
     caller_frame = frame.f_back
     lineno = caller_frame.f_lineno
@@ -847,8 +850,8 @@ class Verifier:
     )
     current_code_line = code_lines[lineno - 1]
     lineno_in_original_script = int(
-        tools.load_json_file('tmp/line_mappings.json')[str(lineno - 1)])
-    original_code_line = tools.load_txt_file('tmp/combined_code.txt').split(
+        tools.load_json_file(f'{self.save_path}/line_mappings.json')[str(lineno - 1)])
+    original_code_line = tools.load_txt_file(f'{self.save_path}/code.txt').split(
         '\n')[lineno_in_original_script]
 
     target_ele, element_tree = self.navigate_and_get_target_element(
@@ -880,7 +883,7 @@ class Verifier:
     '''
 
     # get the currently executing code
-    code_lines = tools.load_txt_file('tmp/compiled_code.txt').split('\n')
+    code_lines = tools.load_txt_file(f'{self.save_path}/compiled_code.txt').split('\n')
     frame = inspect.currentframe()
     caller_frame = frame.f_back
     lineno = caller_frame.f_lineno
@@ -889,8 +892,8 @@ class Verifier:
     )
     current_code_line = code_lines[lineno - 1]
     lineno_in_original_script = int(
-        tools.load_json_file('tmp/line_mappings.json')[str(lineno - 1)])
-    original_code_line = tools.load_txt_file('tmp/combined_code.txt').split(
+        tools.load_json_file(f'{self.save_path}/line_mappings.json')[str(lineno - 1)])
+    original_code_line = tools.load_txt_file(f'{self.save_path}/code.txt').split(
         '\n')[lineno_in_original_script]
 
     target_ele, _ = self.navigate_and_get_target_element(
@@ -943,15 +946,15 @@ class Verifier:
     '''
 
     # get the currently executing code
-    code_lines = tools.load_txt_file('tmp/compiled_code.txt').split('\n')
+    code_lines = tools.load_txt_file(f'{self.save_path}/compiled_code.txt').split('\n')
     frame = inspect.currentframe()
     caller_frame = frame.f_back
     lineno = caller_frame.f_lineno
     print(f"go back at line {lineno}, code is:{code_lines[lineno - 1]}")
     current_code_line = code_lines[lineno - 1]
     lineno_in_original_script = int(
-        tools.load_json_file('tmp/line_mappings.json')[str(lineno - 1)])
-    original_code_line = tools.load_txt_file('tmp/combined_code.txt').split(
+        tools.load_json_file(f'{self.save_path}/line_mappings.json')[str(lineno - 1)])
+    original_code_line = tools.load_txt_file(f'{self.save_path}/code.txt').split(
         '\n')[lineno_in_original_script]
 
     print(f'try to go back')
@@ -1052,16 +1055,16 @@ class ElementList:
   def check_api_name(self, api_name):
     if api_name not in self.api_xpaths.keys():  # not found xpath
       # find the first line with the api_name in the original script (combined with the preparation, this is to stay the same with tap, set_text, etc.)
-      code_lines = tools.load_txt_file('tmp/compiled_code.txt').split('\n')
+      code_lines = tools.load_txt_file(f'{self.save_path}/compiled_code.txt').split('\n')
       # lines = original_script.split('\n')
       line_with_api_name = None
       for line_num, line in enumerate(code_lines):
         if api_name in line:
           line_with_api_name = line.strip()
           lineno_in_original_script = tools.load_json_file(
-              'tmp/line_mappings.json')[str(line_num)]
+              f'{self.save_path}/line_mappings.json')[str(line_num)]
           original_code_line = tools.load_txt_file(
-              'tmp/combined_code.txt').split('\n')[lineno_in_original_script]
+              f'{self.save_path}/code.txt').split('\n')[lineno_in_original_script]
           break
       currently_executing_code = {
           'current_code': line_with_api_name,
@@ -1297,14 +1300,14 @@ class ElementList:
 
   def get_current_code_line(self, lineno: int, action: str, element_selector_name: str):
     # get the currently executing code
-    code_lines = tools.load_txt_file('tmp/compiled_code.txt').split('\n')
+    code_lines = tools.load_txt_file(f'{self.save_path}/compiled_code.txt').split('\n')
     print(
         f"{action}: {element_selector_name} at line {lineno}, code is:{code_lines[lineno - 1]}"
     )
     current_code_line = code_lines[lineno - 1]
     lineno_in_original_script = int(
-        tools.load_json_file('tmp/line_mappings.json')[str(lineno - 1)])
-    original_code_line = tools.load_txt_file('tmp/combined_code.txt').split(
+        tools.load_json_file(f'{self.save_path}/line_mappings.json')[str(lineno - 1)])
+    original_code_line = tools.load_txt_file(f'{self.save_path}/code.txt').split(
         '\n')[lineno_in_original_script]
 
     return current_code_line, lineno_in_original_script, original_code_line
@@ -1351,7 +1354,7 @@ class ElementList:
       raise Exception(f'{button_api_name} not found in {self.api_name} ')
 
     converted_action = agent_utils.convert_action("touch", target_ele, "")
-    if converted_action.get('goal_status', None) != 'infeasible':
+    if converted_action.get('goal_status', None) == 'infeasible':
       raise Exception(f'Error: {button_api_name} is infeasible! ')
     
     self.env.execute_action(json_action.JSONAction(**converted_action))
@@ -1390,7 +1393,7 @@ class ElementList:
       raise Exception(f'{button_api_name} not found in {self.api_name} ')
 
     converted_action = agent_utils.convert_action("long_touch", target_ele, "")
-    if converted_action.get('goal_status', None) != 'infeasible':
+    if converted_action.get('goal_status', None) == 'infeasible':
       raise Exception(f'Error: {button_api_name} is infeasible! ')
     
     self.env.execute_action(json_action.JSONAction(**converted_action))

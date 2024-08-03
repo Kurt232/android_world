@@ -156,7 +156,7 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
   WAIT_AFTER_ACTION_SECONDS = 2.0
   MAX_RETRY_TIMES = 1
 
-  FREEZED_CODE = True
+  FREEZED_CODE = False
 
   def __init__(self,
                env: interface.AsyncEnv,
@@ -169,7 +169,7 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
     self.save_path = save_path
 
   def step(self, goal: str) -> base_agent.AgentInteractionResult:
-    tools.write_txt_file('tmp/task.txt', goal)
+    tools.write_txt_file(f'{self.save_path}/task.txt', goal)
     """
     only execute once for code script
     """
@@ -190,43 +190,22 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
         time.sleep(self.WAIT_AFTER_ACTION_SECONDS)
 
       # generate solution code for first try
-      if retry_time == 0 and not self.FREEZED_CODE:
-        # formatted_apis = format_apis(self.env, app_doc)
-        solution_code = SolutionGenerator.get_solution(
-            app_name=app_name,
-            prompt_answer_path=os.path.join(self.save_path, f'solution.json'),
-            task=task,
-            ele_data_path=ele_data_path,
-            model_name='gpt-4o')
-        tools.write_txt_file('tmp/code.txt', solution_code)
-        code = solution_code
-      
-      if self.FREEZED_CODE:
-        code = tools.load_txt_file('tmp/code.txt')
+      if retry_time == 0:
+        if self.FREEZED_CODE:
+          code = tools.load_txt_file(f'tmp/code.txt')
+        else:
+          # formatted_apis = format_apis(self.env, app_doc)
+          solution_code = SolutionGenerator.get_solution(
+              app_name=app_name,
+              prompt_answer_path=os.path.join(self.save_path, f'solution.json'),
+              task=task,
+              ele_data_path=ele_data_path,
+              model_name='gpt-4o')
+          code = solution_code
+        
+        tools.write_txt_file(f'{self.save_path}/code.txt', code)
 
-      doc = app_doc
-      env = self.env
-      save_path = self.save_path
-      api_xpaths = app_doc.api_xpath
-      verifier = Verifier(env, save_path, app_name, api_xpaths, doc)
-      code_script, line_mappings = regenerate_script(code, 'verifier', 'env',
-                                                     'save_path', 'api_xpaths')  
-      tools.write_txt_file('tmp/compiled_code.txt', code_script)
-      tools.dump_json_file('tmp/line_mappings.json', line_mappings)
-      # in case some silly scripts include no UI actions at all, we make an empty log for batch_verifying
-      log_path = os.path.join(self.save_path, f'log.yaml')
-      tools.dump_yaml_file(log_path, {'records': [], 'step_num': 0})
-      try:
-        exec(code_script)
-      except Exception as e:
-        # save_current_ui_to_log(code_policy, api_name=None)
-        tb_str = traceback.format_exc()
-        error_path = os.path.join(self.save_path, f'error.json')
-        error_info = process_error_info(code, code_script, tb_str, str(e),
-                                        line_mappings)
-
-        tools.dump_json_file(error_path, error_info)
-
+      if retry_time != 0:
         bug_processor = BugProcessorv2(
             app_name=app_name,
             log_path=log_path,
@@ -243,10 +222,33 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
             enable_dependency=False,
             model_name='gpt-4o',
             stuck_ui_apis=stuck_apis_str)
-        
-        if not self.FREEZED_CODE:
-          tools.write_txt_file('tmp/code.txt', script)
+
         code = script
+        
+      tools.write_txt_file(f'{self.save_path}/code{retry_time}.py', code)
+      
+      doc = app_doc
+      env = self.env
+      save_path = self.save_path
+      api_xpaths = app_doc.api_xpath
+      verifier = Verifier(env, save_path, app_name, api_xpaths, doc)
+      code_script, line_mappings = regenerate_script(code, 'verifier', 'env',
+                                                     'save_path', 'api_xpaths')  
+      tools.write_txt_file(f'{self.save_path}/compiled_code.txt', code_script)
+      tools.dump_json_file(f'{self.save_path}/line_mappings.json', line_mappings)
+      # in case some silly scripts include no UI actions at all, we make an empty log for batch_verifying
+      log_path = os.path.join(self.save_path, f'log.yaml')
+      tools.dump_yaml_file(log_path, {'records': [], 'step_num': 0})
+      try:
+        exec(code_script)
+      except Exception as e:
+        # save_current_ui_to_log(code_policy, api_name=None)
+        tb_str = traceback.format_exc()
+        error_path = os.path.join(self.save_path, f'error.json')
+        error_info = process_error_info(code, code_script, tb_str, str(e),
+                                        line_mappings)
+
+        tools.dump_json_file(error_path, error_info)
 
     result = {}
     

@@ -319,10 +319,6 @@ class BugProcessorv2:
       return f'# {{Available UI elements: {comment}}}'
 
     script_comments = self._get_comments_of_all_steps()
-    # code_pre = tools.load_txt_file('data/notes_preparation.txtnotes_preparation.txt')
-    # combined_script = preparation_code + '\n' + code
-    # code = tools.get_combined_code('tmp/preparation/notes.txt', # todo:: app_name
-    #                                self.raw_solution)
     code = self.raw_solution
     code_lines = code.split('\n')
 
