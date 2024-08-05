@@ -169,6 +169,7 @@ class EleAttr(object):
     self.text = ele.text
     self.content_description = ele.content_description
     self.bound_box = ele.bbox
+    self.is_visible = ele.is_visible
 
     self.action = []
     self.action_aw = []
@@ -297,6 +298,7 @@ class EleAttr(object):
         (f" resource_id='{resource_id}'" if resource_id else '') + \
         (f' alt=\'{alt}\'' if alt else '') + \
         (f' status=\'{",".join(status)}\'' if status and len(status)>0 else '') + '>' + \
+        (f" is_visible='{self.is_visible}'") + \
         (content if content else '')
 
   # generate the html description
