@@ -152,7 +152,7 @@ class HumanAgent(base_agent.EnvironmentInteractingAgent):
           action_details['x'] = int(ele.ele.bbox_pixels.x_min)
         if action_type == "click_right":
           action_details['action_type'] = "click"
-          action_details['x'] = int(ele.ele.bbox_pixels.x_max)
+          action_details['x'] = int(ele.ele.bbox_pixels.x_max - 1)
       elif action_type == "scroll":
         action_details['index'] = ele.local_id
         direction_list = ['up', 'down', 'left', 'right']
