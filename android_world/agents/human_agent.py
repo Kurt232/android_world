@@ -45,7 +45,7 @@ class HumanAgent(base_agent.EnvironmentInteractingAgent):
 
     action_list = [
         "wait", "click", "input_text", "scroll", "long_press", "navigate_home",
-        "navigate_back", "open_app", "answer", "keyboard_enter", "status"
+        "navigate_back", "open_app", "answer", "keyboard_enter", "status", "click_left", "click_right"
     ]
     print('\033[0;32m', 'goal: ', goal, '\033[0m')
     print('\033[0;32m', '-' * 40, 'Actions', '-' * 40, '\033[0m')
@@ -116,7 +116,7 @@ class HumanAgent(base_agent.EnvironmentInteractingAgent):
     elif action_type == "answer":
       action_details['text'] = input('Please input the text:')
 
-    elif action_type in ["click", "long_press", "input_text", "scroll"]:
+    elif action_type in ["click", "long_press", "input_text", "scroll", "click_left", "click_right"]:
       print('\033[0;32m', '-' * 40, 'State', '-' * 40, '\033[0m')
       print(element_tree.get_str(is_color=True))
       ele_id = input(f'Please input the element id with {action_type}:')
@@ -140,13 +140,19 @@ class HumanAgent(base_agent.EnvironmentInteractingAgent):
       #         '\033[0m')
       #   return wait_action, None
 
-      if action_type in ["click", "long_press", "input_text"]:
+      if action_type in ["click", "long_press", "input_text", "click_left", "click_right"]:
         x, y = ele.ele.bbox_pixels.center
         x, y = int(x), int(y)
         action_details['x'] = x
         action_details['y'] = y
         if action_type == "input_text":
           action_details['text'] = input('Please input the text:')
+        if action_type == "click_left":
+          action_details['action_type'] = "click"
+          action_details['x'] = int(ele.ele.bbox_pixels.x_min)
+        if action_type == "click_right":
+          action_details['action_type'] = "click"
+          action_details['x'] = int(ele.ele.bbox_pixels.x_max)
       elif action_type == "scroll":
         action_details['index'] = ele.local_id
         direction_list = ['up', 'down', 'left', 'right']
