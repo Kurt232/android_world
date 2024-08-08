@@ -156,7 +156,7 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
   WAIT_AFTER_ACTION_SECONDS = 2.0
   MAX_RETRY_TIMES = 1
 
-  FREEZED_CODE = False
+  FREEZED_CODE = True
 
   def __init__(self,
                env: interface.AsyncEnv,
@@ -176,7 +176,7 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
     # todo:: add a config
     task = goal
     logging.info(f'Executing task: {task}')
-    app_name = tools.load_txt_file('tmp/app_name.txt')
+    app_name = tools.load_txt_file('tmp/app_name.txt') # todo::
     app_doc = ApiDoc(app_name)
     ele_data_path = os.path.join('tmp/elements/', app_name + '.json')
     for retry_time in range(self.MAX_RETRY_TIMES):
@@ -195,7 +195,8 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
           code = tools.load_txt_file(f'tmp/code.txt')
         else:
           # formatted_apis = format_apis(self.env, app_doc)
-          solution_code = SolutionGenerator.get_solution(
+          solution_generator = SolutionGenerator(self.env, app_name, app_doc)
+          solution_code = solution_generator.get_solution(
               app_name=app_name,
               prompt_answer_path=os.path.join(self.save_path, f'solution.json'),
               task=task,
