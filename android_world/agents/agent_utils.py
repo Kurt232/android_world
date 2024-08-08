@@ -834,3 +834,14 @@ class HTMLSkeleton():
     common_structure = compare_and_extract_common(soup1.contents[0],
                                                   soup2.contents[0])
     return HTMLSkeleton(common_structure, is_formatted=True)
+  
+  def __eq__(self, value: object) -> bool:
+    if not isinstance(value, HTMLSkeleton):
+      return False
+    return self.soup == value.soup
+  
+  def __ne__(self, value: object) -> bool:
+    return not self.__eq__(value)
+  
+  def __hash__(self) -> int:
+    return hash(self.str)

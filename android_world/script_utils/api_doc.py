@@ -2,6 +2,7 @@ import os
 import json
 import re
 
+from lxml import etree
 from android_world.agents.agent_utils import HTMLSkeleton
 
 
@@ -112,9 +113,11 @@ class ApiEle():
     self.dependency_action: list[list[DependentAction]] = []
 
     for paths in self.dependency:
-      _path_action = []
+      _path_actions = []
       for action in paths:
-        _path_action.append(DependentAction(action))
+        _path_actions.append(DependentAction(action))
+      
+      self.dependency_action.append(_path_actions)
 
 
 class ApiDoc():
@@ -127,15 +130,15 @@ class ApiDoc():
     self.screen_name2skeleton: dict[str, HTMLSkeleton] = {}
 
     self.main_screen: str = None
-    self.load_api_doc()
+    self._load_api_doc()
 
-  def load_api_doc(self):
+  def _load_api_doc(self):
     raw_api_doc = json.load(open(self.api_doc_path, 'r'))
     len_screen = len(raw_api_doc)
 
     for k, v in raw_api_doc.items():
       if not self.main_screen:
-        self.main_screen = k
+        self.main_screen = k # first screen is the main screen
 
       self.screen_name2skeleton[k] = HTMLSkeleton(v['skeleton'])
       self.skeleton_str2screen_name[v['skeleton']] = k
@@ -154,14 +157,14 @@ class ApiDoc():
     return self.api_xpath
 
   def get_dependency(self, skeleton: HTMLSkeleton, api_name: str):
-    count = -1
-    
     temp = api_name.split('__')
     assert len(temp) == 2
     _screen_name, _api_name = temp[0:2]
     
     screen_value = self.doc.get(_screen_name, None)
-    if not screen_value:
+    skeleton_value = self.screen_name2skeleton.get(_screen_name, None)
+    if not screen_value or not skeleton_value or skeleton_value != skeleton:
+      count = -1
       for screen_name, screen_skeleton in self.screen_name2skeleton.items():
         common = screen_skeleton.extract_common_skeleton(skeleton)
         _count = common.count()
@@ -186,3 +189,31 @@ class ApiDoc():
     if not api:
       return None
     return api.xpath
+
+  def get_screen_name_by_skeleton(self, skeleton: HTMLSkeleton | str):
+    skeleton_str = skeleton if isinstance(skeleton, str) else skeleton.str
+    screen_name = self.skeleton_str2screen_name.get(skeleton_str, None)
+    if not screen_name:
+      count = -1
+      for _screen_name, screen_skeleton in self.screen_name2skeleton.items():
+        common = screen_skeleton.extract_common_skeleton(skeleton)
+        _count = common.count()
+        if _count > count:
+          count = _count
+          screen_name = _screen_name
+    
+    return screen_name
+
+  def get_valid_element_list(self, screen_name: str, html_view: str):
+    elements = self.doc.get(screen_name, None)
+    valid_elements: list[ApiEle] = []
+    if not elements:
+      return valid_elements
+    
+    root = etree.fromstring(html_view)
+    for _, v in elements.items():
+      eles = root.xpath(v.xpath)
+      if eles:
+        valid_elements.append(v)
+    
+    return valid_elements

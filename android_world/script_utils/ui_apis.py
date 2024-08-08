@@ -438,8 +438,7 @@ class Verifier:
 
           # use `is` to judge whether the two skeletons are the same one
           # use `==` to judge whether the two skeletons are the same skeleton
-          if current_skeleton != current_skeleton.extract_common_skeleton(
-              target_skeleton):
+          if current_skeleton != current_skeleton.extract_common_skeleton(target_skeleton):
             if is_match:
               break
             else:
@@ -962,20 +961,8 @@ class Verifier:
     element_tree = agent_utils.forest_to_element_tree(state.forest)
     state_desc = element_tree.str
 
-    ele_data = {
-        'xpath': None,
-        'api_name': None,
-        'text': None,
-        'action_type': 'navigate_back',
-        'dependencies': None,
-        'statement': {
-            'current_code': current_code_line,
-            'original_lineno': lineno_in_original_script,
-            'original_code': original_code_line
-        }
-    }
-
-    self.execute_action(ele_data)
+    self.env.execute_action(json_action.JSONAction(**{"action_type": "navigate_back"}))
+    time.sleep(WAIT_AFTER_ACTION_SECONDS)
 
     # todo
     yaml_path = os.path.join(self.save_path, f'log.yaml')
@@ -1237,7 +1224,11 @@ class ElementList:
 
     # ACTION_COUNT += 1
     check_aciton_count()
-    return matched_elements
+    # todo:: how to deal with multiple matched elements
+    if len(matched_elements) == 0:
+      raise Exception(f'Error: No matched element found in {self.api_name} ')
+    
+    return matched_elements[0]
 
   def __len__(self):
     global ACTION_COUNT
@@ -1264,6 +1255,9 @@ class ElementList:
     state = self.env.get_state()
     element_tree = agent_utils.forest_to_element_tree(state.forest)
     target_ele = element_tree.get_ele_by_xpath(self.element_list_xpath)
+    if not target_ele: # todo:: maybe it's 0
+      logging.warning(f'Element {self.api_name} not found! ')
+      return 0
     # ele_list_children = element_tree.get_children_by_ele(target_ele)
     ele_list_children = target_ele.children
     # ACTION_COUNT += 1
