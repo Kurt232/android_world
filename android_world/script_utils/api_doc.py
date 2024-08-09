@@ -22,7 +22,7 @@ class DependentAction():
     self.text: str = None
 
     # screen_name
-    m = re.search(r'(\w+)__', action)
+    m = re.search(r'(\w+)__', action) # only first is screen name
     assert m is not None
     self.screen_name = m.group(1)
     _action = action[:m.start()] + action[m.end():]
@@ -110,7 +110,11 @@ class ApiEle():
 
   def __init__(self, screen_name: str, raw: dict):
     self.element: str = raw['element']
-    self.element_type: str = raw['element_type']
+    # todo:: ignore "options" and "example"
+    self.type: str = raw['type']
+    self.options: list[str] = raw.get('options', None)
+    # self.element: str = raw['element']
+    # self.element_type: str = raw['element_type']
     self.description: str = raw['description']
     self.effect: str = raw.get('effect', None)
 
@@ -134,7 +138,7 @@ class ApiDoc():
 
   def __init__(self, app_name: str, api_doc_dir: str = "tmp/docs"):
     self.api_doc_path = os.path.join(api_doc_dir, app_name + '.json')
-    self.doc: dict[str, dict[str, ApiEle]] = {}
+    self.doc: dict[str, dict[str, ApiEle]] = {} # screen_name -> api_name -> ApiEle
     self.api_xpath: dict[str, str] = {}
     self.elements: list[ApiEle] = []
     self.skeleton_str2screen_name: dict[str, str] = {}
@@ -158,7 +162,7 @@ class ApiDoc():
         ele = ApiEle(k, v_ele)
         _elements[k_ele] = ele
         self.elements.append(ele)
-        self.api_xpath[k + '__' + k_ele] = ele.xpath
+        self.api_xpath[k_ele] = ele.xpath
       self.doc[k] = _elements
 
     # ! screen and skeleton should be unique (but it's not)
@@ -168,9 +172,7 @@ class ApiDoc():
     return self.api_xpath
 
   def get_dependency(self, api_name: str):
-    temp = api_name.split('__')
-    assert len(temp) == 2
-    _screen_name, _api_name = temp[0:2]
+    _screen_name, _api_name = api_name.split('__')[0], api_name
 
     api = self.doc[_screen_name].get(_api_name, None)
     if not api:
@@ -220,7 +222,7 @@ class ApiDoc():
     elements_desc = ''
     for ele in ele_list:
       description = ele.description
-      elements_desc += f"\n\nelement: {ele.api_name} \n\tDescription: {description} \n\tType: {ele.element_type}"
+      elements_desc += f"\n\nelement: {ele.api_name} \n\tDescription: {description} \n\tType: {ele.type}"
       if ele.effect:
         elements_desc += f"\n\tEffect: {ele.effect}"
       if is_show_xpath:
