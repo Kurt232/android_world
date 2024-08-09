@@ -155,7 +155,7 @@
       "effect": "The screen scrolls down to reveal additional form fields, including the directions input field.",
       "api_name": "new_recipe_screen__scroll_down",
       "state_tag": "2024-07-07_T110844",
-      "xpath": "//viewgroup//scrollbar[preceding-sibling::button[@resource_id='button_save_recipe']]"
+      "xpath": "//FrameLayout/ViewGroup/scrollbar"
     },
     {
       "element": "<button id=\"4\" resource_id=\"button_save_recipe\">\n SAVE\n</button>\n",
