@@ -5,6 +5,8 @@ import pdb
 import yaml
 import inspect
 import time
+import numpy as np
+import datetime
 
 from absl import logging
 
@@ -17,7 +19,7 @@ from android_world.env import json_action
 from android_world.script_utils import tools
 from android_world.script_utils.api_doc import ApiDoc
 
-from . import WAIT_AFTER_ACTION_SECONDS, MAX_SCROLL_NUM, MAX_ACTION_COUNT
+from . import WAIT_AFTER_ACTION_SECONDS, MAX_SCROLL_NUM, MAX_ACTION_COUNT, IS_LOG_SCREENSHOT
 
 api_names = [
     'long_tap', 'tap', 'set_text', 'scroll', 'get_text', 'get_attributes',
@@ -119,6 +121,7 @@ def _save2yaml(file_name,
                raw_prompt=None,
                raw_answer=None,
                currently_executing_code=None,
+               target='action',
                effect_range='global'):
   if not os.path.exists(file_name):
     tmp_data = {'step_num': 0, 'records': []}
@@ -137,6 +140,7 @@ def _save2yaml(file_name,
       'xpath': xpath,
       'skeleton': skeleton,
       'tag': tag,
+      'target': target,
       'raw_prompt': raw_prompt,
       'raw_answer': raw_answer,
       'currently_executing_code': currently_executing_code,
@@ -151,7 +155,39 @@ def _save2yaml(file_name,
     yaml.safe_dump(data, f)
   print(f'save to yaml time: {time.time() - t1}')
 
-
+def _save2log(save_path, 
+               element_tree: ElementTree = None,
+               idx=None,
+               inputs=None,
+               action_type='touch',
+               api_name=None,
+               xpath=None,
+               currently_executing_code=None,
+               comment: str = 'action',
+               effect_range: str = 'global',
+               screenshot: np.ndarray = None):
+  
+  timestamp = datetime.datetime.now().strftime('%Y-%m-%d_T%H%M%S')
+  _save2yaml(
+    file_name=os.path.join(save_path, f'log.yaml'),
+    state_prompt=element_tree.str if element_tree else None,
+    idx=idx,
+    inputs=inputs,
+    action_type=action_type,
+    api_name=api_name,
+    xpath=xpath,
+    skeleton=element_tree.skeleton.str if element_tree else None,
+    tag=timestamp,
+    raw_prompt=None,
+    raw_answer=None,
+    currently_executing_code=currently_executing_code,
+    target=comment,
+    effect_range=effect_range
+  )
+  
+  if IS_LOG_SCREENSHOT and screenshot is not None:
+    agent_utils.save_screenshot(save_path, timestamp, screenshot)
+  
 def save_current_ui_to_log(env: interface.AsyncEnv,
                            save_path: str,
                            api_name: str,
@@ -248,7 +284,7 @@ class Verifier:
 
   def get_action_from_xpath(self, element_tree: ElementTree, api_name: str,
                             xpath: str, action_type: str, input_text: str,
-                            statement):
+                            statement, screenshot=None):
 
     def get_needed_ele_property_from_action_type(action_type):
       if action_type == 'touch':
@@ -281,21 +317,19 @@ class Verifier:
             ele = child
             break
     # todo:: can we need to check whether the ele existing after property checking
-    file_path = os.path.join(self.save_path, 'log.yaml')
-    _save2yaml(
-        file_path,
-        element_tree.str,
-        ele.id,
-        input_text,
-        action_type,
-        api_name,
-        xpath,
-        element_tree.skeleton.str,
-        "",  # todo::
-        None,
-        None,
-        currently_executing_code=statement)
-
+    
+    _save2log(
+        save_path=self.save_path,
+        element_tree=element_tree,
+        idx=ele.id,
+        inputs=input_text,
+        action_type=action_type,
+        api_name=api_name,
+        xpath=xpath,
+        currently_executing_code=statement,
+        comment='navigate',
+        screenshot=screenshot)
+    
     return agent_utils.convert_action(action_type, ele, input_text)
 
   def scroll_and_find_target_ele(self,
@@ -324,9 +358,11 @@ class Verifier:
 
         target_action = self.get_action_from_xpath(element_tree, api_name,
                                                    xpath, action_type, text,
-                                                   statement)
+                                                   statement, state.pixels.copy())
+        
         if target_action.get('goal_status', None) != 'infeasible':
           return target_action
+        
         ele_descs = element_tree.get_ele_descs_without_text()
         # judge whether there is a new view after scrolling, if no new element found, return
         scrolled_new_views = []
@@ -340,19 +376,17 @@ class Verifier:
         target_ele = element_tree.get_ele_by_properties(
             ele_properties_without_idx)
 
-        file_path = os.path.join(self.save_path, f'log.yaml')
-
-        _save2yaml(
-            file_path,
-            element_tree.str,
-            target_ele.id if target_ele else None,
-            api_name,
-            f'scroll {direction}',
-            api_name=None,
-            xpath=xpath,
-            skeleton=element_tree.skeleton.str,
-            tag="",  # todo
-            currently_executing_code=statement)
+        _save2log(
+          save_path=self.save_path,
+          element_tree=element_tree,
+          idx=target_ele.id if target_ele else None,
+          inputs=None,
+          action_type=f'scroll {direction}',
+          api_name=None,
+          xpath=xpath,
+          currently_executing_code=statement,
+          comment='navigate',
+          screenshot=state.pixels.copy())
 
         if target_ele:
           dir = direction.lower()
@@ -396,7 +430,7 @@ class Verifier:
 
     executable_action = self.get_action_from_xpath(
         element_tree, api_name, xpath, action_type, text,
-        code_to_be_executed['statement'])
+        code_to_be_executed['statement'], state.pixels.copy())
 
     if executable_action.get('goal_status', None) != 'infeasible':
       self.env.execute_action(json_action.JSONAction(**executable_action))
@@ -447,10 +481,9 @@ class Verifier:
           action_type = action.action_type
           text = action.text
           xpath = self.doc.get_xpath_by_name(_screen_name, action.api_name)
-          executable_action = self.get_action_from_xpath(
-              element_tree, api_name, xpath, action_type, text,
-              code_to_be_executed['statement'])
-
+          executable_action = self.scroll_and_find_target_ele(
+              element_tree, api_name, xpath, action_type, text, code_to_be_executed['statement'])
+          
           if executable_action.get('goal_status', None) == 'infeasible':
             if is_match:
               break
@@ -519,45 +552,18 @@ class Verifier:
       element_tree = agent_utils.forest_to_element_tree(state.forest)
       target_ele = element_tree.get_ele_by_xpath(element_selector_xpath)
 
-    _save2yaml(
-        file_name=os.path.join(self.save_path, f'log.yaml'),
-        state_prompt=element_tree.str,
+    _save2log(
+        save_path=self.save_path,
+        element_tree=element_tree,
         idx=target_ele.id if target_ele else None,
         inputs=None,
         action_type=caller_type,
         api_name=element_selector_api_name,
         xpath=element_selector_xpath,
-        skeleton=element_tree.skeleton.str,
-        tag="todo",  # todo::
-        raw_prompt=None,
-        raw_answer=None,
-        currently_executing_code=statement)
+        currently_executing_code=statement,
+        comment='navigate',
+        screenshot=state.pixels.copy())
     return target_ele, element_tree
-
-  def _save_getting_info_action(self, action_type, api_name, xpath,
-                                current_code_line, lineno_in_original_script,
-                                original_code_line):
-    yaml_path = os.path.join(self.save_path, 'log.yaml')
-    state = self.env.get_state()
-    element_tree = agent_utils.forest_to_element_tree(state.forest)
-    state_desc = element_tree.str
-    _save2yaml(
-        yaml_path,
-        state_desc,
-        idx=None,
-        inputs=None,
-        action_type=action_type,
-        api_name=api_name,
-        xpath=xpath,
-        skeleton=element_tree.skeleton.str,
-        tag="todo",  # todo::
-        raw_prompt=None,
-        raw_answer=None,
-        currently_executing_code={
-            'current_code': current_code_line,
-            'original_lineno': lineno_in_original_script,
-            'original_code': original_code_line
-        })
 
   def get_ui_tree(self):
     '''
@@ -862,10 +868,6 @@ class Verifier:
             'original_code': original_code_line
         })
 
-    self._save_getting_info_action('get_text', None, None, current_code_line,
-                                   lineno_in_original_script,
-                                   original_code_line)
-
     check_aciton_count()
     if not target_ele:
       raise Exception(
@@ -904,31 +906,6 @@ class Verifier:
             'original_code': original_code_line
         })
 
-    yaml_path = os.path.join(self.save_path, f'log.yaml')
-    state = self.env.get_state()
-    element_tree = agent_utils.forest_to_element_tree(state.forest)
-    state_desc = element_tree.str
-    _save2yaml(
-        yaml_path,
-        state_desc,
-        idx=None,
-        inputs=None,
-        action_type='get_attributes',
-        api_name=element_selector,
-        xpath=None,
-        skeleton=element_tree.skeleton.str,
-        tag="todo",
-        raw_prompt=None,
-        raw_answer=None,
-        currently_executing_code={
-            'current_code': current_code_line,
-            'original_lineno': lineno_in_original_script,
-            'original_code': original_code_line
-        })
-    self._save_getting_info_action('get_attributes', None, None,
-                                   current_code_line, lineno_in_original_script,
-                                   original_code_line)
-
     check_aciton_count()
     if not target_ele:
       raise Exception(
@@ -959,30 +936,25 @@ class Verifier:
     print(f'try to go back')
     state = self.env.get_state()
     element_tree = agent_utils.forest_to_element_tree(state.forest)
-    state_desc = element_tree.str
 
-    self.env.execute_action(json_action.JSONAction(**{"action_type": "navigate_back"}))
-    time.sleep(WAIT_AFTER_ACTION_SECONDS)
-
-    # todo
-    yaml_path = os.path.join(self.save_path, f'log.yaml')
-    _save2yaml(
-        yaml_path,
-        state_desc,
+    _save2log(
+        save_path=self.save_path,
+        element_tree=element_tree,
         idx=None,
         inputs=None,
         action_type='go back',
         api_name=None,
         xpath=None,
-        skeleton=element_tree.skeleton.str,
-        tag="todo",
-        raw_prompt=None,
-        raw_answer=None,
         currently_executing_code={
             'current_code': current_code_line,
             'original_lineno': lineno_in_original_script,
             'original_code': original_code_line
-        })
+        },
+        screenshot=state.pixels.copy())
+
+    self.env.execute_action(json_action.JSONAction(**{"action_type": "navigate_back"}))
+    time.sleep(WAIT_AFTER_ACTION_SECONDS)
+
     # current_state = self.input_policy.device.get_current_state()
     # if current_state.get_app_activity_depth(self.input_manager.app) > 0:
     # If the app is in activity stack but is not in foreground
@@ -1015,29 +987,24 @@ class ElementList:
   def _save_getting_info_action(self, action_type, api_name: str, xpath: str,
                                 current_code_line, lineno_in_original_script,
                                 original_code_line):
-    yaml_path = os.path.join(self.save_path, f'log.yaml')
     state = self.env.get_state()
     element_tree = agent_utils.forest_to_element_tree(state.forest)
-    state_desc = element_tree.str
 
-    _save2yaml(
-        yaml_path,
-        state_desc,
+    _save2log(
+        save_path=self.save_path,
+        element_tree=element_tree,
         idx=None,
         inputs=None,
         action_type=action_type,
         api_name=api_name,
         xpath=xpath,
-        skeleton=element_tree.skeleton.str,
-        tag="todo",  # todo::
-        raw_prompt=None,
-        raw_answer=None,
         currently_executing_code={
             'current_code': current_code_line,
             'original_lineno': lineno_in_original_script,
             'original_code': original_code_line
         },
-        effect_range=self.api_name)
+        effect_range=self.api_name,
+        screenshot=state.pixels.copy())
 
   def check_api_name(self, api_name):
     if api_name not in self.api_xpaths.keys():  # not found xpath
@@ -1059,12 +1026,17 @@ class ElementList:
           'original_code': original_code_line
       }
 
-      save_current_ui_to_log(
-          self.env,
-          self.save_path,
-          api_name,
-          None,
-          currently_executing_code=currently_executing_code)
+      _save2log(
+          save_path=self.save_path,
+          element_tree=None,
+          idx=None,
+          inputs=None,
+          action_type=None,
+          api_name=api_name,
+          xpath=None,
+          currently_executing_code=currently_executing_code,
+          comment='initialize element list',
+          screenshot=None)
       raise Exception(
           f'Error: Element {api_name} does not exist in the app! Please use the real element name! '
       )
@@ -1117,8 +1089,24 @@ class ElementList:
       ele_attr = element_tree.get_children_by_idx(target_ele_group, selector)
       matched_xpath, matched_ele = self.convert_ele_attr_to_elementlist(
           ele_attr)
-      self._save_getting_ele_info_action_to_yaml(
-          'index', self.api_name, f'{self.api_name}[{selector}]', matched_xpath)
+      
+      _save2log(
+          save_path=self.save_path,
+          element_tree=element_tree,
+          idx=ele_attr.id if ele_attr else None,
+          inputs=None,
+          action_type='index',
+          api_name=self.api_name,
+          xpath=matched_xpath,
+          currently_executing_code = {
+            'current_code': current_code_line,
+            'original_lineno': lineno_in_original_script,
+            'original_code': original_code_line,
+            'statement': f'{self.api_name}[{selector}] -> {matched_xpath}'
+          },
+          screenshot=state.pixels.copy()
+      )
+      
       return matched_ele
     # # Handle slice objects
     # elif isinstance(selector, slice):
@@ -1263,34 +1251,6 @@ class ElementList:
     # ACTION_COUNT += 1
     check_aciton_count()
     return len(ele_list_children)
-
-  def _save_getting_ele_info_action_to_yaml(self, action_type, api_name,
-                                            action_statement, matched_xpath):
-    '''
-      @action_type: match/index/len
-      @action_statement: the statement of the action, such as "open_note_title_list[0]"
-      @matched_xpath: the xpath of the matched element
-      '''
-    state = self.env.get_state()
-    element_tree = agent_utils.forest_to_element_tree(state.forest)
-    state_desc = element_tree.get_str(is_color=False)
-
-    statement = f'{action_statement} -> {matched_xpath}'
-
-    yaml_path = os.path.join(self.save_path, f'log.yaml')
-    _save2yaml(
-        yaml_path,
-        state_desc,
-        idx=None,
-        inputs=None,
-        action_type=action_type,
-        api_name=api_name,
-        xpath=matched_xpath,
-        skeleton=element_tree.skeleton.str,
-        tag="todo",
-        raw_prompt=None,
-        raw_answer=None,
-        currently_executing_code=statement)
 
   def get_current_code_line(self, lineno: int, action: str, element_selector_name: str):
     # get the currently executing code
