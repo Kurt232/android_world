@@ -156,8 +156,7 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
   WAIT_AFTER_ACTION_SECONDS = 2.0
   MAX_RETRY_TIMES = 1
 
-  FREEZED_CODE = True
-
+  FREEZED_CODE = False
   def __init__(self,
                env: interface.AsyncEnv,
                llm: infer.LlmWrapper,
@@ -165,7 +164,6 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
                name: str = 'CodeAgent'):
 
     super().__init__(env, name)
-    self.llm = llm  # todo::
     self.save_path = save_path
 
   def step(self, goal: str) -> base_agent.AgentInteractionResult:
@@ -226,7 +224,7 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
 
         code = script
         
-      tools.write_txt_file(f'{self.save_path}/code{retry_time}.py', code)
+      tools.write_txt_file(f'{self.save_path}/code{retry_time}.txt', code)
       
       doc = app_doc
       env = self.env

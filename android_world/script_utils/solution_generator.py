@@ -44,30 +44,21 @@ class SolutionGenerator:
 Here is an example script to complete the task:
 
 ```python
-# task: Delete all but one of any recipes in the Broccoli app that are exact duplicates, ensuring at least one instance of each unique recipe remains
-done = False
-while not done:
-  current_recipes = $main_screen__recipe_card_list
-  current_recipe_details = {{}}
-  current_done = True
-  for i in range(len(current_recipes)):
-    recipe = current_recipes[i]
-    title = recipe.get_text($main_screen__recipe_card_title)
-    count = current_recipe_details.get(title, 0) + 1
-    current_recipe_details[title] = count
-    if count != 1:
-      tap(recipe.match(title))
-      tap($recipe_details_screen__more_options_button)
-      tap($recipe_details_more_options_popup__delete_button)
-      tap($delete_confirmation_dialog__delete_button)
-      current_done = False
-      break
-      # slide effect, delete one element will change the layout
-  
-  if current_done:
-    is_to_bottom = scroll($main_screen__recipe_card_list, "down")
-    if is_to_bottom:
-      done = True
+# task: Open a note or create a note titled 'note_test' if there is none.
+notes = $open_note_title_list
+
+for i in range(len(notes)):
+  note = notes[i]
+  title = note.get_text($note_title)
+  if title == 'note_test':
+    note.tap(title)
+    return
+
+back()
+tap($create_note)
+set_text($add_note_title, 'note_test')
+tap($text_note_type)
+tap($add_note_ok)
 ```
 
 Above is an example. 
