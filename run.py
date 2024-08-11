@@ -181,7 +181,7 @@ def _get_agent(
     agent = seeact.SeeAct(env)
   # CodeScript.
   elif _AGENT_NAME.value == 'code':
-    agent = code_agent.CodeAgent(env, infer.Gpt4Wrapper('gpt-4o'), save_path=_SAVE_PATH.value)
+    agent = code_agent.CodeAgent(env, save_path=_SAVE_PATH.value, task_names=_TASKS.value)
   
   if not agent:
     raise ValueError(f'Unknown agent: {_AGENT_NAME.value}')
