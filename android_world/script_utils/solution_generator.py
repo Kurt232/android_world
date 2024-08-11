@@ -14,13 +14,16 @@ class SolutionGenerator:
     self.app_name = app_name
     self.doc = doc
     
-  def make_prompt(self, ele_data, task, app_name):
+  def make_prompt(self, task, app_name):
     # all elements
     all_elements_desc = ''
-    for element in ele_data['elements']:
-      all_elements_desc += f"\n\nelement: {element['api_name']} \n\tDescription: {element['description']} \n\tType: {element['element_type']}"
-      if 'effect' in element.keys():
-        all_elements_desc += f"\n\tEffect: {element['effect']}"
+    for ele in self.doc.elements:
+      description = ele.description
+      if ele.options:
+        description += f'It includes options: {", ". join(ele.options)}.'
+      all_elements_desc += f"\n\nelement: {ele.api_name} \n\tDescription: {description} \n\tType: {ele.type}"
+      if ele.effect:
+        all_elements_desc += f"\n\tEffect: {ele.effect}"
     
     # current screen elements
     current_screen_elements = ''
@@ -35,7 +38,10 @@ class SolutionGenerator:
     valid_element_list = self.doc.get_valid_element_list(current_screen_name, element_tree.str)
     
     for ele in valid_element_list:
-      current_screen_elements += f"\n\nelement: {ele.api_name} \n\tDescription: {ele.description} \n\tType: {ele.element_type}"
+      description = ele.description
+      if ele.options:
+        description += f'It includes options: {", ". join(ele.options)}.'
+      current_screen_elements += f"\n\nelement: {ele.api_name} \n\tDescription: {description} \n\tType: {ele.type}"
       if ele.effect:
         current_screen_elements += f"\n\tEffect: {ele.effect}"
 
@@ -105,12 +111,10 @@ Your answer should follow this JSON format:
   def get_solution(self, app_name,
                    prompt_answer_path,
                    task: str,
-                   ele_data_path: str,
                    model_name='gpt-4o'):
     # formatted_apis = self.format_all_apis(enable_dependency)
-    ele_data = tools.load_json_file(ele_data_path)
     prompt = self.make_prompt(
-        task=task, app_name=app_name, ele_data=ele_data)
+        task=task, app_name=app_name)
     answer = tools.query_gpt(prompt=prompt, model=model_name)
     tools.dump_json_file(prompt_answer_path, {
         'prompt': prompt,

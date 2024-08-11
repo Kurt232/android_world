@@ -12,7 +12,6 @@ from absl import logging
 
 from android_world.agents.agent_utils import ElementTree, EleAttr
 from android_world.agents import agent_utils
-from android_world.agents import infer
 from android_world.env import interface
 from android_world.env import json_action
 
@@ -46,9 +45,8 @@ def sanitize_name(name):
   # To make it a valid python variable, replace all non-word characters with '_', and replace the first digit with '_'
   return re.sub(r'\W|^(?=\d)', '_', name)
 
-
-def regenerate_script(script, verifier_instant_name, android_env_name,
-                      save_path_name, api_xpaths_instant_name):
+  
+def regenerate_script(script, verifier_instant_name):
   '''
     find element_lists and instantiate them, remove '$' from element_selectors, add instant_name prefix to all apis
     '''
@@ -56,11 +54,10 @@ def regenerate_script(script, verifier_instant_name, android_env_name,
                        re.MULTILINE)
   script_lines = script.split('\n')
   modified_lines = [
-      f'def autodroidv2_task_solution_code({verifier_instant_name}, {android_env_name}, {save_path_name}, {api_xpaths_instant_name}):'
+      f'def autodroidv2_task_solution_code({verifier_instant_name}):'
   ]  # def a function because of the necessity of inspecting the script
   all_appeared_api_names = []
-  line_mappings = {
-  }  # key: compiled script line number, value: original script line number
+  line_mappings = {}  # key: compiled script line number, value: original script line number
   compiled_line_num = 1  # the first line is the function definition line autodroidv2_task_solution_code()
   for original_line_num, line in enumerate(script_lines):
     match = pattern.match(line)
@@ -69,7 +66,7 @@ def regenerate_script(script, verifier_instant_name, android_env_name,
       element_name = match.group(1)
       sanitized_element_name = sanitize_name(element_name)
       beginning_tabs = tools.get_leading_tabs(line)
-      instantiate_statement = f'{beginning_tabs}{sanitized_element_name} = ElementList(\'{element_name}\', None, {android_env_name}, {save_path_name}, {api_xpaths_instant_name}, {verifier_instant_name})'
+      instantiate_statement = f'{beginning_tabs}{sanitized_element_name} = ElementList(\'{element_name}\', None, {verifier_instant_name})'
       modified_lines.append(f'\t{instantiate_statement}')
       line_mappings[compiled_line_num] = original_line_num
       compiled_line_num += 1
@@ -85,7 +82,7 @@ def regenerate_script(script, verifier_instant_name, android_env_name,
           if sanitized_api_name not in all_appeared_api_names:
             all_appeared_api_names.append(api_name)
             beginning_tabs = tools.get_leading_tabs(line)
-            instantiate_statement = f'{beginning_tabs}{sanitized_api_name} = ElementList(\'{api_name}\', None, {android_env_name}, {save_path_name},{api_xpaths_instant_name}, {verifier_instant_name})'
+            instantiate_statement = f'{beginning_tabs}{sanitized_api_name} = ElementList(\'{api_name}\', None, {verifier_instant_name})'
             modified_lines.append(f'\t{instantiate_statement}')
             line_mappings[compiled_line_num] = original_line_num
             compiled_line_num += 1
@@ -97,7 +94,7 @@ def regenerate_script(script, verifier_instant_name, android_env_name,
     compiled_line_num += 1
 
   modified_lines.append(
-      f'autodroidv2_task_solution_code({verifier_instant_name}, {android_env_name}, {save_path_name}, {api_xpaths_instant_name})'
+      f'autodroidv2_task_solution_code({verifier_instant_name})'
   )
   script = '\n'.join(modified_lines)
 
@@ -156,6 +153,7 @@ def _save2yaml(file_name,
   print(f'save to yaml time: {time.time() - t1}')
 
 def _save2log(save_path, 
+               log_file: str,
                element_tree: ElementTree = None,
                idx=None,
                inputs=None,
@@ -169,7 +167,7 @@ def _save2log(save_path,
   
   timestamp = datetime.datetime.now().strftime('%Y-%m-%d_T%H%M%S')
   _save2yaml(
-    file_name=os.path.join(save_path, f'log.yaml'),
+    file_name=log_file,
     state_prompt=element_tree.str if element_tree else None,
     idx=idx,
     inputs=inputs,
@@ -269,16 +267,30 @@ def save_current_ui_to_log(env: interface.AsyncEnv,
 #         return self.xpath
 
 
+class CodeConfig:
+  def __init__(self, app_name: str, doc: ApiDoc, save_path: str, code: str, compiled_code: str, line_mappings: dict[int, int]):
+    self.app_name = app_name
+    self.doc = doc
+    self.save_path = save_path
+    self.log_file = save_path + '/log.yaml'
+    self.code = code
+    self.compiled_code = compiled_code
+    self.line_mappings = line_mappings
+    self.code_lines = code.split('\n')
+    self.compiled_code_lines = compiled_code.split('\n')
+
+
 class Verifier:
 
-  def __init__(self, env: interface.AsyncEnv, save_path: str, app_name: str,
-               api_xpaths, doc: ApiDoc) -> None:
+  def __init__(self, env: interface.AsyncEnv, config: CodeConfig) -> None:
     # android world
     self.env = env
-    self.save_path = save_path
-    self.app_name = app_name
-    self.api_xpaths = api_xpaths
-    self.doc = doc
+    self.save_path: str = config.save_path
+    self.app_name: str = config.app_name
+    self.doc: ApiDoc = config.doc
+    self.api_xpaths = self.doc.api_xpath
+    self.config = config
+    
     # autodroid
     self.last_screen_html_str = None
 
@@ -320,6 +332,7 @@ class Verifier:
     
     _save2log(
         save_path=self.save_path,
+        log_file=self.config.log_file,
         element_tree=element_tree,
         idx=ele.id,
         inputs=input_text,
@@ -378,6 +391,7 @@ class Verifier:
 
         _save2log(
           save_path=self.save_path,
+          log_file=self.config.log_file,
           element_tree=element_tree,
           idx=target_ele.id if target_ele else None,
           inputs=None,
@@ -512,7 +526,7 @@ class Verifier:
     return
 
   def check_output_crash(self, api_name):
-    output_log = tools.load_yaml_file(os.path.join(self.save_path, f'log.yaml'))
+    output_log = tools.load_yaml_file(self.config.log_file)
     if output_log['records'][-1]['Choice'] == 'crashed':
       raise Exception(f'Action not found when executing tap {api_name}')
 
@@ -554,6 +568,7 @@ class Verifier:
 
     _save2log(
         save_path=self.save_path,
+        log_file=self.config.log_file,
         element_tree=element_tree,
         idx=target_ele.id if target_ele else None,
         inputs=None,
@@ -622,17 +637,15 @@ class Verifier:
   def tap(self, button_api):
     global ACTION_COUNT
     # get the currently executing code
-    code_lines = tools.load_txt_file(f'{self.save_path}/compiled_code.txt').split('\n')
+    code_lines = self.config.compiled_code_lines
     frame = inspect.currentframe()
     caller_frame = frame.f_back
     lineno = caller_frame.f_lineno
     print(
         f"Tap: {button_api} at line {lineno}, code is:{code_lines[lineno - 1]}")
     current_code_line = code_lines[lineno - 1]
-    lineno_in_original_script = int(
-        tools.load_json_file(f'{self.save_path}/line_mappings.json')[str(lineno - 1)])
-    original_code_line = tools.load_txt_file(f'{self.save_path}/code.txt').split(
-        '\n')[lineno_in_original_script]
+    lineno_in_original_script = self.config.line_mappings[lineno - 1]
+    original_code_line = self.config.code_lines[lineno_in_original_script]
 
     if isinstance(button_api, str):
       print(f'try to tap: {button_api}, current action account: {ACTION_COUNT}')
@@ -675,7 +688,7 @@ class Verifier:
   def long_tap(self, button_api):
     global ACTION_COUNT
     # get the currently executing code
-    code_lines = tools.load_txt_file(f'{self.save_path}/compiled_code.txt').split('\n')
+    code_lines = self.config.compiled_code_lines
     frame = inspect.currentframe()
     caller_frame = frame.f_back
     lineno = caller_frame.f_lineno
@@ -683,10 +696,8 @@ class Verifier:
         f"long tap: {button_api} at line {lineno}, code is:{code_lines[lineno - 1]}"
     )
     current_code_line = code_lines[lineno - 1]
-    lineno_in_original_script = int(
-        tools.load_json_file(f'{self.save_path}/line_mappings.json')[str(lineno - 1)])
-    original_code_line = tools.load_txt_file(f'{self.save_path}/code.txt').split(
-        '\n')[lineno_in_original_script]
+    lineno_in_original_script = self.config.line_mappings[lineno - 1]
+    original_code_line = self.config.code_lines[lineno_in_original_script]
 
     if isinstance(button_api, str):
       print(f'try to tap: {button_api}, current action account: {ACTION_COUNT}')
@@ -729,18 +740,14 @@ class Verifier:
   def set_text(self, text_api, text):
     global ACTION_COUNT
     # get the currently executing code
-    code_lines = tools.load_txt_file(f'{self.save_path}/compiled_code.txt').split('\n')
+    code_lines = self.config.compiled_code_lines
     frame = inspect.currentframe()
     caller_frame = frame.f_back
     lineno = caller_frame.f_lineno
-    print(
-        f"settext: {text_api} at line {lineno}, code is:{code_lines[lineno - 1]}"
-    )
+    print(f"settext: {text_api} at line {lineno}, code is:{code_lines[lineno - 1]}")
     current_code_line = code_lines[lineno - 1]
-    lineno_in_original_script = int(
-        tools.load_json_file(f'{self.save_path}/line_mappings.json')[str(lineno - 1)])
-    original_code_line = tools.load_txt_file(f'{self.save_path}/code.txt').split(
-        '\n')[lineno_in_original_script]
+    lineno_in_original_script = self.config.line_mappings[lineno - 1]
+    original_code_line = self.config.code_lines[lineno_in_original_script]
 
     if isinstance(text_api, str):
       text_api_name = text_api.split('$')[-1]
@@ -781,18 +788,14 @@ class Verifier:
   def scroll(self, scroller_api, direction):
     global ACTION_COUNT
     # get the currently executing code
-    code_lines = tools.load_txt_file(f'{self.save_path}/compiled_code.txt').split('\n')
+    code_lines = self.config.compiled_code_lines
     frame = inspect.currentframe()
     caller_frame = frame.f_back
     lineno = caller_frame.f_lineno
-    print(
-        f"scroll {direction}: {scroller_api} at line {lineno}, code is:{code_lines[lineno - 1]}"
-    )
+    print(f"scroll {direction}: {scroller_api} at line {lineno}, code is:{code_lines[lineno - 1]}")
     current_code_line = code_lines[lineno - 1]
-    lineno_in_original_script = int(
-        tools.load_json_file(f'{self.save_path}/line_mappings.json')[str(lineno - 1)])
-    original_code_line = tools.load_txt_file(f'{self.save_path}/code.txt').split(
-        '\n')[lineno_in_original_script]
+    lineno_in_original_script = self.config.line_mappings[lineno - 1]
+    original_code_line = self.config.code_lines[lineno_in_original_script]
 
     if isinstance(scroller_api, str):
       scroller_api_name = scroller_api.split('$')[-1]
@@ -846,18 +849,14 @@ class Verifier:
     '''
 
     # get the currently executing code
-    code_lines = tools.load_txt_file(f'{self.save_path}/compiled_code.txt').split('\n')
+    code_lines = self.config.compiled_code_lines
     frame = inspect.currentframe()
     caller_frame = frame.f_back
     lineno = caller_frame.f_lineno
-    print(
-        f"get_text: {element_selector} at line {lineno}, code is:{code_lines[lineno - 1]}"
-    )
+    print(f"get_text: {element_selector} at line {lineno}, code is:{code_lines[lineno - 1]}")
     current_code_line = code_lines[lineno - 1]
-    lineno_in_original_script = int(
-        tools.load_json_file(f'{self.save_path}/line_mappings.json')[str(lineno - 1)])
-    original_code_line = tools.load_txt_file(f'{self.save_path}/code.txt').split(
-        '\n')[lineno_in_original_script]
+    lineno_in_original_script = self.config.line_mappings[lineno - 1]
+    original_code_line = self.config.code_lines[lineno_in_original_script]
 
     target_ele, element_tree = self.navigate_and_get_target_element(
         element_selector,
@@ -884,18 +883,14 @@ class Verifier:
     '''
 
     # get the currently executing code
-    code_lines = tools.load_txt_file(f'{self.save_path}/compiled_code.txt').split('\n')
+    code_lines = self.config.compiled_code_lines
     frame = inspect.currentframe()
     caller_frame = frame.f_back
     lineno = caller_frame.f_lineno
-    print(
-        f"get_attributes: {element_selector} at line {lineno}, code is:{code_lines[lineno - 1]}"
-    )
+    print(f"get_attributes: {element_selector} at line {lineno}, code is:{code_lines[lineno - 1]}")
     current_code_line = code_lines[lineno - 1]
-    lineno_in_original_script = int(
-        tools.load_json_file(f'{self.save_path}/line_mappings.json')[str(lineno - 1)])
-    original_code_line = tools.load_txt_file(f'{self.save_path}/code.txt').split(
-        '\n')[lineno_in_original_script]
+    lineno_in_original_script = self.config.line_mappings[lineno - 1]
+    original_code_line = self.config.code_lines[lineno_in_original_script]
 
     target_ele, _ = self.navigate_and_get_target_element(
         element_selector,
@@ -922,16 +917,14 @@ class Verifier:
     '''
 
     # get the currently executing code
-    code_lines = tools.load_txt_file(f'{self.save_path}/compiled_code.txt').split('\n')
+    code_lines = self.config.compiled_code_lines
     frame = inspect.currentframe()
     caller_frame = frame.f_back
     lineno = caller_frame.f_lineno
     print(f"go back at line {lineno}, code is:{code_lines[lineno - 1]}")
     current_code_line = code_lines[lineno - 1]
-    lineno_in_original_script = int(
-        tools.load_json_file(f'{self.save_path}/line_mappings.json')[str(lineno - 1)])
-    original_code_line = tools.load_txt_file(f'{self.save_path}/code.txt').split(
-        '\n')[lineno_in_original_script]
+    lineno_in_original_script = self.config.line_mappings[lineno - 1]
+    original_code_line = self.config.code_lines[lineno_in_original_script]
 
     print(f'try to go back')
     state = self.env.get_state()
@@ -939,6 +932,7 @@ class Verifier:
 
     _save2log(
         save_path=self.save_path,
+        log_file=self.config.log_file,
         element_tree=element_tree,
         idx=None,
         inputs=None,
@@ -966,15 +960,15 @@ class Verifier:
 
 class ElementList:
 
-  def __init__(self, api_name, api_xpath, env: interface.AsyncEnv,
-               save_path: str, api_xpaths: dict[str, str],
-               verifier: Verifier) -> None:
+  def __init__(self, api_name, api_xpath, verifier: Verifier) -> None:
     # all element_lists can be uniquely identified by their api_xpath. If one api_name is provided, we can retrieve its xpath from api_xpaths. If api_name is not provided, such as a dynamic element at runtime, then its xpath must be provided.
-    self.env = env
-    self.save_path = save_path
-
+    self.env = verifier.env
+    self.save_path = verifier.save_path
+    self.config = verifier.config
+    
     self.api_name = api_name
-    self.api_xpaths = api_xpaths
+    self.api_xpaths = verifier.api_xpaths
+    
     if self.api_name:
       self.check_api_name(api_name)
     if not api_xpath:
@@ -992,6 +986,7 @@ class ElementList:
 
     _save2log(
         save_path=self.save_path,
+        log_file=self.config.log_file,
         element_tree=element_tree,
         idx=None,
         inputs=None,
@@ -1009,16 +1004,12 @@ class ElementList:
   def check_api_name(self, api_name):
     if api_name not in self.api_xpaths.keys():  # not found xpath
       # find the first line with the api_name in the original script (combined with the preparation, this is to stay the same with tap, set_text, etc.)
-      code_lines = tools.load_txt_file(f'{self.save_path}/compiled_code.txt').split('\n')
-      # lines = original_script.split('\n')
       line_with_api_name = None
-      for line_num, line in enumerate(code_lines):
+      for line_num, line in enumerate(self.config.compiled_code_lines):
         if api_name in line:
           line_with_api_name = line.strip()
-          lineno_in_original_script = tools.load_json_file(
-              f'{self.save_path}/line_mappings.json')[str(line_num)]
-          original_code_line = tools.load_txt_file(
-              f'{self.save_path}/code.txt').split('\n')[lineno_in_original_script]
+          lineno_in_original_script = self.config.line_mappings[line_num]
+          original_code_line = self.config.code_lines[lineno_in_original_script]
           break
       currently_executing_code = {
           'current_code': line_with_api_name,
@@ -1028,6 +1019,7 @@ class ElementList:
 
       _save2log(
           save_path=self.save_path,
+          log_file=self.config.log_file,
           element_tree=None,
           idx=None,
           inputs=None,
@@ -1046,9 +1038,6 @@ class ElementList:
     elementlist = ElementList(
         api_name=None,
         api_xpath=ele_xpath,
-        env=self.env,
-        save_path=self.save_path,
-        api_xpaths=self.api_xpaths,
         verifier=self.verifier)
     return ele_xpath, elementlist
 
@@ -1092,6 +1081,7 @@ class ElementList:
       
       _save2log(
           save_path=self.save_path,
+          log_file=self.config.log_file,
           element_tree=element_tree,
           idx=ele_attr.id if ele_attr else None,
           inputs=None,
@@ -1254,15 +1244,13 @@ class ElementList:
 
   def get_current_code_line(self, lineno: int, action: str, element_selector_name: str):
     # get the currently executing code
-    code_lines = tools.load_txt_file(f'{self.save_path}/compiled_code.txt').split('\n')
+    code_lines = self.config.compiled_code_lines
     print(
         f"{action}: {element_selector_name} at line {lineno}, code is:{code_lines[lineno - 1]}"
     )
     current_code_line = code_lines[lineno - 1]
-    lineno_in_original_script = int(
-        tools.load_json_file(f'{self.save_path}/line_mappings.json')[str(lineno - 1)])
-    original_code_line = tools.load_txt_file(f'{self.save_path}/code.txt').split(
-        '\n')[lineno_in_original_script]
+    lineno_in_original_script = self.config.line_mappings[lineno - 1]
+    original_code_line = self.config.code_lines[lineno_in_original_script]
 
     return current_code_line, lineno_in_original_script, original_code_line
 

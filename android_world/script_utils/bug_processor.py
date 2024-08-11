@@ -208,14 +208,14 @@ Now please return the corrected script to complete the task. Your answer should 
 
 class BugProcessorv2:
 
-  def __init__(self, app_name, log_path, error_log_path, task: str, raw_solution: str, ele_data_path, api_xpaths: dict[str, str]):
+  def __init__(self, app_name, log_path, error_log_path, task: str, raw_solution: str, ele_data_path, doc: ApiDoc):
     self.app_name = app_name
     self.raw_log = tools.load_yaml_file(log_path)
     self.error_log = tools.load_json_file(error_log_path)
     self.ele_data = tools.load_json_file(ele_data_path)
     self.task = task
     self.raw_solution = raw_solution
-    self.api_xpaths = api_xpaths
+    self.doc = doc
 
   def _get_view_without_id(self, view):
     modified_view = re.sub(r" id='\d+'", '', view)
@@ -234,7 +234,7 @@ class BugProcessorv2:
     if len(self.raw_log['records'])==0:
       return []
     ui_state = self.raw_log['records'][-1]['State']
-    for api_name, api_xpath in self.api_xpaths.items():
+    for api_name, api_xpath in self.doc.api_xpath.items():
 
       root = etree.fromstring(ui_state)
       eles = root.xpath(api_xpath)

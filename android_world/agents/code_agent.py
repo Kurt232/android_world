@@ -18,7 +18,7 @@ from android_world.env import json_action
 
 from android_world.agents.agent_utils import ElementTree
 
-from android_world.script_utils.ui_apis import Verifier, ElementList, regenerate_script
+from android_world.script_utils.ui_apis import CodeConfig, Verifier, ElementList, regenerate_script
 from android_world.script_utils import tools
 from android_world.script_utils.bug_processor import BugProcessorv2
 from android_world.script_utils.solution_generator import SolutionGenerator
@@ -159,24 +159,50 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
   FREEZED_CODE = False
   def __init__(self,
                env: interface.AsyncEnv,
-               llm: infer.LlmWrapper,
                save_path: str,
+               task_names: str,
                name: str = 'CodeAgent'):
 
     super().__init__(env, name)
-    self.save_path = save_path
+    self.save_dir = save_path
+    self.app_name = tools.load_txt_file(f'tmp/app_name.txt').strip()
+    self.task_names = task_names
+    
+    self.goal_set = set()
+    self.save_path = None
+    
+  @property
+  def task_name(self):
+    return self.task_names[len(self.goal_set) - 1]
 
   def step(self, goal: str) -> base_agent.AgentInteractionResult:
-    tools.write_txt_file(f'{self.save_path}/task.txt', goal)
     """
     only execute once for code script
     """
-    # todo:: add a config
+    self.goal_set.add(goal)
     task = goal
+    app_name = self.app_name
+    self.save_path = os.path.join(self.save_dir, self.task_name)
+    if not os.path.exists(self.save_path):
+      os.makedirs(self.save_path)
+    
     logging.info(f'Executing task: {task}')
-    app_name = tools.load_txt_file('tmp/app_name.txt') # todo::
+    tools.write_txt_file(f'{self.save_path}/task.txt', task)
     app_doc = ApiDoc(app_name)
-    ele_data_path = os.path.join('tmp/elements/', app_name + '.json')
+    
+    # generate code
+    if self.FREEZED_CODE:
+      code = tools.load_txt_file(f'tmp/code.txt')
+    else:
+      # formatted_apis = format_apis(self.env, app_doc)
+      solution_generator = SolutionGenerator(self.env, app_name, app_doc)
+      solution_code = solution_generator.get_solution(
+          app_name=app_name,
+          prompt_answer_path=os.path.join(self.save_path, f'solution.json'),
+          task=task,
+          model_name='gpt-4o')
+      code = solution_code
+    
     for retry_time in range(self.MAX_RETRY_TIMES):
       if retry_time == 0:
         # restart the app first in case the script couldn't run and the app has not been start
@@ -186,35 +212,20 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
                 'app_name': app_name
             }))
         time.sleep(self.WAIT_AFTER_ACTION_SECONDS)
-
-      # generate solution code for first try
-      if retry_time == 0:
-        if self.FREEZED_CODE:
-          code = tools.load_txt_file(f'tmp/code.txt')
-        else:
-          # formatted_apis = format_apis(self.env, app_doc)
-          solution_generator = SolutionGenerator(self.env, app_name, app_doc)
-          solution_code = solution_generator.get_solution(
-              app_name=app_name,
-              prompt_answer_path=os.path.join(self.save_path, f'solution.json'),
-              task=task,
-              ele_data_path=ele_data_path,
-              model_name='gpt-4o')
-          code = solution_code
-        
-        tools.write_txt_file(f'{self.save_path}/code.txt', code)
-
-      if retry_time != 0:
+      
+      log_path = os.path.join(self.save_path, f'log.yaml')
+      error_path = os.path.join(self.save_path, f'error.json')
+      
+      if retry_time != 0: # debug
         bug_processor = BugProcessorv2(
             app_name=app_name,
             log_path=log_path,
             error_log_path=error_path,
             task=task,
             raw_solution=code,
-            ele_data_path=ele_data_path,
-            api_xpaths=api_xpaths)
+            doc=app_doc)
 
-        stuck_apis_str = format_apis(self.env, api_xpaths)
+        stuck_apis_str = format_apis(self.env, app_doc.api_xpath)
         script = bug_processor.process_bug(
             prompt_answer_path=os.path.join(
                 self.save_path, f'debug_task_turn{retry_time}.json'),
@@ -224,26 +235,26 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
 
         code = script
         
-      tools.write_txt_file(f'{self.save_path}/code{retry_time}.txt', code)
+        # update the save_path for retry
+        self.save_path = os.path.join(self.save_dir, f'{retry_time}')
       
-      doc = app_doc
-      env = self.env
-      save_path = self.save_path
-      api_xpaths = app_doc.api_xpath
-      verifier = Verifier(env, save_path, app_name, api_xpaths, doc)
-      code_script, line_mappings = regenerate_script(code, 'verifier', 'env',
-                                                     'save_path', 'api_xpaths')  
+      tools.write_txt_file(f'{self.save_path}/code.txt', code)
+      # in case some silly scripts include no UI actions at all, we make an empty log for batch_verifying
+      tools.dump_yaml_file(log_path, {'records': [], 'step_num': 0})
+
+      code_script, line_mappings = regenerate_script(code, 'verifier')
       tools.write_txt_file(f'{self.save_path}/compiled_code.txt', code_script)
       tools.dump_json_file(f'{self.save_path}/line_mappings.json', line_mappings)
-      # in case some silly scripts include no UI actions at all, we make an empty log for batch_verifying
-      log_path = os.path.join(self.save_path, f'log.yaml')
-      tools.dump_yaml_file(log_path, {'records': [], 'step_num': 0})
+      
+      env = self.env      
+      config = CodeConfig(app_name, app_doc, self.save_path, code, code_script, line_mappings)
+      verifier = Verifier(env, config)
+      
       try:
         exec(code_script)
       except Exception as e:
         # save_current_ui_to_log(code_policy, api_name=None)
         tb_str = traceback.format_exc()
-        error_path = os.path.join(self.save_path, f'error.json')
         error_info = process_error_info(code, code_script, tb_str, str(e),
                                         line_mappings)
 
