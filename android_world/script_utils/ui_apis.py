@@ -1060,7 +1060,8 @@ class ElementList:
             'original_code': original_code_line
         },
         effect_range=self.element_list_xpath,
-        screenshot=state.pixels.copy())
+        comment='initialization',
+        screenshot=self.state.pixels.copy())
 
   def check_api_name(self, api_name):
     if api_name not in self.api_xpaths.keys():  # not found xpath
@@ -1094,7 +1095,7 @@ class ElementList:
           f'Error: Element {api_name} does not exist in the app! Please use the real element name! '
       )
 
-  def convert_ele_attr_to_elementlist(self, ele_attr):
+  def convert_ele_attr_to_element_list(self, ele_attr):
     ele_xpath = f"//{ele_attr.type_}[@id='{ele_attr.id}']"
     elementlist = ElementList(
         api_name=None,
@@ -1124,7 +1125,7 @@ class ElementList:
     # Default to integer index if not a custom selector
     if isinstance(selector, int):
       ele_attr = element_tree.get_children_by_idx(target_ele_group, selector)
-      matched_xpath, matched_ele = self.convert_ele_attr_to_elementlist(
+      matched_xpath, matched_ele = self.convert_ele_attr_to_element_list(
           ele_attr)
       
       return matched_ele
@@ -1148,13 +1149,8 @@ class ElementList:
     # get the currently executing code
     frame = inspect.currentframe()
     caller_frame = frame.f_back
-    lineno = caller_frame.f_lineno
-    
+    lineno = caller_frame.f_lineno    
     current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, '__next__', self.api_name)
-    self._save_getting_info_action(f'[{self.index}]next', self.api_name,
-                                   self.element_list_xpath, current_code_line,
-                                   lineno_in_original_script,
-                                   original_code_line)
 
     element_selector_api_name = self.api_name if self.api_name else self.element_list_xpath
     element_selector_xpath = self.element_list_xpath
@@ -1173,7 +1169,7 @@ class ElementList:
     check_action_count()
     if self.index < len(ele_list_children):
       ele_attr = ele_list_children[self.index]
-      matched_xpath, matched_ele = self.convert_ele_attr_to_elementlist(
+      matched_xpath, matched_ele = self.convert_ele_attr_to_element_list(
           ele_attr)
       self.index += 1
       return matched_ele
@@ -1189,11 +1185,6 @@ class ElementList:
     caller_frame = frame.f_back
     lineno = caller_frame.f_lineno
     current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, 'match', match_data)
-
-    self._save_getting_info_action(f'match[{match_data}]', self.api_name,
-                                   self.element_list_xpath, current_code_line,
-                                   lineno_in_original_script,
-                                   original_code_line)
 
     element_selector_api_name = self.api_name if self.api_name else self.element_list_xpath
     element_selector_xpath = self.element_list_xpath
@@ -1212,13 +1203,13 @@ class ElementList:
       # ele_dict = ele.dict()
       if isinstance(match_data, str):
         if ele.is_match(match_data):
-          matched_xpath, matched_ele = self.convert_ele_attr_to_elementlist(ele)
+          matched_xpath, matched_ele = self.convert_ele_attr_to_element_list(ele)
           matched_elements.append(matched_ele)
           matched_xpaths.append(matched_xpath)
       elif isinstance(match_data, dict):
         ele_dict = ele.dict()
         if all(ele_dict[key] == value for key, value in match_data.items()):
-          matched_xpath, matched_ele = self.convert_ele_attr_to_elementlist(ele)
+          matched_xpath, matched_ele = self.convert_ele_attr_to_element_list(ele)
           matched_elements.append(matched_ele)
           matched_xpaths.append(matched_xpath)
 
@@ -1238,11 +1229,6 @@ class ElementList:
     caller_frame = frame.f_back
     lineno = caller_frame.f_lineno
     current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, '__len__', self.api_name)
-    
-    self._save_getting_info_action('len', self.api_name,
-                                   self.element_list_xpath, current_code_line,
-                                   lineno_in_original_script,
-                                   original_code_line)
 
     element_selector_api_name = self.api_name if self.api_name else self.element_list_xpath
     element_selector_xpath = self.element_list_xpath
