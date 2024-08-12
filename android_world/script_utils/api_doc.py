@@ -107,22 +107,18 @@ class DependentAction():
 
 class ApiEle():
 
-  def __init__(self, raw: dict):
+  def __init__(self, screen_name: str, raw: dict):
     self.element: str = raw['element']
     self.element_type: str = raw['element_type']
     self.description: str = raw['description']
     self.effect: str = raw.get('effect', None)
 
-    self.full_api_name = raw['api_name']
-    
-    tmp_name = raw['api_name'].split('__')
-    assert len(tmp_name) == 2
-    self.scree_name: str = tmp_name[0]
-    self.api_name: str = tmp_name[1]
+    self.screen_name = screen_name
+    self.api_name = raw['api_name']
 
     self.state_tag: str = raw['state_tag']
-    self.xpath: str = raw['xpath']
-    self.dependency: list[list[str]] = raw['paths']
+    self.xpath: str = raw.get('xpath', None) # todo:: maybe not exist, log this
+    self.dependency: list[list[str]] = raw.get('paths', [])
     self.dependency_action: list[list[DependentAction]] = []
 
     for paths in self.dependency:
@@ -139,6 +135,7 @@ class ApiDoc():
     self.api_doc_path = os.path.join(api_doc_dir, app_name + '.json')
     self.doc: dict[str, dict[str, ApiEle]] = {}
     self.api_xpath: dict[str, str] = {}
+    self.elements: list[ApiEle] = []
     self.skeleton_str2screen_name: dict[str, str] = {}
     self.screen_name2skeleton: dict[str, HTMLSkeleton] = {}
 
@@ -157,10 +154,10 @@ class ApiDoc():
       self.skeleton_str2screen_name[v['skeleton']] = k
       _elements = {}
       for k_ele, v_ele in v['elements'].items():
-        ele = ApiEle(v_ele)
+        ele = ApiEle(k, v_ele)
         _elements[k_ele] = ele
-        if ele.xpath: # existing null xpath
-          self.api_xpath[k + '__' + k_ele] = ele.xpath
+        self.elements.append(ele)
+        self.api_xpath[k + '__' + k_ele] = ele.xpath
       self.doc[k] = _elements
 
     # ! screen and skeleton should be unique (but it's not)

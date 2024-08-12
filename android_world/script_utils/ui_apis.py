@@ -280,6 +280,22 @@ class CodeConfig:
     self.code_lines = code.split('\n')
     self.compiled_code_lines = compiled_code.split('\n')
 
+  def update(self, app_name: str = None, doc: ApiDoc = None, save_path: str = None, code: str = None, compiled_code: str = None, line_mappings: dict[int, int] = None):
+    if app_name is not None:
+      self.app_name = app_name
+    if doc is not None:
+      self.doc = doc
+    if save_path is not None:
+      self.save_path = save_path
+      self.log_file = save_path + '/log.yaml'
+    if code is not None:
+      self.code = code
+      self.code_lines = code.split('\n')
+    if compiled_code is not None:
+      self.compiled_code = compiled_code
+      self.compiled_code_lines = compiled_code.split('\n')
+    if line_mappings is not None:
+      self.line_mappings = line_mappings
 
 class Verifier:
 
@@ -478,7 +494,7 @@ class Verifier:
               if action.action_type == 'back':
                 self.env.execute_action(
                     json_action.JSONAction(**{
-                        "action_type": "back"
+                        "action_type": "navigate_back"
                     }))
                 time.sleep(WAIT_AFTER_ACTION_SECONDS)
                 is_match = True
