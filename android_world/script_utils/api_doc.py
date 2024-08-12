@@ -9,6 +9,9 @@ from android_world.agents.agent_utils import HTMLSkeleton
 class DependentAction():
 
   def __init__(self, action: str):
+    '''
+    still remember to consider back() action
+    '''
     action = action.strip()
     self.raw_action: str = action
     self.screen_name: str = None
@@ -21,37 +24,47 @@ class DependentAction():
     m = re.search(r'(\w+)__', action)
     assert m is not None
     self.screen_name = m.group(1)
-    action = action[:m.start()] + action[m.end():]
+    _action = action[:m.start()] + action[m.end():]
 
     # argv
-    self.argv = self._extract_arguments(action)
+    self.argv = self._extract_arguments(_action)
     if len(self.argv) > 0:
       self.api_name = self.argv[0]
+      self.name = self.screen_name + '__' + self.api_name
 
     # action_type
-    if action.startswith('tap'):
-      self.action_type = 'tap'
+    if _action.startswith('tap'):
+      self.action_type = 'touch'
       assert len(self.argv) == 1
-    elif action.startswith('long_tap'):
-      self.action_type = 'long_tap'
+    elif _action.startswith('long_tap'):
+      self.action_type = 'long_touch'
       assert len(self.argv) == 1
-    elif action.startswith('set_text'):
+    elif _action.startswith('set_text'):
       self.action_type = 'set_text'
       assert len(self.argv) == 2
       self.text = self.argv[1].strip("\'\"")
-    elif action.startswith('scroll'):
+    elif _action.startswith('scroll'):
       self.action_type = 'scroll'
       assert len(self.argv) == 2
       direction = self.argv[1].strip("\'\"").lower()
       assert direction in ['up', 'down', 'lift', 'right']
       self.action_type = 'scroll' + ' ' + direction
-    elif action.startswith('get_text'):
+    elif _action.startswith('get_text'):
+      '''
+      can't execute, will wait
+      '''
       self.action_type = 'get_text'
       assert len(self.argv) == 1
-    elif action.startswith('get_attributes'):
+    elif _action.startswith('get_attributes'):
+      '''
+      can't execute, will wait
+      '''
       self.action_type = 'get_attributes'
       assert len(self.argv) == 1
-    elif action.startswith('back'):
+    elif _action.startswith('back'):
+      '''
+      specially handle
+      '''
       self.action_type = 'back'
       assert len(self.argv) == 0
     else:
@@ -156,24 +169,10 @@ class ApiDoc():
   def get_api_xpath(self):
     return self.api_xpath
 
-  def get_dependency(self, skeleton: HTMLSkeleton, api_name: str):
+  def get_dependency(self, api_name: str):
     temp = api_name.split('__')
     assert len(temp) == 2
     _screen_name, _api_name = temp[0:2]
-    
-    screen_value = self.doc.get(_screen_name, None)
-    skeleton_value = self.screen_name2skeleton.get(_screen_name, None)
-    if not screen_value or not skeleton_value or skeleton_value != skeleton:
-      count = -1
-      for screen_name, screen_skeleton in self.screen_name2skeleton.items():
-        common = screen_skeleton.extract_common_skeleton(skeleton)
-        _count = common.count()
-        if _count > count:
-          count = _count
-          _screen_name = screen_name
-
-      if not _screen_name:
-        _screen_name = self.main_screen
 
     api = self.doc[_screen_name].get(_api_name, None)
     if not api:
