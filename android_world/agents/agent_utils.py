@@ -401,13 +401,14 @@ class ElementTree(object):
     # convert bfs order id to dfs order id
     valid_node_ids.sort()
     idx_map = {node.id: idx for idx, node in zip(valid_node_ids, dfs_order)}
+    _scrollable_ele_ids = set()
     # update the ele_map
     _ele_map = {}
     for idx, node in zip(valid_node_ids, dfs_order):
       ele = ele_map[node.id]
       ele.id = idx
       if ele.ele.is_scrollable:
-        self.scrollable_ele_ids.append(idx)
+        _scrollable_ele_ids.add(idx)
       for i, child in enumerate(ele.children):
         ele.children[i] = idx_map[child]
       _ele_map[idx] = ele
@@ -419,6 +420,7 @@ class ElementTree(object):
       if node.parent != -1:
         node.parent = idx_map.get(node.parent, -1)
 
+    self.scrollable_ele_ids = list(_scrollable_ele_ids & _valid_ele_ids)
     # get the leaves
     root.get_leaves()
     root.drop_invalid_nodes(_valid_ele_ids)
