@@ -18,7 +18,7 @@ from android_world.env import json_action
 from android_world.script_utils import tools
 from android_world.script_utils.api_doc import ApiDoc
 
-from . import WAIT_AFTER_ACTION_SECONDS, MAX_SCROLL_NUM, MAX_ACTION_COUNT, IS_LOG_SCREENSHOT
+from . import WAIT_AFTER_ACTION_SECONDS, MAX_SCROLL_NUM, MAX_ACTION_COUNT, IS_LOG_SCREENSHOT, MAX_DEPENDENCE_DEPTH
 
 api_names = [
     'long_tap', 'tap', 'set_text', 'scroll', 'get_text', 'get_attributes',
@@ -193,7 +193,7 @@ def save_current_ui_to_log(env: interface.AsyncEnv,
                            xpath: str,
                            currently_executing_code=None):
   log_path = os.path.join(save_path, f'log.yaml')
-  state = env.get_state()
+  state = env.get_state(True)
   element_tree = agent_utils.forest_to_element_tree(state.forest)
   state_desc = element_tree.str
 
@@ -364,7 +364,7 @@ class Verifier:
 
       for _ in range(MAX_SCROLL_NUM):
 
-        state = self.env.get_state()
+        state = self.env.get_state(True)
         element_tree = agent_utils.forest_to_element_tree(state.forest)
 
         target_ele = element_tree.get_ele_by_xpath(xpath)
@@ -426,7 +426,7 @@ class Verifier:
 
     code_to_be_executed = ele_data
 
-    state = self.env.get_state()
+    state = self.env.get_state(True)
     element_tree = agent_utils.forest_to_element_tree(state.forest)
     # first execute the code
     xpath = code_to_be_executed['xpath']
@@ -446,7 +446,7 @@ class Verifier:
       if not target_ele:
         ## dependency
         # we have executed all the dependencies, but still not found the target element
-        state = self.env.get_state()
+        state = self.env.get_state(True)
         element_tree = agent_utils.forest_to_element_tree(state.forest)
         
         while target_ele is None:  # todo:: limit the max number of retry
@@ -466,7 +466,7 @@ class Verifier:
               _screen_name = action.screen_name
               _target_skeleton = self.doc.screen_name2skeleton[_screen_name]
 
-              state = self.env.get_state()
+              state = self.env.get_state(True)
               element_tree = agent_utils.forest_to_element_tree(state.forest)
               
               # find the target element in the current UI
@@ -518,7 +518,7 @@ class Verifier:
               time.sleep(WAIT_AFTER_ACTION_SECONDS)
 
             if dep_id >= len(action_list) - 1:
-              state = self.env.get_state()
+              state = self.env.get_state(True)
               element_tree = agent_utils.forest_to_element_tree(state.forest)
               target_ele = element_tree.get_ele_by_xpath(xpath)              
               break
@@ -573,7 +573,7 @@ class Verifier:
   def navigate_and_get_target_element(self, element_selector_api_name, element_selector_xpath, caller_type,
                                       statement):
     # t1 = time.time()
-    state = self.env.get_state()
+    state = self.env.get_state(True)
     element_tree = agent_utils.forest_to_element_tree(state.forest)
     # print(f'get current state time: {time.time() - t1}')
     # t2 = time.time()
@@ -606,7 +606,7 @@ class Verifier:
 
       self.execute_action(ele_data)
       # self.check_output_crash(element_selector_xpath)
-      state = self.env.get_state()
+      state = self.env.get_state(True)
       element_tree = agent_utils.forest_to_element_tree(state.forest)
       target_ele = element_tree.get_ele_by_xpath(element_selector_xpath)
 
@@ -625,7 +625,7 @@ class Verifier:
           }))
       time.sleep(WAIT_AFTER_ACTION_SECONDS)
 
-    state = self.env.get_state()
+    state = self.env.get_state(True)
     element_tree = agent_utils.forest_to_element_tree(state.forest)
     element_tree_str = element_tree.str
     # ACTION_COUNT += 1  # to ensure the app do not restart after getting the ui tree
@@ -645,7 +645,7 @@ class Verifier:
           }))
       time.sleep(WAIT_AFTER_ACTION_SECONDS)
 
-    state = self.env.get_state()
+    state = self.env.get_state(True)
     element_tree = agent_utils.forest_to_element_tree(state.forest)
     if isinstance(element_selector, list):
       element_selector = element_selector[0]
@@ -656,7 +656,7 @@ class Verifier:
       return False
 
   def check_last_screen_html_is_same(self):
-    state = self.env.get_state()
+    state = self.env.get_state(True)
     element_tree = agent_utils.forest_to_element_tree(state.forest)
     current_screen_html_str = element_tree.str
     is_same = False
@@ -988,7 +988,7 @@ class Verifier:
     original_code_line = self.config.code_lines[lineno_in_original_script]
 
     print(f'try to go back')
-    state = self.env.get_state()
+    state = self.env.get_state(True)
     element_tree = agent_utils.forest_to_element_tree(state.forest)
 
     _save2log(
@@ -1042,7 +1042,7 @@ class ElementList:
   def _save_getting_info_action(self, action_type, api_name: str, xpath: str,
                                 current_code_line, lineno_in_original_script,
                                 original_code_line):
-    state = self.env.get_state()
+    state = self.env.get_state(True)
     element_tree = agent_utils.forest_to_element_tree(state.forest)
 
     _save2log(
