@@ -190,19 +190,6 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
     tools.write_txt_file(f'{self.save_path}/task.txt', task)
     app_doc = ApiDoc(app_name)
     
-    # generate code
-    if self.FREEZED_CODE:
-      code = tools.load_txt_file(f'tmp/code.txt')
-    else:
-      # formatted_apis = format_apis(self.env, app_doc)
-      solution_generator = SolutionGenerator(self.env, app_name, app_doc)
-      solution_code = solution_generator.get_solution(
-          app_name=app_name,
-          prompt_answer_path=os.path.join(self.save_path, f'solution.json'),
-          task=task,
-          model_name='gpt-4o')
-      code = solution_code
-    
     for retry_time in range(self.MAX_RETRY_TIMES):
       if retry_time == 0:
         # restart the app first in case the script couldn't run and the app has not been start
@@ -216,7 +203,19 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
       log_path = os.path.join(self.save_path, f'log.yaml')
       error_path = os.path.join(self.save_path, f'error.json')
       
-      if retry_time != 0: # debug
+      if retry_time == 0: # first time
+        # generate code
+        if self.FREEZED_CODE:
+          code = tools.load_txt_file(f'tmp/code.txt')
+        else:
+          solution_generator = SolutionGenerator(self.env, app_name, app_doc)
+          solution_code = solution_generator.get_solution(
+              app_name=app_name,
+              prompt_answer_path=os.path.join(self.save_path, f'solution.json'),
+              task=task,
+              model_name='gpt-4o')
+          code = solution_code
+      else: # debug
         bug_processor = BugProcessorv2(
             app_name=app_name,
             log_path=log_path,
@@ -233,21 +232,22 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
             model_name='gpt-4o',
             stuck_ui_apis=stuck_apis_str)
 
-        code = script
-        
         # update the save_path for retry
         self.save_path = os.path.join(self.save_dir, f'{retry_time}')
       
       tools.write_txt_file(f'{self.save_path}/code.txt', code)
-      # in case some silly scripts include no UI actions at all, we make an empty log for batch_verifying
-      tools.dump_yaml_file(log_path, {'records': [], 'step_num': 0})
-
+      
       code_script, line_mappings = regenerate_script(code, 'verifier')
       tools.write_txt_file(f'{self.save_path}/compiled_code.txt', code_script)
       tools.dump_json_file(f'{self.save_path}/line_mappings.json', line_mappings)
       
-      env = self.env      
+      # in case some silly scripts include no UI actions at all, we make an empty log for batch_verifying
+      tools.dump_yaml_file(log_path, {'records': [], 'step_num': 0})
+      
+      env = self.env
       config = CodeConfig(app_name, app_doc, self.save_path, code, code_script, line_mappings)
+      
+      # execution
       verifier = Verifier(env, config)
       
       try:

@@ -19,16 +19,14 @@ class SolutionGenerator:
     all_elements_desc = ''
     for ele in self.doc.elements:
       description = ele.description
-      if ele.options:
-        description += f'It includes options: {", ". join(ele.options)}.'
-      all_elements_desc += f"\n\nelement: {ele.api_name} \n\tDescription: {description} \n\tType: {ele.type}"
+      all_elements_desc += f"\n\nelement: {ele.api_name} \n\tDescription: {description} \n\tType: {ele.element_type}"
       if ele.effect:
         all_elements_desc += f"\n\tEffect: {ele.effect}"
     
     # current screen elements
     current_screen_elements = ''
     
-    state = self.env.get_state()
+    state = self.env.get_state(True)
     element_tree = agent_utils.forest_to_element_tree(state.forest)
     current_screen_name = self.doc.get_screen_name_by_skeleton(element_tree.skeleton)
     if not current_screen_name:
@@ -39,9 +37,7 @@ class SolutionGenerator:
     
     for ele in valid_element_list:
       description = ele.description
-      if ele.options:
-        description += f'It includes options: {", ". join(ele.options)}.'
-      current_screen_elements += f"\n\nelement: {ele.api_name} \n\tDescription: {description} \n\tType: {ele.type}"
+      current_screen_elements += f"\n\nelement: {ele.api_name} \n\tDescription: {description} \n\tType: {ele.element_type}"
       if ele.effect:
         current_screen_elements += f"\n\tEffect: {ele.effect}"
 
