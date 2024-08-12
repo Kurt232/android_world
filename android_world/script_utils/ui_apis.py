@@ -32,12 +32,12 @@ def set_action_count(count):
   ACTION_COUNT = count
 
 
-def check_aciton_count():
+def check_action_count():
   global ACTION_COUNT
-  if ACTION_COUNT >= MAX_ACTION_COUNT:
-    raise Exception(
-        f'Action count exceeds the maximum limit: {MAX_ACTION_COUNT}. The script may be stuck in an infinite loop. Please check the script.'
-    )
+  # if ACTION_COUNT >= MAX_ACTION_COUNT:
+    # raise Exception(
+    #     f'Action count exceeds the maximum limit: {MAX_ACTION_COUNT}. The script may be stuck in an infinite loop. Please check the script.'
+    # )
   ACTION_COUNT += 1
 
 
@@ -129,6 +129,7 @@ def _save2yaml(file_name,
     old_yaml_data = yaml.safe_load(f)
   new_records = old_yaml_data['records']
   new_records.append({
+      'step': len(new_records),
       'State': state_prompt,
       'Choice': idx,
       'Action': action_type,
@@ -144,7 +145,7 @@ def _save2yaml(file_name,
       'effect_range': effect_range
   })
   data = {
-      'step_num': len(list(old_yaml_data['records'])),
+      'step_num': len(new_records),
       'records': new_records
   }
   t1 = time.time()
@@ -294,63 +295,60 @@ class Verifier:
     # autodroid
     self.last_screen_html_str = None
 
-  def get_action_from_xpath(self, element_tree: ElementTree, api_name: str,
-                            xpath: str, action_type: str, input_text: str,
-                            statement, screenshot=None):
+  # def get_action_from_xpath(self, element_tree: ElementTree, api_name: str,
+  #                           xpath: str, action_type: str, input_text: str,
+  #                           statement, screenshot=None):
 
-    def get_needed_ele_property_from_action_type(action_type):
-      if action_type == 'touch':
-        return 'clickable'
-      if action_type == 'long_touch':
-        return 'long_clickable'
-      if action_type == 'scroll up' or action_type == 'scroll down':
-        return 'scrollable'
-      if action_type == 'set_text':
-        return 'editable'
-      if 'select' in action_type:
-        return 'checkable'
-      return None
+  #   def get_needed_ele_property_from_action_type(action_type):
+  #     if action_type == 'touch':
+  #       return 'clickable'
+  #     if action_type == 'long_touch':
+  #       return 'long_clickable'
+  #     if action_type == 'scroll up' or action_type == 'scroll down':
+  #       return 'scrollable'
+  #     if action_type == 'set_text':
+  #       return 'editable'
+  #     if 'select' in action_type:
+  #       return 'checkable'
+  #     return None
 
-    ele = element_tree.get_ele_by_xpath(xpath)
-    if not ele:
-      return {"action_type": "status", "goal_status": "infeasible"}
+  #   ele = element_tree.get_ele_by_xpath(xpath)
+  #   if not ele:
+  #     return {"action_type": "status", "goal_status": "infeasible"}
 
-    # the action is supposed to be performed, so now we should find an executable element in the current UI element's children
-    if action_type in [
-        'touch', 'long_touch', 'select', 'unselect', 'scroll up', 'scroll down',
-        'scroll', 'set_text'
-    ]:
-      needed_property = get_needed_ele_property_from_action_type(action_type)
-      if needed_property and not ele.get_attributes().get(
-          needed_property, False):
-        all_children = element_tree.get_all_children_by_ele(ele)
-        for child in all_children:
-          if child.get_attributes().get(needed_property, False):
-            ele = child
-            break
-    # todo:: can we need to check whether the ele existing after property checking
+  #   # the action is supposed to be performed, so now we should find an executable element in the current UI element's children
+  #   if action_type in [
+  #       'touch', 'long_touch', 'select', 'unselect', 'scroll up', 'scroll down',
+  #       'scroll', 'set_text'
+  #   ]:
+  #     needed_property = get_needed_ele_property_from_action_type(action_type)
+  #     if needed_property and not ele.get_attributes().get(
+  #         needed_property, False):
+  #       all_children = element_tree.get_all_children_by_ele(ele)
+  #       for child in all_children:
+  #         if child.get_attributes().get(needed_property, False):
+  #           ele = child
+  #           break
+  #   # todo:: can we need to check whether the ele existing after property checking
     
-    _save2log(
-        save_path=self.save_path,
-        log_file=self.config.log_file,
-        element_tree=element_tree,
-        idx=ele.id,
-        inputs=input_text,
-        action_type=action_type,
-        api_name=api_name,
-        xpath=xpath,
-        currently_executing_code=statement,
-        comment='navigate',
-        screenshot=screenshot)
+  #   _save2log(
+  #       save_path=self.save_path,
+  #       log_file=self.config.log_file,
+  #       element_tree=element_tree,
+  #       idx=ele.id,
+  #       inputs=input_text,
+  #       action_type=action_type,
+  #       api_name=api_name,
+  #       xpath=xpath,
+  #       currently_executing_code=statement,
+  #       comment='navigate',
+  #       screenshot=screenshot)
     
-    return agent_utils.convert_action(action_type, ele, input_text)
+  #   return agent_utils.convert_action(action_type, ele, input_text)
 
   def scroll_and_find_target_ele(self,
                                  element_tree: ElementTree,
-                                 api_name: str,
                                  xpath,
-                                 action_type,
-                                 text,
                                  statement,
                                  direction='DOWN'):
     all_ele_descs_during_scrolling = []
@@ -369,12 +367,10 @@ class Verifier:
         state = self.env.get_state()
         element_tree = agent_utils.forest_to_element_tree(state.forest)
 
-        target_action = self.get_action_from_xpath(element_tree, api_name,
-                                                   xpath, action_type, text,
-                                                   statement, state.pixels.copy())
+        target_ele = element_tree.get_ele_by_xpath(xpath)
         
-        if target_action.get('goal_status', None) != 'infeasible':
-          return target_action
+        if target_ele:
+          return target_ele
         
         ele_descs = element_tree.get_ele_descs_without_text()
         # judge whether there is a new view after scrolling, if no new element found, return
@@ -412,15 +408,13 @@ class Verifier:
                       "direction": dir
                   }))
           time.sleep(WAIT_AFTER_ACTION_SECONDS)
-    return {"action_type": "status", "goal_status": "infeasible"}
+    return None
 
   def execute_action(self, ele_data: dict):
     global ACTION_COUNT
 
     logging.info(f'execute action: {ele_data}')
     api_name = ele_data['api_name']
-    # if not api_name:
-    #   return
 
     if ACTION_COUNT == 0:
       self.env.execute_action(
@@ -438,134 +432,155 @@ class Verifier:
     xpath = code_to_be_executed['xpath']
     action_type = code_to_be_executed['action_type']
     text = code_to_be_executed['text']
+    statement = code_to_be_executed['statement']
+    comment = code_to_be_executed.get('comment', 'action')
+    
+    # try find the target element in the current UI
+    target_ele = element_tree.get_ele_by_xpath(xpath)
+    
+    if not target_ele:
+      # find the target element in the scroll down views
+      target_ele = self.scroll_and_find_target_ele(element_tree, xpath, statement)
 
-    if action_type == None:
-      return
+      # could not find a target element in the current UI, find in the dependencies
+      if not target_ele:
+        ## dependency
+        # we have executed all the dependencies, but still not found the target element
+        state = self.env.get_state()
+        element_tree = agent_utils.forest_to_element_tree(state.forest)
+        
+        while target_ele is None:  # todo:: limit the max number of retry
+          current_skeleton = element_tree.skeleton
+          _, dependency_action = self.doc.get_dependency(current_skeleton, api_name) # todo:: which priority is higher compared the skeleton and the screen_name
 
-    executable_action = self.get_action_from_xpath(
-        element_tree, api_name, xpath, action_type, text,
-        code_to_be_executed['statement'], state.pixels.copy())
-
-    if executable_action.get('goal_status', None) != 'infeasible':
-      self.env.execute_action(json_action.JSONAction(**executable_action))
-      time.sleep(WAIT_AFTER_ACTION_SECONDS)
-      return
-
-    # could not find a target element in the current UI, find in the dependencies
-    executable_action = self.scroll_and_find_target_ele(
-        element_tree, api_name, xpath, action_type, text,
-        code_to_be_executed['statement'])
-
-    # could not find a target element in the current UI, find in the dependencies
-    if executable_action.get('goal_status', None) != 'infeasible':
-      self.env.execute_action(json_action.JSONAction(**executable_action))
-      time.sleep(WAIT_AFTER_ACTION_SECONDS)
-      return
-
-    ## dependency
-    # we have executed all the dependencies, but still not found the target element
-    done = False
-    while not done:  # todo:: limit the max number of retry
-      state = self.env.get_state()
-      element_tree = agent_utils.forest_to_element_tree(state.forest)
-      current_skeleton = element_tree.skeleton
-      _, dependency_action = self.doc.get_dependency(current_skeleton, api_name) # todo:: which priority is higher compared the skeleton and the screen_name
-
-      if not dependency_action:
-        break
-      
-      count = 0
-      for action_list in dependency_action:
-        count += 1
-
-        is_match = False
-        dep_id = -1
-        for idx, action in enumerate(reversed(action_list)):
-          _screen_name = action.screen_name
-          target_skeleton = self.doc.screen_name2skeleton[_screen_name]
-
-          # use `is` to judge whether the two skeletons are the same one
-          # use `==` to judge whether the two skeletons are the same skeleton
-          if current_skeleton != current_skeleton.extract_common_skeleton(target_skeleton):
-            if is_match:
-              break
-            else:
-              continue
-
-          action_type = action.action_type
-          text = action.text
-          xpath = self.doc.get_xpath_by_name(_screen_name, action.api_name)
-          executable_action = self.scroll_and_find_target_ele(
-              element_tree, api_name, xpath, action_type, text, code_to_be_executed['statement'])
+          if not dependency_action:
+            break
           
-          if executable_action.get('goal_status', None) == 'infeasible':
+          count = 0
+          for action_list in dependency_action[:MAX_DEPENDENCE_DEPTH]:
+            count += 1
+
+            is_match = False
+            dep_id = -1
+            for idx, action in enumerate(reversed(action_list)):
+              _screen_name = action.screen_name
+              _target_skeleton = self.doc.screen_name2skeleton[_screen_name]
+
+              state = self.env.get_state()
+              element_tree = agent_utils.forest_to_element_tree(state.forest)
+              
+              # find the target element in the current UI
+              target_ele = element_tree.get_ele_by_xpath(xpath)
+              if target_ele:
+                break
+              
+              # execute dependency action
+              _current_skeleton = element_tree.skeleton
+              # use `is` to judge whether the two skeletons are the same one
+              # use `==` to judge whether the two skeletons are the same skeleton
+              if _current_skeleton != _current_skeleton.extract_common_skeleton(_target_skeleton):
+                if is_match: # already found action in previous dependency, so we need to keep matched state
+                  break # try to other dependency
+                else:
+                  continue # execute dependency action
+
+              _action_xpath = self.doc.get_xpath_by_name(_screen_name, action.api_name)
+              _target_ele = self.scroll_and_find_target_ele(
+                  element_tree, _action_xpath, statement)
+              
+              if not _target_ele:
+                if is_match:
+                  break
+                else:
+                  continue
+
+              # execute the action
+              is_match = True
+              dep_id = idx
+              
+              if not action_type: # navigating
+                return
+              _save2log(
+                save_path=self.save_path,
+                log_file=self.config.log_file,
+                element_tree=element_tree,
+                idx=target_ele.id if target_ele else None,
+                inputs=None,
+                action_type=action.action_type,
+                api_name=action.api_name,
+                xpath=_action_xpath,
+                currently_executing_code=statement,
+                comment='navigate',
+                screenshot=state.pixels.copy())
+              
+              executable_action = agent_utils.convert_action(action.action_type, _target_ele, action.text)
+              self.env.execute_action(json_action.JSONAction(**executable_action))
+              time.sleep(WAIT_AFTER_ACTION_SECONDS)
+
+            if dep_id >= len(action_list) - 1:
+              state = self.env.get_state()
+              element_tree = agent_utils.forest_to_element_tree(state.forest)
+              target_ele = element_tree.get_ele_by_xpath(xpath)              
+              break
+              # if target_ele is None, continue to find the next dependency
+            
+            # executed action and changed the screen, we need to find new dependency
             if is_match:
               break
-            else:
-              continue
 
-          # execute the action
-          is_match = True
-          dep_id = idx
-          self.env.execute_action(json_action.JSONAction(**executable_action))
-          time.sleep(WAIT_AFTER_ACTION_SECONDS)
-
-        if dep_id == len(action_list) - 1:
-          done = True
-
-        # executed action and changed the screen, we need to find new dependency
-        if is_match:
-          break
-
-      if count == len(dependency_action) and not done:
-        # fail to solve the dependency
-        break
-
-    if not done:
-      raise Exception(f'Action not found when executing tap {api_name}')
+          if count == len(dependency_action):
+            # fail to solve the dependency
+            # target_ele still is None
+            break
+      
+    if target_ele:
+      _save2log(
+          save_path=self.save_path,
+          log_file=self.config.log_file,
+          element_tree=element_tree,
+          idx=target_ele.id if target_ele else None,
+          inputs=text,
+          action_type=action_type,
+          api_name=api_name,
+          xpath=xpath,
+          currently_executing_code=statement,
+          comment=comment,
+          screenshot=state.pixels.copy())
+      executable_action = agent_utils.convert_action(action_type, target_ele, text)
+      self.env.execute_action(json_action.JSONAction(**executable_action))
+      time.sleep(WAIT_AFTER_ACTION_SECONDS)      
+    else:
+      _save2log(
+          save_path=self.save_path,
+          log_file=self.config.log_file,
+          element_tree=element_tree,
+          idx=None,
+          inputs=text,
+          action_type=action_type,
+          api_name=api_name,
+          xpath=xpath,
+          currently_executing_code=statement,
+          comment='crashed',
+          screenshot=state.pixels.copy())
+      raise Exception(f'{action_type} not found when executing tap {api_name}({xpath})')
     return
 
-  def check_output_crash(self, api_name):
-    output_log = tools.load_yaml_file(self.config.log_file)
-    if output_log['records'][-1]['Choice'] == 'crashed':
-      raise Exception(f'Action not found when executing tap {api_name}')
+  # def check_output_crash(self, api_name):
+  #   output_log = tools.load_yaml_file(self.config.log_file)
+  #   if output_log['records'][-1]['Choice'] == 'crashed':
+  #     raise Exception(f'Action not found when executing tap {api_name}')
 
-  def navigate_and_get_target_element(self, element_selector, caller_type,
+  def navigate_and_get_target_element(self, element_selector_api_name, element_selector_xpath, caller_type,
                                       statement):
     # t1 = time.time()
     state = self.env.get_state()
     element_tree = agent_utils.forest_to_element_tree(state.forest)
     # print(f'get current state time: {time.time() - t1}')
     # t2 = time.time()
-    # for actions like getting length, indexing, or matching, the element_selector is a string
-    if isinstance(element_selector, str):
-      element_selector = element_selector.split('$')[-1]
-
-      element_selector_xpath = self.api_xpaths[element_selector]
-      element_selector_api_name = element_selector
-    else:
-      if isinstance(element_selector, list):
-        element_selector = element_selector[0]
-      element_selector_xpath = element_selector.element_list_xpath
-      element_selector_api_name = element_selector.api_name if element_selector.api_name else element_selector.element_list_xpath
-
+    
     target_ele = element_tree.get_ele_by_xpath(element_selector_xpath)
     # print(f'get target element time: {time.time() - t2}')
-    if not target_ele:
-      ele_data = {
-          'xpath': element_selector_xpath,
-          'api_name': element_selector_api_name,
-          'text': None,
-          'action_type': None,
-          'statement': statement
-      }
-
-      self.execute_action(ele_data)
-      self.check_output_crash(element_selector_xpath)
-      state = self.env.get_state()
-      element_tree = agent_utils.forest_to_element_tree(state.forest)
-      target_ele = element_tree.get_ele_by_xpath(element_selector_xpath)
-
+    
     _save2log(
         save_path=self.save_path,
         log_file=self.config.log_file,
@@ -576,8 +591,25 @@ class Verifier:
         api_name=element_selector_api_name,
         xpath=element_selector_xpath,
         currently_executing_code=statement,
-        comment='navigate',
+        comment='action',
         screenshot=state.pixels.copy())
+    
+    if not target_ele:
+      ele_data = {
+          'xpath': element_selector_xpath,
+          'api_name': element_selector_api_name,
+          'text': None,
+          'action_type': None, # navigating
+          'statement': statement,
+          'comment': 'navigate'
+      }
+
+      self.execute_action(ele_data)
+      # self.check_output_crash(element_selector_xpath)
+      state = self.env.get_state()
+      element_tree = agent_utils.forest_to_element_tree(state.forest)
+      target_ele = element_tree.get_ele_by_xpath(element_selector_xpath)
+
     return target_ele, element_tree
 
   def get_ui_tree(self):
@@ -591,12 +623,13 @@ class Verifier:
               "action_type": "open_app",
               "app_name": self.app_name
           }))
+      time.sleep(WAIT_AFTER_ACTION_SECONDS)
 
     state = self.env.get_state()
     element_tree = agent_utils.forest_to_element_tree(state.forest)
     element_tree_str = element_tree.str
     # ACTION_COUNT += 1  # to ensure the app do not restart after getting the ui tree
-    check_aciton_count()
+    check_action_count()
     return element_tree_str
 
   def check_ele_exist(self, element_selector):
@@ -610,6 +643,7 @@ class Verifier:
               "action_type": "open_app",
               "app_name": self.app_name
           }))
+      time.sleep(WAIT_AFTER_ACTION_SECONDS)
 
     state = self.env.get_state()
     element_tree = agent_utils.forest_to_element_tree(state.forest)
@@ -680,10 +714,10 @@ class Verifier:
       }
 
     self.execute_action(ele_data)
-    self.check_output_crash(button_api_name)
+    # self.check_output_crash(button_api_name)
     self.check_last_screen_html_is_same()
     # ACTION_COUNT += 1
-    check_aciton_count()
+    check_action_count()
 
   def long_tap(self, button_api):
     global ACTION_COUNT
@@ -732,10 +766,10 @@ class Verifier:
       }
 
     self.execute_action(ele_data)
-    self.check_output_crash(button_api_name)
+    # self.check_output_crash(button_api_name)
     self.check_last_screen_html_is_same()
     # ACTION_COUNT += 1
-    check_aciton_count()
+    check_action_count()
 
   def set_text(self, text_api, text):
     global ACTION_COUNT
@@ -780,10 +814,10 @@ class Verifier:
     # else:
     #     self.input_policy.start(input_manager=self.input_manager, restart_first=False)
     self.execute_action(ele_data)
-    self.check_output_crash(text_api_name)
+    # self.check_output_crash(text_api_name)
     self.check_last_screen_html_is_same()
     # ACTION_COUNT += 1
-    check_aciton_count()
+    check_action_count()
 
   def scroll(self, scroller_api, direction):
     global ACTION_COUNT
@@ -836,10 +870,10 @@ class Verifier:
       }
 
     self.execute_action(ele_data)
-    self.check_output_crash(scroller_api_name)
+    # self.check_output_crash(scroller_api_name)
     is_to_bottom = self.check_last_screen_html_is_same()
     # ACTION_COUNT += 1
-    check_aciton_count()
+    check_action_count()
     return is_to_bottom
 
   def get_text(self, element_selector):
@@ -858,19 +892,33 @@ class Verifier:
     lineno_in_original_script = self.config.line_mappings[lineno - 1]
     original_code_line = self.config.code_lines[lineno_in_original_script]
 
+    # for actions like getting length, indexing, or matching, the element_selector is a string
+    if isinstance(element_selector, str):
+      element_selector = element_selector.split('$')[-1]
+
+      element_selector_xpath = self.api_xpaths[element_selector]
+      element_selector_api_name = element_selector
+    else:
+      if isinstance(element_selector, list):
+        element_selector = element_selector[0]
+      element_selector_xpath = element_selector.element_list_xpath
+      element_selector_api_name = element_selector.api_name if element_selector.api_name else element_selector.element_list_xpath
+    
     target_ele, element_tree = self.navigate_and_get_target_element(
-        element_selector,
+        element_selector_api_name,
+        element_selector_xpath,
         caller_type='get_text',
         statement={
             'current_code': current_code_line,
             'original_lineno': lineno_in_original_script,
             'original_code': original_code_line
-        })
+        },
+        comment='action')
 
-    check_aciton_count()
+    check_action_count()
     if not target_ele:
       raise Exception(
-          f'Element not found when executing get_text {element_selector}')
+          f'Element not found when executing get_text {element_selector_api_name}({element_selector_xpath})')
     else:
       text = element_tree.get_text(target_ele)
       text = text.replace('--', ' ')
@@ -892,8 +940,21 @@ class Verifier:
     lineno_in_original_script = self.config.line_mappings[lineno - 1]
     original_code_line = self.config.code_lines[lineno_in_original_script]
 
+    # for actions like getting length, indexing, or matching, the element_selector is a string
+    if isinstance(element_selector, str):
+      element_selector = element_selector.split('$')[-1]
+
+      element_selector_xpath = self.api_xpaths[element_selector]
+      element_selector_api_name = element_selector
+    else:
+      if isinstance(element_selector, list):
+        element_selector = element_selector[0]
+      element_selector_xpath = element_selector.element_list_xpath
+      element_selector_api_name = element_selector.api_name if element_selector.api_name else element_selector.element_list_xpath
+    
     target_ele, _ = self.navigate_and_get_target_element(
-        element_selector,
+        element_selector_api_name,
+        element_selector_xpath,
         caller_type='get_attributes',
         statement={
             'current_code': current_code_line,
@@ -901,7 +962,7 @@ class Verifier:
             'original_code': original_code_line
         })
 
-    check_aciton_count()
+    check_action_count()
     if not target_ele:
       raise Exception(
           f'Element not found when executing get_attributes {element_selector}')
@@ -955,7 +1016,7 @@ class Verifier:
 
     self.check_last_screen_html_is_same()
     # ACTION_COUNT += 1
-    check_aciton_count()
+    check_action_count()
 
 
 class ElementList:
@@ -998,7 +1059,7 @@ class ElementList:
             'original_lineno': lineno_in_original_script,
             'original_code': original_code_line
         },
-        effect_range=self.api_name,
+        effect_range=self.element_list_xpath,
         screenshot=state.pixels.copy())
 
   def check_api_name(self, api_name):
@@ -1023,7 +1084,7 @@ class ElementList:
           element_tree=None,
           idx=None,
           inputs=None,
-          action_type=None,
+          action_type='crashed',
           api_name=api_name,
           xpath=None,
           currently_executing_code=currently_executing_code,
@@ -1041,16 +1102,6 @@ class ElementList:
         verifier=self.verifier)
     return ele_xpath, elementlist
 
-  def navigate_to_api_name(self, api_name, caller_type,
-                           statement):  # todo:: check
-    # if the api_name is provided, then the element_list is selected from the api document, then we should check its dependency
-    if api_name:
-      target_ele, element_tree = self.verifier.navigate_and_get_target_element(
-          api_name, caller_type, statement)
-      if not target_ele:
-        logging.error(f'Element {api_name} not found! ')
-        raise Exception(f'Element {api_name} not found! ')
-
   def __getitem__(self, selector):
     global ACTION_COUNT
 
@@ -1058,20 +1109,17 @@ class ElementList:
     frame = inspect.currentframe()
     caller_frame = frame.f_back
     lineno = caller_frame.f_lineno
-    current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, '__getitem__', selector)
+    current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, f'index[{selector}]', selector)
 
-    self.navigate_to_api_name(
-        self.api_name,
-        caller_type='index',
-        statement={
+    element_selector_api_name = self.api_name if self.api_name else self.element_list_xpath
+    element_selector_xpath = self.element_list_xpath
+    statement = {
             'current_code': current_code_line,
             'original_lineno': lineno_in_original_script,
             'original_code': original_code_line
-        })
-    # todo:: refactor this part to the initial function
-    state = self.env.get_state()
-    element_tree = agent_utils.forest_to_element_tree(state.forest)
-    target_ele_group = element_tree.get_ele_by_xpath(self.element_list_xpath)
+        }
+    
+    target_ele_group, element_tree = self.verifier.navigate_and_get_target_element(element_selector_api_name, element_selector_xpath, f'index[{selector}]', statement)
 
     # Default to integer index if not a custom selector
     if isinstance(selector, int):
@@ -1079,29 +1127,11 @@ class ElementList:
       matched_xpath, matched_ele = self.convert_ele_attr_to_elementlist(
           ele_attr)
       
-      _save2log(
-          save_path=self.save_path,
-          log_file=self.config.log_file,
-          element_tree=element_tree,
-          idx=ele_attr.id if ele_attr else None,
-          inputs=None,
-          action_type='index',
-          api_name=self.api_name,
-          xpath=matched_xpath,
-          currently_executing_code = {
-            'current_code': current_code_line,
-            'original_lineno': lineno_in_original_script,
-            'original_code': original_code_line,
-            'statement': f'{self.api_name}[{selector}] -> {matched_xpath}'
-          },
-          screenshot=state.pixels.copy()
-      )
-      
       return matched_ele
     # # Handle slice objects
     # elif isinstance(selector, slice):
     #     return self.data[selector.start:selector.stop:selector.step]
-    check_aciton_count()
+    check_action_count()
     raise ValueError("Invalid selector")
 
   def __iter__(self):
@@ -1121,33 +1151,26 @@ class ElementList:
     lineno = caller_frame.f_lineno
     
     current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, '__next__', self.api_name)
-    self._save_getting_info_action('index', self.api_name,
+    self._save_getting_info_action(f'[{self.index}]next', self.api_name,
                                    self.element_list_xpath, current_code_line,
                                    lineno_in_original_script,
                                    original_code_line)
 
-    state = self.env.get_state()
-    element_tree = agent_utils.forest_to_element_tree(state.forest)
-    target_ele_group = element_tree.get_ele_by_xpath(self.element_list_xpath)
-
-    if not target_ele_group:
-      self.navigate_to_api_name(
-          self.api_name,
-          caller_type='next',
-          statement={
-              'current_code': current_code_line,
-              'original_lineno': lineno_in_original_script,
-              'original_code': original_code_line
-          })
-      state = self.env.get_state()
-      element_tree = agent_utils.forest_to_element_tree(state.forest)
-      target_ele_group = element_tree.get_ele_by_xpath(self.element_list_xpath)
+    element_selector_api_name = self.api_name if self.api_name else self.element_list_xpath
+    element_selector_xpath = self.element_list_xpath
+    statement = {
+            'current_code': current_code_line,
+            'original_lineno': lineno_in_original_script,
+            'original_code': original_code_line
+        }
+    
+    target_ele_group, element_tree = self.verifier.navigate_and_get_target_element(element_selector_api_name, element_selector_xpath, f'[{self.index}]next', statement)
 
     ele_list_children = element_tree.get_children_by_ele(target_ele_group)
     if not ele_list_children:
       raise StopIteration
     # ACTION_COUNT += 1
-    check_aciton_count()
+    check_action_count()
     if self.index < len(ele_list_children):
       ele_attr = ele_list_children[self.index]
       matched_xpath, matched_ele = self.convert_ele_attr_to_elementlist(
@@ -1167,24 +1190,23 @@ class ElementList:
     lineno = caller_frame.f_lineno
     current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, 'match', match_data)
 
-    self._save_getting_info_action('match', self.api_name,
+    self._save_getting_info_action(f'match[{match_data}]', self.api_name,
                                    self.element_list_xpath, current_code_line,
                                    lineno_in_original_script,
                                    original_code_line)
 
-    self.navigate_to_api_name(
-        self.api_name,
-        caller_type='match',
-        statement={
+    element_selector_api_name = self.api_name if self.api_name else self.element_list_xpath
+    element_selector_xpath = self.element_list_xpath
+    statement = {
             'current_code': current_code_line,
             'original_lineno': lineno_in_original_script,
             'original_code': original_code_line
-        })
-    state = self.env.get_state()
-    element_tree = agent_utils.forest_to_element_tree(state.forest)
-    target_ele = element_tree.get_ele_by_xpath(self.element_list_xpath)
-    ele_list_children = element_tree.get_children_by_ele(target_ele)
+        }
+    
+    target_ele, element_tree = self.verifier.navigate_and_get_target_element(element_selector_api_name, element_selector_xpath, f'match[{match_data}]', statement)
 
+    ele_list_children = element_tree.get_children_by_ele(target_ele)
+    
     matched_elements, matched_xpaths = [], []
     for ele in ele_list_children:
       # ele_dict = ele.dict()
@@ -1201,7 +1223,7 @@ class ElementList:
           matched_xpaths.append(matched_xpath)
 
     # ACTION_COUNT += 1
-    check_aciton_count()
+    check_action_count()
     # todo:: how to deal with multiple matched elements
     if len(matched_elements) == 0:
       raise Exception(f'Error: No matched element found in {self.api_name} ')
@@ -1222,24 +1244,23 @@ class ElementList:
                                    lineno_in_original_script,
                                    original_code_line)
 
-    self.navigate_to_api_name(
-        self.api_name,
-        caller_type='len',
-        statement={
+    element_selector_api_name = self.api_name if self.api_name else self.element_list_xpath
+    element_selector_xpath = self.element_list_xpath
+    statement = {
             'current_code': current_code_line,
             'original_lineno': lineno_in_original_script,
             'original_code': original_code_line
-        })
-    state = self.env.get_state()
-    element_tree = agent_utils.forest_to_element_tree(state.forest)
-    target_ele = element_tree.get_ele_by_xpath(self.element_list_xpath)
+        }
+    
+    target_ele, _ = self.verifier.navigate_and_get_target_element(element_selector_api_name, element_selector_xpath, 'len', statement)
+
     if not target_ele: # todo:: maybe it's 0
-      logging.warning(f'Element {self.api_name} not found! ')
+      logging.warning(f'not found {self.api_name}({self.element_list_xpath})')
       return 0
     # ele_list_children = element_tree.get_children_by_ele(target_ele)
     ele_list_children = target_ele.children
     # ACTION_COUNT += 1
-    check_aciton_count()
+    check_action_count()
     return len(ele_list_children)
 
   def get_current_code_line(self, lineno: int, action: str, element_selector_name: str):
@@ -1257,7 +1278,7 @@ class ElementList:
   def find_target_element(self, element_selector_xpath: str):
     
     target_ele = None
-    state = self.env.get_state()
+    state = self.env.get_state(True)
     element_tree = agent_utils.forest_to_element_tree(state.forest)
     target_ele_group = element_tree.get_ele_by_xpath(self.element_list_xpath)
     if target_ele_group:
@@ -1293,7 +1314,7 @@ class ElementList:
     target_ele = self.find_target_element(button_api_xpath)
 
     if not target_ele:
-      raise Exception(f'{button_api_name} not found in {self.api_name} ')
+      raise Exception(f'{button_api_name} not found in {self.api_name}({self.element_list_xpath})')
 
     converted_action = agent_utils.convert_action("touch", target_ele, "")
     if converted_action.get('goal_status', None) == 'infeasible':
@@ -1302,9 +1323,9 @@ class ElementList:
     self.env.execute_action(json_action.JSONAction(**converted_action))
     time.sleep(WAIT_AFTER_ACTION_SECONDS)
     
-    self.verifier.check_output_crash(button_api_name)
+    # self.verifier.check_output_crash(button_api_name)
     # ACTION_COUNT += 1
-    check_aciton_count()
+    check_action_count()
 
   def long_tap(self, button_api):
     global ACTION_COUNT
@@ -1332,7 +1353,7 @@ class ElementList:
     target_ele = self.find_target_element(button_api_xpath)
 
     if not target_ele:
-      raise Exception(f'{button_api_name} not found in {self.api_name} ')
+      raise Exception(f'{button_api_name} not found in {self.api_name}({self.element_list_xpath})')
 
     converted_action = agent_utils.convert_action("long_touch", target_ele, "")
     if converted_action.get('goal_status', None) == 'infeasible':
@@ -1341,9 +1362,9 @@ class ElementList:
     self.env.execute_action(json_action.JSONAction(**converted_action))
     time.sleep(WAIT_AFTER_ACTION_SECONDS)
     
-    self.verifier.check_output_crash(button_api_name)
+    # self.verifier.check_output_crash(button_api_name)
     # ACTION_COUNT += 1
-    check_aciton_count()
+    check_action_count()
 
   def set_text(self, input_api, text):
     global ACTION_COUNT
@@ -1370,7 +1391,7 @@ class ElementList:
     target_ele = self.find_target_element(input_api_xpath)
 
     if not target_ele:
-      raise Exception(f'{input_api_name} not found in {self.api_name} ')
+      raise Exception(f'{input_api_name} not found in {self.api_name}({self.element_list_xpath})')
 
     converted_action = agent_utils.convert_action("set_text", target_ele, text)
     if converted_action.get('goal_status', None) != 'infeasible':
@@ -1379,9 +1400,9 @@ class ElementList:
     self.env.execute_action(json_action.JSONAction(**converted_action))
     time.sleep(WAIT_AFTER_ACTION_SECONDS)
     
-    self.verifier.check_output_crash(input_api_name)
+    # self.verifier.check_output_crash(input_api_name)
     # ACTION_COUNT += 1
-    check_aciton_count()
+    check_action_count()
 
   def get_text(self, element_selector):
     global ACTION_COUNT
@@ -1404,6 +1425,7 @@ class ElementList:
     caller_frame = frame.f_back
     lineno = caller_frame.f_lineno
     current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, 'get_text', element_selector_api_name)
+    
     self._save_getting_info_action('get_text', element_selector_api_name,
                                    element_selector_xpath, current_code_line,
                                    lineno_in_original_script,
@@ -1411,14 +1433,9 @@ class ElementList:
     
     target_ele = self.find_target_element(element_selector_xpath)
 
+    check_action_count()
     if not target_ele:
-      raise Exception(f'{element_selector_api_name} not found in {self.api_name} ')
-    
-    check_aciton_count()
-
-    if not target_ele:
-      raise Exception(
-          f'Element not found when executing get_text {element_selector}')
+      raise Exception(f'{element_selector_api_name}({element_selector_xpath}) not found in {self.api_name}({self.element_list_xpath})')
     else:
       text = target_ele.text if target_ele.text else ''
       text = text.replace('--', ' ')
@@ -1452,12 +1469,12 @@ class ElementList:
     target_ele = self.find_target_element(element_selector_xpath)
 
     if not target_ele:
-      raise Exception(f'{element_selector_api_name} not found in {self.api_name} ')
+      raise Exception(f'{element_selector_api_name}({element_selector_xpath}) not found in {self.api_name}({self.element_list_xpath})')
     
-    check_aciton_count()
+    check_action_count()
     if not target_ele:
       raise Exception(
-          f'Element not found when executing get_attributes {element_selector}')
+          f'Element not found when executing get_attributes {element_selector}({element_selector_xpath})')
     else:
       target_ele_attrs = target_ele.get_attributes()
       target_ele_attrs['text'] = target_ele_attrs.replace('--', ' ')
