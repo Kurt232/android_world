@@ -449,12 +449,16 @@ class BugProcessorV3:
     self.code = code
 
   def get_script_embedded_error(self):
-    error_lineno = self.error_log['error_line_in_original_script']
+    if 'is not defined' in self.error_log['error']:
+      error_info = 'totally wrong API name or variable name'
+      return None
     
     if 'verifier' in self.error_log['error']:
       error_info = 'The statement is not supported by the verifier, please find another way to implement the same functionality.'
     else:
       error_info = self.error_log['error']
+    
+    error_lineno = self.error_log['error_line_number_in_original_script']
     
     code_lines = self.code.split('\n')
     error_line = tools.get_leading_tabs(code_lines[error_lineno]) + f'^^^^^^ {error_info}'
@@ -467,9 +471,12 @@ class BugProcessorV3:
     
     # current screen elements
     current_screen_desc = self.doc.get_current_element_desc(env, is_show_xpath=True)
+    
+    # original script with error
+    original_script_with_error = self.get_script_embedded_error()
 
     instruction = f'''You are a robot operating a smartphone to use the {self.app_name} app. Like how humans operate the smartphone, you can tap, long tap, input text, scroll, and get attributes of the UI elements in the {self.app_name} app. However, unlike humans, you cannot see the screen or interact with the physical buttons on the smartphone. Therefore, you need to write scripts to manipulate the UI elements in the app.'''
-    task = f'**Your ultimate task is: {task}**'
+    task = f'**Your ultimate task is: {self.task}**'
     use_api = '''\
 In the script, except for the common python control flow (for, if-else, function def/calls, etc.), you can use the following APIs:
 - tap(<element_selector>) -> None: tap on the element. Almost all elements can be taped. If an element's attribute checked=false or selected=false, tapping it can make it checked or selected, vice versa.
@@ -491,14 +498,33 @@ The <element_list> primitive is used to select a list of elements, possible ways
 You can use len(<element_list>) to get the total number of items in an element list.
 
 Each <element_selector> can refer to a single element or an element contained multiple elements, especially in the case of complex items within an <element_list>. The following APIs are supported to be invoked as member functions to limit their effect domain: `tap`, `long_tap`, `set_text`, `scroll`, `get_text`, `get_attributes`, and `back`. Note that these APIs still need to satisfy the required arguments. If the APIs are invoked as member functions, they will only affect the element selected by the <element_selector>, while the APIs invoked as global functions will affect all elements in the phone screen. For example, `$note_list[1].tap($note_title)` will tap the title of the second note in the note list, whereas `tap($note_title)` will always tap the first note title in the note list.'''
-    regenerate_script = f'''\
+    original_script_prompt = f"""\
 Now, here is an unsuccessful script that you have executed before, where the bug possibly exists in missed <element_selector> due to the inexact element name or failed to invoke API statements because of the incorrect executing order or unexpected results. You should try to fix the bug and re-generate the script to complete the task.
 
 The unsuccessful script with error information is as follows:
 ```python
-{self.get_script_embedded_error()}
-```
+{original_script_with_error}
+```""" if original_script_with_error else '''\
+Here is an example script to complete the task:
 
+```python
+# task: Open a note or create a note titled 'note_test' if there is none.
+notes = $open_note_title_list
+
+for i in range(len(notes)):
+  note = notes[i]
+  title = note.get_text($note_title)
+  if title == 'note_test':
+    note.tap(title)
+    return
+
+back()
+tap($create_note)
+set_text($add_note_title, 'note_test')
+tap($text_note_type)
+tap($add_note_ok)
+```'''
+    regenerate_script = f'''\
 The unsuccessful execution of the script has changed the screen of the {self.app_name} app. **Therefore, you should generate new script based on the current screen that has the following current UI elements:
 
 {current_screen_desc}
@@ -516,7 +542,7 @@ You can use the following important UI elements:
 }
 
 **Note that you should only output the JSON content.**'''
-    prompt = instruction + '\n' + task + '\n' + regenerate_script + '\n' + use_api + '\n' + output_format
+    prompt = instruction + '\n' + task + '\n' + original_script_prompt + '\n' + regenerate_script + '\n' + use_api + '\n' + output_format
     return prompt
 
   def get_solution(self,

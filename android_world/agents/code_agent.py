@@ -153,11 +153,12 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
             task=task,
             doc=app_doc,
             log_path=log_path,
-            error_log_path=error_path,
-            raw_solution=code)
+            error_path=error_path,
+            code=code)
         
         # update the save_path for retry
-        self.save_path = os.path.join(self.save_dir, f'{retry_time}')
+        self.save_path = os.path.join(self.save_dir, self.task_name, f'{retry_time}')
+        os.makedirs(self.save_path, exist_ok=True)
         
         code = bug_processor.get_solution(# re-generate code
             prompt_answer_path=os.path.join(self.save_path, f'solution.json'),
@@ -171,7 +172,7 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
       tools.dump_json_file(f'{self.save_path}/line_mappings.json', line_mappings)
       
       # in case some silly scripts include no UI actions at all, we make an empty log for batch_verifying
-      tools.dump_yaml_file(log_path, {'records': [], 'step_num': 0})
+      tools.dump_yaml_file(os.path.join(self.save_path, f'log.yaml'), {'records': [], 'step_num': 0})
       
       env = self.env
       config = CodeConfig(app_name, app_doc, self.save_path, code, code_script, line_mappings)
