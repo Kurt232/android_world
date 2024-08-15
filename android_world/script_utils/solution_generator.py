@@ -3,45 +3,24 @@ import json
 import os
 
 from android_world.env import interface
-from android_world.agents import agent_utils
 from android_world.script_utils import tools
 from android_world.script_utils.api_doc import ApiDoc
 
 class SolutionGenerator:
 
-  def __init__(self, env: interface.AsyncEnv, app_name: str, doc: ApiDoc):
-    self.env = env
+  def __init__(self, app_name: str, task: str, doc: ApiDoc):
     self.app_name = app_name
+    self.task = task
     self.doc = doc
     
-  def make_prompt(self, task, app_name):
+  def make_prompt(self, env: interface.AsyncEnv):
     # all elements
-    all_elements_desc = ''
-    for ele in self.doc.elements:
-      description = ele.description
-      all_elements_desc += f"\n\nelement: {ele.api_name} \n\tDescription: {description} \n\tType: {ele.element_type}"
-      if ele.effect:
-        all_elements_desc += f"\n\tEffect: {ele.effect}"
+    all_elements_desc = self.doc.get_all_element_desc()
     
     # current screen elements
-    current_screen_elements = ''
-    
-    state = self.env.get_state(True)
-    element_tree = agent_utils.forest_to_element_tree(state.forest)
-    current_screen_name = self.doc.get_screen_name_by_skeleton(element_tree.skeleton)
-    if not current_screen_name:
-      current_screen_name = self.doc.main_screen
-    
-    # valid_elements
-    valid_element_list = self.doc.get_valid_element_list(current_screen_name, element_tree.str)
-    
-    for ele in valid_element_list:
-      description = ele.description
-      current_screen_elements += f"\n\nelement: {ele.api_name} \n\tDescription: {description} \n\tType: {ele.element_type}"
-      if ele.effect:
-        current_screen_elements += f"\n\tEffect: {ele.effect}"
+    current_screen_elements = self.doc.get_current_element_desc(env)
 
-    return f'''Imagine that you are a robot operating a smartphone to use the {app_name} app. Like how humans operate the smartphone, you can tap, long tap, input text, scroll, and get attributes of the UI elements in the {app_name} app. However, unlike humans, you cannot see the screen or interact with the physical buttons on the smartphone. Therefore, you need to write scripts to manipulate the UI elements (buttons, text fields, scrollers, element_lists, etc) in the app. 
+    return f'''Imagine that you are a robot operating a smartphone to use the {self.app_name} app. Like how humans operate the smartphone, you can tap, long tap, input text, scroll, and get attributes of the UI elements in the {app_name} app. However, unlike humans, you cannot see the screen or interact with the physical buttons on the smartphone. Therefore, you need to write scripts to manipulate the UI elements (buttons, text fields, scrollers, element_lists, etc) in the app. 
 
 Here is an example script to complete the task:
 
@@ -64,7 +43,7 @@ tap($add_note_ok)
 ```
 
 Above is an example. 
-**Your ultimate task is: {task}**
+**Your ultimate task is: {self.task}**
 
 In the script, except for the common python control flow (for, if-else, function def/calls, etc.), you can use the following APIs:
 - tap(<element_selector>) -> None: tap on the element. Almost all elements can be taped. If an element's attribute checked=false or selected=false, tapping it can make it checked or selected, vice versa.
@@ -104,13 +83,11 @@ Your answer should follow this JSON format:
 
 **Note that you should only output the JSON content.**'''
 
-  def get_solution(self, app_name,
-                   prompt_answer_path,
-                   task: str,
+  def get_solution(self,
+                   prompt_answer_path: str,
+                   env: interface.AsyncEnv,
                    model_name='gpt-4o'):
-    # formatted_apis = self.format_all_apis(enable_dependency)
-    prompt = self.make_prompt(
-        task=task, app_name=app_name)
+    prompt = self.make_prompt(env)
     answer = tools.query_gpt(prompt=prompt, model=model_name)
     tools.dump_json_file(prompt_answer_path, {
         'prompt': prompt,

@@ -20,7 +20,7 @@ from android_world.agents.agent_utils import ElementTree
 
 from android_world.script_utils.ui_apis import CodeConfig, Verifier, ElementList, regenerate_script
 from android_world.script_utils import tools
-from android_world.script_utils.bug_processor import BugProcessorv2
+from android_world.script_utils.bug_processor import BugProcessorV3
 from android_world.script_utils.solution_generator import SolutionGenerator
 from android_world.script_utils.api_doc import ApiDoc
 
@@ -82,73 +82,6 @@ def process_error_info(original_script, compiled_script, traceback, error,
   }
 
 
-def format_apis(env: interface.AsyncEnv, api_xpaths):
-
-  def _recursively_get_ele_property(ele_tree: ElementTree, ele):
-    ele_text = ele_tree.get_ele_text(ele)
-    ele_content_desc = ele_tree.get_content_desc(ele)
-    return {'text': ele_text, 'content_desc': ele_content_desc}
-
-  def _get_ordered_ui_apis(ele_tree: ElementTree, ui_state_desc, api_xpaths):
-    ui_apis = {}
-    for api_name, api_xpath in api_xpaths.items():
-      root = etree.fromstring(ui_state_desc)
-      eles = root.xpath(api_xpath)
-      if not eles:
-        continue
-      ele_desc = etree.tostring(
-          eles[0], pretty_print=True).decode('utf-8')  # only for father node
-      id_str = re.search(r' id="(\d+)"', ele_desc).group(1)
-      id = int(id_str)
-
-      ele = ele_tree.get_ele_by_xpath(api_xpath)
-      ele_children = ele_tree.get_children_by_ele(ele)
-      # ele_properties = ele.dict(only_original_attributes=True)
-
-      api_desc = {
-          'name':
-              api_name,
-          'property':
-              _recursively_get_ele_property(ele_tree, ele),
-          'children': [
-              _recursively_get_ele_property(ele_tree, child)
-              for child in ele_children
-          ]
-      }
-
-      ui_apis[id] = api_desc
-
-    # iterate over ui_apis to get the order of apis
-    ui_apis_ordered = []
-    for id in sorted(ui_apis.keys()):
-      ui_apis_ordered.append(ui_apis[id])
-    # import pdb
-    # pdb.set_trace()
-    return ui_apis_ordered
-
-  current_state = env.get_state()
-  element_tree = agent_utils.forest_to_element_tree(current_state.forest)
-
-  state_desc = element_tree.get_str(is_color=False)
-  ui_apis_ordered = _get_ordered_ui_apis(element_tree, state_desc,
-                                         api_xpaths)
-  ui_apis_str = ''
-  for ui_api in ui_apis_ordered:
-    ui_apis_str += f'\nelement: {ui_api["name"]}\n'
-    if ui_api['property']['text']:
-      ui_apis_str += f'\tText: {ui_api["property"]["text"]}\n'
-    if ui_api['property']['content_desc']:
-      ui_apis_str += f'\tContent Description: {ui_api["property"]["content_desc"]}\n'
-    if ui_api['children'] != []:
-      ui_apis_str += '\tChildren:\n'
-      for child in ui_api['children']:
-        if child['text']:
-          ui_apis_str += f'\t\tChild text: {child["text"]};'
-        if child['content_desc']:
-          ui_apis_str += f'\t\tChild content description: {child["content_desc"]}\n'
-  return ui_apis_str
-
-
 class CodeAgent(base_agent.EnvironmentInteractingAgent):
   """code agent"""
 
@@ -199,41 +132,37 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
                 'app_name': app_name
             }))
         time.sleep(self.WAIT_AFTER_ACTION_SECONDS)
-      
-      log_path = os.path.join(self.save_path, f'log.yaml')
-      error_path = os.path.join(self.save_path, f'error.json')
-      
+        
       if retry_time == 0: # first time
         # generate code
         if self.FREEZED_CODE:
           code = tools.load_txt_file(f'tmp/code.txt')
         else:
-          solution_generator = SolutionGenerator(self.env, app_name, app_doc)
+          solution_generator = SolutionGenerator(app_name, task, app_doc)
           solution_code = solution_generator.get_solution(
-              app_name=app_name,
               prompt_answer_path=os.path.join(self.save_path, f'solution.json'),
-              task=task,
+              env=self.env,
               model_name='gpt-4o')
           code = solution_code
       else: # debug
-        bug_processor = BugProcessorv2(
+        log_path = os.path.join(self.save_path, f'log.yaml')
+        error_path = os.path.join(self.save_path, f'error.json')
+      
+        bug_processor = BugProcessorV3(
             app_name=app_name,
+            task=task,
+            doc=app_doc,
             log_path=log_path,
             error_log_path=error_path,
-            task=task,
-            raw_solution=code,
-            doc=app_doc)
-
-        stuck_apis_str = format_apis(self.env, app_doc.api_xpath)
-        script = bug_processor.process_bug(
-            prompt_answer_path=os.path.join(
-                self.save_path, f'debug_task_turn{retry_time}.json'),
-            enable_dependency=False,
-            model_name='gpt-4o',
-            stuck_ui_apis=stuck_apis_str)
-
+            raw_solution=code)
+        
         # update the save_path for retry
         self.save_path = os.path.join(self.save_dir, f'{retry_time}')
+        
+        code = bug_processor.get_solution(# re-generate code
+            prompt_answer_path=os.path.join(self.save_path, f'solution.json'),
+            env=self.env,
+            model_name='gpt-4o')
       
       tools.write_txt_file(f'{self.save_path}/code.txt', code)
       
@@ -258,6 +187,7 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
         error_info = process_error_info(code, code_script, tb_str, str(e),
                                         line_mappings)
 
+        error_path = os.path.join(self.save_path, f'error.json')
         tools.dump_json_file(error_path, error_info)
 
     result = {}
