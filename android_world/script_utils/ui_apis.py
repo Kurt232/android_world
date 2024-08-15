@@ -58,20 +58,17 @@ def regenerate_script(script, verifier_instant_name):
   ]  # def a function because of the necessity of inspecting the script
   all_appeared_api_names = []
   line_mappings = {}  # key: compiled script line number, value: original script line number
-  compiled_line_num = 1  # the first line is the function definition line autodroidv2_task_solution_code()
-  for original_line_num, line in enumerate(script_lines):
+  element_statement_set = set()
+  
+  for _, line in enumerate(script_lines):
     match = pattern.match(line)
     if match:
       # for matching, indexing operation statements.
       element_name = match.group(1)
       sanitized_element_name = sanitize_name(element_name)
-      beginning_tabs = tools.get_leading_tabs(line)
-      instantiate_statement = f'{beginning_tabs}{sanitized_element_name} = ElementList(\'{element_name}\', None, {verifier_instant_name})'
-      modified_lines.append(f'\t{instantiate_statement}')
-      line_mappings[compiled_line_num] = original_line_num
-      compiled_line_num += 1
-
       line = line.replace(f'${element_name}', sanitized_element_name)
+      
+      element_statement_set.add(f'{sanitized_element_name} = ElementList(\'{element_name}\', None, {verifier_instant_name})')
     else:
       # for tapping, set_text, etc. statements
       api_name_pattern = r'\$([\w%]+)'  # also match apis with %, for example, font_size_150%
@@ -81,17 +78,24 @@ def regenerate_script(script, verifier_instant_name):
           sanitized_api_name = sanitize_name(api_name)
           if sanitized_api_name not in all_appeared_api_names:
             all_appeared_api_names.append(api_name)
-            beginning_tabs = tools.get_leading_tabs(line)
-            instantiate_statement = f'{beginning_tabs}{sanitized_api_name} = ElementList(\'{api_name}\', None, {verifier_instant_name})'
-            modified_lines.append(f'\t{instantiate_statement}')
-            line_mappings[compiled_line_num] = original_line_num
-            compiled_line_num += 1
+            element_statement_set.add(f'{sanitized_api_name} = ElementList(\'{api_name}\', None, {verifier_instant_name})')
 
           line = line.replace(f'${api_name}', sanitized_api_name)
 
     modified_lines.append(f'\t{line}')
+  
+  element_statement_list = list(element_statement_set)
+  element_statement_list.sort()
+  statement_len = len(element_statement_list)
+  beginning_tabs = tools.get_leading_tabs(modified_lines[1])
+  
+  for s in element_statement_list:
+    modified_lines.insert(1, beginning_tabs + s)
+  
+  for i, _ in enumerate(modified_lines[statement_len + 1:]):
+    original_line_num = i
+    compiled_line_num = i + statement_len + 1
     line_mappings[compiled_line_num] = original_line_num
-    compiled_line_num += 1
 
   modified_lines.append(
       f'autodroidv2_task_solution_code({verifier_instant_name})'
@@ -1067,31 +1071,6 @@ class ElementList:
   def check_api_name(self, api_name):
     if api_name not in self.api_xpaths.keys():  # not found xpath
       # find the first line with the api_name in the original script (combined with the preparation, this is to stay the same with tap, set_text, etc.)
-      line_with_api_name = None
-      for line_num, line in enumerate(self.config.compiled_code_lines):
-        if api_name in line:
-          line_with_api_name = line.strip()
-          lineno_in_original_script = self.config.line_mappings[line_num]
-          original_code_line = self.config.code_lines[lineno_in_original_script]
-          break
-      currently_executing_code = {
-          'current_code': line_with_api_name,
-          'original_lineno': lineno_in_original_script,
-          'original_code': original_code_line
-      }
-
-      _save2log(
-          save_path=self.save_path,
-          log_file=self.config.log_file,
-          element_tree=None,
-          idx=None,
-          inputs=None,
-          action_type='crashed',
-          api_name=api_name,
-          xpath=None,
-          currently_executing_code=currently_executing_code,
-          comment='initialize element list',
-          screenshot=None)
       raise Exception(
           f'Error: Element {api_name} does not exist in the app! Please use the real element name! '
       )
