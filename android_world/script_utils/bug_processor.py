@@ -4,6 +4,10 @@ from lxml import etree
 from android_world.script_utils import tools
 from android_world.script_utils.gen_dependency_tree import get_semantic_dependencies
 from android_world.script_utils.api_doc import ApiDoc
+from android_world.script_utils.ui_apis import CodeConfig
+
+from android_world.env import interface
+from android_world.agents import agent_utils
 
 class BugProcessor:
 
@@ -206,7 +210,7 @@ Now please return the corrected script to complete the task. Your answer should 
     return prompt
 
 
-class BugProcessorv2:
+class BugProcessorV2:
 
   def __init__(self, app_name, log_path, error_log_path, task: str, raw_solution: str, ele_data_path, doc: ApiDoc):
     self.app_name = app_name
@@ -417,6 +421,109 @@ Your answer should follow this JSON format:
                   stuck_ui_apis=None):
     prompt = self.make_prompt(enable_dependency=enable_dependency,
                               stuck_ui_apis=stuck_ui_apis)
+    answer = tools.query_gpt(prompt=prompt, model=model_name)
+    tools.dump_json_file(prompt_answer_path, {
+        'prompt': prompt,
+        'answer': answer
+    })
+    answer = tools.convert_gpt_answer_to_json(answer,
+                                              model_name=model_name,
+                                              default_value={
+                                                  'Plan': '',
+                                                  'Script': ''
+                                              })
+    if 'Script' in answer.keys():
+      return answer['Script']
+    else:
+      return answer['script']
+
+
+class BugProcessorV3:
+
+  def __init__(self, app_name: str, task: str, doc: ApiDoc, log_path: str, error_path: str, code: str):
+    self.app_name = app_name
+    self.task = task
+    self.doc = doc
+    self.raw_log = tools.load_yaml_file(log_path)
+    self.error_log = tools.load_json_file(error_path)
+    self.code = code
+
+  def get_script_embedded_error(self):
+    error_lineno = self.error_log['error_line_in_original_script']
+    
+    if 'verifier' in self.error_log['error']:
+      error_info = 'The statement is not supported by the verifier, please find another way to implement the same functionality.'
+    else:
+      error_info = self.error_log['error']
+    
+    code_lines = self.code.split('\n')
+    error_line = tools.get_leading_tabs(code_lines[error_lineno]) + f'^^^^^^ {error_info}'
+    code_lines.insert(error_lineno + 1, error_line)
+    return '\n'.join(code_lines)
+
+  def make_prompt(self, env: interface.AsyncEnv):
+    # all elements
+    all_elements_desc = self.doc.get_all_element_desc(is_show_xpath=True)
+    
+    # current screen elements
+    current_screen_desc = self.doc.get_current_element_desc(env, is_show_xpath=True)
+
+    instruction = f'''You are a robot operating a smartphone to use the {self.app_name} app. Like how humans operate the smartphone, you can tap, long tap, input text, scroll, and get attributes of the UI elements in the {self.app_name} app. However, unlike humans, you cannot see the screen or interact with the physical buttons on the smartphone. Therefore, you need to write scripts to manipulate the UI elements in the app.'''
+    task = f'**Your ultimate task is: {task}**'
+    use_api = '''\
+In the script, except for the common python control flow (for, if-else, function def/calls, etc.), you can use the following APIs:
+- tap(<element_selector>) -> None: tap on the element. Almost all elements can be taped. If an element's attribute checked=false or selected=false, tapping it can make it checked or selected, vice versa.
+- long_tap(<element_selector>) -> None: long tap the element. 
+- set_text(<element_selector>, <text>) -> None: set the text of the element to <text>. Only editable text fields can be set text.
+- scroll(<element_selector>, <direction>) -> bool: scroll the UI element in the specified direction, and direction is a str from "up", 'down", "left", "right". e.g. scroll($scroll_settings_page, "down")
+- get_text(<element_selector>) -> str: return the text of the element as a string.
+- get_attributes(<element_selector>) -> dict[str, str]: return the attributes of the element as a dict, dict keys include "selected", "checked", "scrollable", dict values are boolean. eg. get_attributes($files[3])["selected"].
+- back(): close the current window
+
+
+The <element_selector> primitive is used to select an element, possible ways of selection include:
+- $<element id>, eg. $settings_button
+- <element_list>[<idx>]: the idx-th in the element list. eg. $my_items[1]
+
+The <element_list> primitive is used to select a list of elements, possible ways of selection include:
+- <element_selector>: the items in the list element identified by <element_selector>. eg. $my_items
+- <element_list>.match(<text or attribute dict>): the elements in the element list that match the given text or attribute dict. eg. $my_items.match("key words") or $my_items.match({{"selected": true}})
+You can use len(<element_list>) to get the total number of items in an element list.
+
+Each <element_selector> can refer to a single element or an element contained multiple elements, especially in the case of complex items within an <element_list>. The following APIs are supported to be invoked as member functions to limit their effect domain: `tap`, `long_tap`, `set_text`, `scroll`, `get_text`, `get_attributes`, and `back`. Note that these APIs still need to satisfy the required arguments. If the APIs are invoked as member functions, they will only affect the element selected by the <element_selector>, while the APIs invoked as global functions will affect all elements in the phone screen. For example, `$note_list[1].tap($note_title)` will tap the title of the second note in the note list, whereas `tap($note_title)` will always tap the first note title in the note list.'''
+    regenerate_script = f'''\
+Now, here is an unsuccessful script that you have executed before, where the bug possibly exists in missed <element_selector> due to the inexact element name or failed to invoke API statements because of the incorrect executing order or unexpected results. You should try to fix the bug and re-generate the script to complete the task.
+
+The unsuccessful script with error information is as follows:
+```python
+{self.get_script_embedded_error()}
+```
+
+The unsuccessful execution of the script has changed the screen of the {self.app_name} app. **Therefore, you should generate new script based on the current screen that has the following current UI elements:
+
+{current_screen_desc}
+
+You can use the following important UI elements:
+
+{all_elements_desc}
+'''
+    output_format = '''Your answer should follow this JSON format:
+
+{
+    "plan": "<a high level plan to complete the task>",
+    "elements": "<analyze the elements that could be used to complete the task>", 
+    "script": "<the python script to complete the task>"
+}
+
+**Note that you should only output the JSON content.**'''
+    prompt = instruction + '\n' + task + '\n' + regenerate_script + '\n' + use_api + '\n' + output_format
+    return prompt
+
+  def get_solution(self,
+                  env: interface.AsyncEnv,
+                  prompt_answer_path,
+                  model_name='gpt-3.5-turbo'):
+    prompt = self.make_prompt(env)
     answer = tools.query_gpt(prompt=prompt, model=model_name)
     tools.dump_json_file(prompt_answer_path, {
         'prompt': prompt,

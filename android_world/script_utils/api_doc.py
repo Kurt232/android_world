@@ -4,7 +4,8 @@ import re
 
 from lxml import etree
 from android_world.agents.agent_utils import HTMLSkeleton
-
+from android_world.agents import agent_utils
+from android_world.env import interface
 
 class DependentAction():
 
@@ -213,3 +214,31 @@ class ApiDoc():
         valid_elements.append(v)
     
     return valid_elements
+  
+  @staticmethod
+  def _get_element_description(ele_list: list[ApiEle], is_show_xpath=False):
+    elements_desc = ''
+    for ele in ele_list:
+      description = ele.description
+      elements_desc += f"\n\nelement: {ele.api_name} \n\tDescription: {description} \n\tType: {ele.element_type}"
+      if ele.effect:
+        elements_desc += f"\n\tEffect: {ele.effect}"
+      if is_show_xpath:
+        elements_desc += f"\n\tXPath: {ele.xpath}"
+    
+    return elements_desc
+  
+  def get_all_element_desc(self, is_show_xpath=False):
+    return self._get_element_description(self.elements, is_show_xpath)
+  
+  def get_current_element_desc(self, env: interface.AsyncEnv, is_show_xpath=False):
+    state = env.get_state(True)
+    element_tree = agent_utils.forest_to_element_tree(state.forest)
+    current_screen_name = self.get_screen_name_by_skeleton(element_tree.skeleton)
+    if not current_screen_name:
+      current_screen_name = self.main_screen
+    
+    # valid_elements
+    valid_element_list = self.get_valid_element_list(current_screen_name, element_tree.str)
+    
+    return self._get_element_description(valid_element_list, is_show_xpath)
