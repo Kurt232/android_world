@@ -20,7 +20,7 @@ class SolutionGenerator:
     # current screen elements
     current_screen_elements = self.doc.get_current_element_desc(env)
 
-    return f'''Imagine that you are a robot operating a smartphone to use the {self.app_name} app. Like how humans operate the smartphone, you can tap, long tap, input text, scroll, and get attributes of the UI elements in the {app_name} app. However, unlike humans, you cannot see the screen or interact with the physical buttons on the smartphone. Therefore, you need to write scripts to manipulate the UI elements (buttons, text fields, scrollers, element_lists, etc) in the app. 
+    return f'''Imagine that you are a robot operating a smartphone to use the {self.app_name} app. Like how humans operate the smartphone, you can tap, long tap, input text, scroll, and get attributes of the UI elements in the {self.app_name} app. However, unlike humans, you cannot see the screen or interact with the physical buttons on the smartphone. Therefore, you need to write scripts to manipulate the UI elements (buttons, text fields, scrollers, element_lists, etc) in the app. 
 
 Here is an example script to complete the task:
 
@@ -76,9 +76,9 @@ You can use the following important UI elements:
 Your answer should follow this JSON format:
 
 {{
-    "plan": "<a high level plan to complete the task>",
-    "elements": "<analyze the elements that could be used to complete the task>", 
-    "script": "<the python script to complete the task>"
+    "plan": "<string, a high level plan to complete the task>",
+    "elements": "<string, analyze the elements that could be used to complete the task>", 
+    "script": "<string, the python script to complete the task>"
 }}
 
 **Note that you should only output the JSON content.**'''

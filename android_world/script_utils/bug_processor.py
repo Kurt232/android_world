@@ -459,7 +459,8 @@ class BugProcessorV3:
       error_info = self.error_log['error']
     
     error_lineno = self.error_log['error_line_number_in_original_script']
-    
+    if error_lineno is None:
+      error_lineno = -1
     code_lines = self.code.split('\n')
     error_line = tools.get_leading_tabs(code_lines[error_lineno]) + f'^^^^^^ {error_info}'
     code_lines.insert(error_lineno + 1, error_line)
@@ -536,9 +537,9 @@ You can use the following important UI elements:
     output_format = '''Your answer should follow this JSON format:
 
 {
-    "plan": "<a high level plan to complete the task>",
-    "elements": "<analyze the elements that could be used to complete the task>", 
-    "script": "<the python script to complete the task>"
+    "plan": "<string, a high level plan to complete the task>",
+    "elements": "<string, analyze the elements that could be used to complete the task>", 
+    "script": "<string, the python script to complete the task>"
 }
 
 **Note that you should only output the JSON content.**'''

@@ -87,7 +87,7 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
 
   # Wait a few seconds for the screen to stabilize after executing an action.
   WAIT_AFTER_ACTION_SECONDS = 2.0
-  MAX_RETRY_TIMES = 1
+  MAX_RETRY_TIMES = 3
 
   FREEZED_CODE = False
   def __init__(self,

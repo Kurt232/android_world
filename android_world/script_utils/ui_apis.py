@@ -918,8 +918,7 @@ class Verifier:
             'current_code': current_code_line,
             'original_lineno': lineno_in_original_script,
             'original_code': original_code_line
-        },
-        comment='action')
+        })
 
     check_action_count()
     if not target_ele:

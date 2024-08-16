@@ -105,11 +105,9 @@ class DependentAction():
     return []
 
 
-
 class ApiEle():
 
   def __init__(self, screen_name: str, raw: dict):
-    self.element: str = raw['element']
     # todo:: ignore "options" and "example"
     self.type: str = raw['type']
     self.options: list[str] = raw.get('options', None)
@@ -119,7 +117,7 @@ class ApiEle():
     self.effect: str = raw.get('effect', None)
 
     self.screen_name = screen_name
-    self.api_name = raw['api_name']
+    self.api_name = raw['name']
 
     self.state_tag: str = raw['state_tag']
     self.xpath: str = raw.get('xpath', None) # todo:: maybe not exist, log this
