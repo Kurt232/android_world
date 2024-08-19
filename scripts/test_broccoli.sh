@@ -1,0 +1,4 @@
+rm -fr test_broccoli
+mkdir -p outputs
+echo broccoli > tmp/app_name.txt
+python run.py --suite_family=android_world --agent_name=code --tasks=RecipeAddMultipleRecipes,RecipeAddMultipleRecipesFromImage,RecipeAddSingleRecipe,RecipeDeleteDuplicateRecipes,RecipeDeleteDuplicateRecipes2,RecipeDeleteDuplicateRecipes3,RecipeDeleteMultipleRecipes,RecipeDeleteMultipleRecipesWithConstraint,RecipeDeleteMultipleRecipesWithNoise,RecipeDeleteSingleRecipe,RecipeDeleteSingleWithRecipeWithNoise -v=-2 --save_path=test_broccoli > outputs/broccoli.txt
