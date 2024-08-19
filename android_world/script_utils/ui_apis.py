@@ -17,6 +17,7 @@ from android_world.env import json_action
 
 from android_world.script_utils import tools
 from android_world.script_utils.api_doc import ApiDoc
+from android_world.script_utils.err import XPathError, APIError, ActionError
 
 from . import WAIT_AFTER_ACTION_SECONDS, MAX_SCROLL_NUM, MAX_ACTION_COUNT, IS_LOG_SCREENSHOT, MAX_DEPENDENCE_DEPTH, MAX_DEPENDENCE_WIDTH
 
@@ -453,8 +454,8 @@ class Verifier:
         element_tree = agent_utils.forest_to_element_tree(state.forest)
         
         counter = 0
-        while target_ele is None and counter < MAX_DEPENDENCE_WIDTH:  # todo:: limit the max number of retry
-          _, dependency_action = self.doc.get_dependency(api_name) # todo:: which priority is higher compared the skeleton and the screen_name
+        while target_ele is None and counter < MAX_DEPENDENCE_WIDTH:
+          _, dependency_action = self.doc.get_dependency(api_name)
           
           if not dependency_action:
             break
@@ -516,6 +517,9 @@ class Verifier:
                 screenshot=state.pixels.copy())
               
               executable_action = agent_utils.convert_action(action.action_type, _target_ele, action.text)
+              # finding dependency can tolerate the action error
+              # if executable_action.get('action_type') == 'wait':
+              #   raise ActionError(f'Fail to {action.action_type}({action.api_name})', None, None, action.action_type, action.api_name)
               self.env.execute_action(json_action.JSONAction(**executable_action))
               time.sleep(WAIT_AFTER_ACTION_SECONDS)
 
@@ -554,8 +558,10 @@ class Verifier:
         return
       
       executable_action = agent_utils.convert_action(action_type, target_ele, text)
+      if executable_action.get('action_type') == 'wait':
+        raise ActionError(f'Fail to {action_type}({api_name})', None, None, action_type, api_name)
       self.env.execute_action(json_action.JSONAction(**executable_action))
-      time.sleep(WAIT_AFTER_ACTION_SECONDS)      
+      time.sleep(WAIT_AFTER_ACTION_SECONDS) 
     else:
       _save2log(
           save_path=self.save_path,
@@ -569,7 +575,7 @@ class Verifier:
           currently_executing_code=statement,
           comment='crashed',
           screenshot=state.pixels.copy())
-      raise Exception(f'{action_type} not found when executing tap {api_name}({xpath})')
+      raise XPathError(f'Not Found {api_name}[{xpath}]', api_name, xpath)
     return
 
   # def check_output_crash(self, api_name):
@@ -920,14 +926,15 @@ class Verifier:
             'original_code': original_code_line
         })
 
-    check_action_count()
     if not target_ele:
-      raise Exception(
-          f'Element not found when executing get_text {element_selector_api_name}({element_selector_xpath})')
-    else:
-      text = element_tree.get_text(target_ele)
-      text = text.replace('--', ' ')
-      return text
+      raise XPathError(
+          f'Not Found {element_selector_api_name}[{element_selector_xpath}]', element_selector_api_name, element_selector_xpath)
+    
+    check_action_count()
+    
+    text = element_tree.get_text(target_ele)
+    text = text.replace('--', ' ')
+    return text
 
   def get_attributes(self, element_selector):
     global ACTION_COUNT
@@ -967,14 +974,15 @@ class Verifier:
             'original_code': original_code_line
         })
 
-    check_action_count()
     if not target_ele:
-      raise Exception(
-          f'Element not found when executing get_attributes {element_selector}')
-    else:
-      target_ele_attrs = target_ele.get_attributes()
-      target_ele_attrs['text'] = target_ele_attrs.replace('--', ' ')
-      return target_ele_attrs
+      raise XPathError(
+        f'Not Found {element_selector}[{element_selector_xpath}]', element_selector_api_name, element_selector_xpath)
+    
+    check_action_count()
+    
+    target_ele_attrs = target_ele.get_attributes()
+    target_ele_attrs['text'] = target_ele_attrs.replace('--', ' ')
+    return target_ele_attrs
 
   def back(self):
     global ACTION_COUNT
@@ -1070,9 +1078,7 @@ class ElementList:
   def check_api_name(self, api_name):
     if api_name not in self.api_xpaths.keys():  # not found xpath
       # find the first line with the api_name in the original script (combined with the preparation, this is to stay the same with tap, set_text, etc.)
-      raise Exception(
-          f'Error: Element {api_name} does not exist in the app! Please use the real element name! '
-      )
+      raise APIError(f'Not exist {api_name}', api_name)
 
   def convert_ele_attr_to_elementlist(self, ele_attr):
     ele_xpath = f"//{ele_attr.type_}[@id='{ele_attr.id}']"
@@ -1112,7 +1118,7 @@ class ElementList:
     # elif isinstance(selector, slice):
     #     return self.data[selector.start:selector.stop:selector.step]
     check_action_count()
-    raise ValueError("Invalid selector")
+    raise ActionError(f"Fail to __getitem__({selector}) in {self.api_name}[{self.element_list_xpath}]", self.api_name, self.element_list_xpath, '__getitem__', selector)
 
   def __iter__(self):
     '''
@@ -1206,7 +1212,7 @@ class ElementList:
     check_action_count()
     # todo:: how to deal with multiple matched elements
     if len(matched_elements) == 0:
-      raise Exception(f'Error: No matched element found in {self.api_name} ')
+      raise ActionError(f'Fail to match({match_data}) in {self.api_name}[{self.element_list_xpath}]', self.api_name, self.element_list_xpath, 'match', match_data)
     
     return matched_elements[0]
 
@@ -1235,7 +1241,7 @@ class ElementList:
     target_ele, _ = self.verifier.navigate_and_get_target_element(element_selector_api_name, element_selector_xpath, 'len', statement)
 
     if not target_ele: # todo:: maybe it's 0
-      logging.warning(f'not found {self.api_name}({self.element_list_xpath})')
+      logging.warning(f'not found {self.api_name}[{self.element_list_xpath}]')
       return 0
     # ele_list_children = element_tree.get_children_by_ele(target_ele)
     ele_list_children = target_ele.children
@@ -1279,8 +1285,7 @@ class ElementList:
       button_api_name = button_api.api_name if button_api.api_name else button_api.element_list_xpath
       button_api_xpath = button_api.element_list_xpath
     else:
-      raise Exception(
-          f'Error: button_api type is not supported: {type(button_api)}')
+      raise APIError(f'Not exist {button_api}', button_api)
 
     frame = inspect.currentframe()
     caller_frame = frame.f_back
@@ -1294,11 +1299,11 @@ class ElementList:
     target_ele = self.find_target_element(button_api_xpath)
 
     if not target_ele:
-      raise Exception(f'{button_api_name} not found in {self.api_name}({self.element_list_xpath})')
+      raise XPathError(f'Not Found {button_api_name}[{button_api_xpath}] in {self.api_name}[{self.element_list_xpath}]', button_api_name, button_api_xpath, self.api_name, self.element_list_xpath)
 
     converted_action = agent_utils.convert_action("touch", target_ele, "")
-    if converted_action.get('goal_status', None) == 'infeasible':
-      raise Exception(f'Error: {button_api_name} is infeasible! ')
+    if converted_action['action_type'] == 'wait':
+      raise ActionError(f'Fail to tap({button_api_name}) in {self.api_name}[{self.element_list_xpath}]', self.api_name, self.element_list_xpath, 'touch', button_api_name)
     
     self.env.execute_action(json_action.JSONAction(**converted_action))
     time.sleep(WAIT_AFTER_ACTION_SECONDS)
@@ -1318,8 +1323,7 @@ class ElementList:
       button_api_name = button_api.api_name if button_api.api_name else button_api.element_list_xpath
       button_api_xpath = button_api.element_list_xpath
     else:
-      raise Exception(
-          f'Error: button_api type is not supported: {type(button_api)}')
+      raise APIError(f'Not exist {button_api}', button_api)
 
     frame = inspect.currentframe()
     caller_frame = frame.f_back
@@ -1333,11 +1337,11 @@ class ElementList:
     target_ele = self.find_target_element(button_api_xpath)
 
     if not target_ele:
-      raise Exception(f'{button_api_name} not found in {self.api_name}({self.element_list_xpath})')
+      raise XPathError(f'Not Found {button_api_name}[{button_api_xpath}] in {self.api_name}[{self.element_list_xpath}]', button_api_name, button_api_xpath, self.api_name, self.element_list_xpath)
 
     converted_action = agent_utils.convert_action("long_touch", target_ele, "")
-    if converted_action.get('goal_status', None) == 'infeasible':
-      raise Exception(f'Error: {button_api_name} is infeasible! ')
+    if converted_action['action_type'] == 'wait':
+      raise ActionError(f'Fail to long_tap({button_api_name}) in {self.api_name}[{self.element_list_xpath}]', self.api_name, self.element_list_xpath, 'long_touch', button_api_name)
     
     self.env.execute_action(json_action.JSONAction(**converted_action))
     time.sleep(WAIT_AFTER_ACTION_SECONDS)
@@ -1356,8 +1360,7 @@ class ElementList:
       input_api_name = input_api.api_name if input_api.api_name else input_api.element_list_xpath
       input_api_xpath = input_api.element_list_xpath
     else:
-      raise Exception(
-          f'Error: input_api type is not supported: {type(input_api)}')
+      raise APIError(f'Not exist {input_api}', input_api)
     
     frame = inspect.currentframe()
     caller_frame = frame.f_back
@@ -1371,11 +1374,11 @@ class ElementList:
     target_ele = self.find_target_element(input_api_xpath)
 
     if not target_ele:
-      raise Exception(f'{input_api_name} not found in {self.api_name}({self.element_list_xpath})')
+      raise XPathError(f'Not Found {input_api_name}[{input_api_xpath}] in {self.api_name}[{self.element_list_xpath}]', input_api_name, input_api_xpath, self.api_name, self.element_list_xpath)
 
     converted_action = agent_utils.convert_action("set_text", target_ele, text)
-    if converted_action.get('goal_status', None) != 'infeasible':
-      raise Exception(f'Error: {input_api_name} is infeasible! ')
+    if converted_action['action_type'] == 'wait':
+      raise ActionError(f'Fail to set_text({input_api}) in {self.api_name}[{self.element_list_xpath}]', self.api_name, self.element_list_xpath, 'long_touch', input_api)
     
     self.env.execute_action(json_action.JSONAction(**converted_action))
     time.sleep(WAIT_AFTER_ACTION_SECONDS)
@@ -1398,8 +1401,7 @@ class ElementList:
       element_selector_xpath = element_selector.element_list_xpath
       element_selector_api_name = element_selector.api_name if element_selector.api_name else element_selector.element_list_xpath
     else:
-      raise Exception(
-          f'Error: element_selector type is not supported: {type(element_selector)}')
+      raise APIError(f'Not exist {element_selector}', element_selector)
 
     frame = inspect.currentframe()
     caller_frame = frame.f_back
@@ -1413,13 +1415,14 @@ class ElementList:
     
     target_ele = self.find_target_element(element_selector_xpath)
 
-    check_action_count()
     if not target_ele:
-      raise Exception(f'{element_selector_api_name}({element_selector_xpath}) not found in {self.api_name}({self.element_list_xpath})')
-    else:
-      text = target_ele.text if target_ele.text else ''
-      text = text.replace('--', ' ')
-      return text
+      raise XPathError(f'Not Found {element_selector_api_name}[{element_selector_xpath}] in {self.api_name}[{self.element_list_xpath}]', element_selector_api_name, element_selector_xpath, self.api_name, self.element_list_xpath)
+    
+    check_action_count()
+    
+    text = target_ele.text if target_ele.text else ''
+    text = text.replace('--', ' ')
+    return text
 
   def get_attributes(self, element_selector):
     global ACTION_COUNT
@@ -1434,8 +1437,7 @@ class ElementList:
       element_selector_xpath = element_selector.element_list_xpath
       element_selector_api_name = element_selector.api_name if element_selector.api_name else element_selector.element_list_xpath
     else:
-      raise Exception(
-          f'Error: element_selector type is not supported: {type(element_selector)}')
+      raise APIError(f'Not Exist {element_selector}', element_selector)
 
     frame = inspect.currentframe()
     caller_frame = frame.f_back
@@ -1449,16 +1451,12 @@ class ElementList:
     target_ele = self.find_target_element(element_selector_xpath)
 
     if not target_ele:
-      raise Exception(f'{element_selector_api_name}({element_selector_xpath}) not found in {self.api_name}({self.element_list_xpath})')
+      raise XPathError(f'Not Found {element_selector_api_name}[{element_selector_xpath}] in {self.api_name}[{self.element_list_xpath}]', element_selector_api_name, element_selector_xpath, self.api_name, self.element_list_xpath)
     
     check_action_count()
-    if not target_ele:
-      raise Exception(
-          f'Element not found when executing get_attributes {element_selector}({element_selector_xpath})')
-    else:
-      target_ele_attrs = target_ele.get_attributes()
-      target_ele_attrs['text'] = target_ele_attrs.replace('--', ' ')
-      return target_ele_attrs
+    target_ele_attrs = target_ele.get_attributes()
+    target_ele_attrs['text'] = target_ele_attrs.replace('--', ' ')
+    return target_ele_attrs
   
   def scroll(self, scroller_api, direction):
     return self.verifier.scroll(scroller_api, direction)
