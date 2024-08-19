@@ -546,7 +546,7 @@ You can use the following important UI elements:
     prompt = instruction + '\n' + task + '\n' + original_script_prompt + '\n' + regenerate_script + '\n' + use_api + '\n' + output_format
     return prompt
 
-  def get_solution(self,
+  def get_fixed_solution(self,
                   env: interface.AsyncEnv,
                   prompt_answer_path,
                   model_name='gpt-3.5-turbo'):
@@ -568,3 +568,66 @@ You can use the following important UI elements:
       return answer['Script']
     else:
       return answer['script']
+    
+  def fix_invalid_xpath(self,
+                      env: interface.AsyncEnv, 
+                      api_name: str,
+                      prompt_answer_path,
+                      model_name='gpt-3.5-turbo'):
+    api = self.doc.get_api_by_name(api_name)
+    if not api:
+      raise APIError(f'Not exist {api_name}', api_name)
+    
+    state = env.get_state(True)
+    element_tree = agent_utils.forest_to_element_tree(state.forest)
+    element_tree_html_without_id = self._get_view_without_id(element_tree.str)
+    
+    element_html = api.element
+    element_html_without_id = self._get_view_without_id(element_html)
+    prompt = f'''\
+Given the current UI state, you should find the valid XPath for the UI element that is represented by the following HTML code:
+
+{element_html_without_id}
+
+The current UI state is described by the following HTML code:
+
+{element_tree_html_without_id}
+
+Your answer should follow this JSON format:
+
+{{
+  "flag": <bool, whether the target element exists in the current UI state>,
+  "xpath": <string, the unique xpath of the target element>
+}}
+
+**Note that you should only output the JSON content.**'''
+    answer, tokens = tools.query_gpt(prompt=prompt, model=model_name)
+    answer, tokens1 = tools.convert_gpt_answer_to_json(answer,
+                                              model_name=model_name,
+                                              default_value={
+                                                  'flag': False,
+                                                  'xpath': ''
+                                              })
+    
+    tools.dump_jsonl_file(prompt_answer_path, {
+        'prompt': prompt,
+        'answer': answer,
+        'tokens': tokens,
+        'convert_tokens': tokens1
+    })
+    
+    flag = answer.get('flag', None)
+    if flag == False:
+      return False
+    
+    xpath = answer.get('xpath', None)
+    if xpath == None:
+      return False
+    
+    ele = element_tree.get_ele_by_xpath(xpath)
+    if not ele:
+      return False
+    
+    api.xpath = xpath
+    self.doc.is_updated = True
+    return True

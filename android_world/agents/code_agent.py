@@ -160,7 +160,7 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
         self.save_path = os.path.join(self.save_dir, self.task_name, f'{retry_time}')
         os.makedirs(self.save_path, exist_ok=True)
         
-        code = bug_processor.get_solution(# re-generate code
+        code = bug_processor.get_fix_solution(# re-generate code
             prompt_answer_path=os.path.join(self.save_path, f'solution.json'),
             env=self.env,
             model_name='gpt-4o')
