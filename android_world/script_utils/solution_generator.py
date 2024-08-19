@@ -88,16 +88,18 @@ Your answer should follow this JSON format:
                    env: interface.AsyncEnv,
                    model_name='gpt-4o'):
     prompt = self.make_prompt(env)
-    answer = tools.query_gpt(prompt=prompt, model=model_name)
-    tools.dump_json_file(prompt_answer_path, {
-        'prompt': prompt,
-        'answer': answer
-    })
-    answer = tools.convert_gpt_answer_to_json(
+    answer, tokens = tools.query_gpt(prompt=prompt, model=model_name)
+    answer, tokens1 = tools.convert_gpt_answer_to_json(
         answer, model_name=model_name, default_value={
             'Plan': '',
             'Script': ''
         })
+    tools.dump_json_file(prompt_answer_path, {
+        'prompt': prompt,
+        'answer': answer,
+        'tokens': tokens,
+        'convert_tokens': tokens1
+    })
     if 'Script' in answer.keys():
       return answer['Script']
     else:

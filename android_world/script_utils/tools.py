@@ -22,6 +22,12 @@ def dump_json_file(json_path, data):
     json.dump(data, f)
 
 
+def dump_jsonl_file(jsonl_path, data):
+  with open(jsonl_path, 'a') as f:
+    json.dump(data, f)
+    f.write('\n')
+
+
 def debug_query_gptv2(prompt: str, model_name: str):
   client = OpenAI(base_url='https://chat1.plus7.plus/v1',
                   api_key='sk-gRHvMVThd4k5T7ch9dB90f54DcA74926A9C938C5088d7bFe')
@@ -119,6 +125,15 @@ def query_gpt(prompt, model="gpt-3.5-turbo"):
     if retry == max_retry:
       raise err
 
+    usage = {
+      "prompt_tokens": response['usage']['prompt_tokens'],
+      "completion_tokens": response['usage']['completion_tokens']
+    }
+    # "usage": {
+    #   "prompt_tokens": 9,
+    #   "completion_tokens": 12,
+    #   "total_tokens": 21
+    # }
     res = completion.choices[0].message.content
 
   elif model.startswith("claude"):
@@ -159,9 +174,18 @@ def query_gpt(prompt, model="gpt-3.5-turbo"):
     if retry == max_retry:
       raise err
 
+    usage = {
+      "prompt_tokens": response.json()['usage']['input_tokens'],
+      "completion_tokens": response.json()['usage']['output_tokens']
+    }
+    # "usage": 
+    #   {
+    #     "input_tokens": 12,
+    #     "output_tokens": 6
+    #   }
     res = response.json()['content'][0]['text']
 
-  return res
+  return res, usage
 
 
 def convert_gpt_answer_to_json(answer,
@@ -183,9 +207,10 @@ data:
     answer = answer.replace('```', '').strip()
 
     converted_answer = ast.literal_eval(answer)
+    usage = None
   except:
     print('*' * 10, 'converting', '*' * 10, '\n', answer, '\n', '*' * 50)
-    converted_answer = query_func(convert_prompt, model_name)
+    converted_answer, usage = query_func(convert_prompt, model_name)
     print('*' * 10, 'converted v1', '*' * 10, '\n', converted_answer, '\n',
           '*' * 10)
     if isinstance(converted_answer, str):
@@ -206,9 +231,14 @@ is wrong and can not be parsed in python. Please check it and convert it properl
 
 **Please do not output any content other than the JSON dict format!!!**
 '''
-        converted_answer = query_func(new_convert, model_name)
+        converted_answer, usage1 = query_func(new_convert, model_name)
         print('*' * 10, 'converted v2', '*' * 10, '\n', converted_answer, '\n',
               '*' * 10)
+        
+        usage = {
+          "prompt_tokens": usage['prompt_tokens'] + usage1['prompt_tokens'],
+          "completion_tokens": usage['completion_tokens'] + usage1['completion_tokens']
+        }
         if isinstance(converted_answer, str):
           try:
             converted_answer = converted_answer.replace('```json', '').replace(
@@ -216,8 +246,8 @@ is wrong and can not be parsed in python. Please check it and convert it properl
             converted_answer = converted_answer.replace('```', '').strip()
             converted_answer = ast.literal_eval(converted_answer)
           except:
-            return default_value
-  return converted_answer
+            return default_value, usage
+  return converted_answer, usage
 
 
 def get_combined_code(pre_code_path, code):
