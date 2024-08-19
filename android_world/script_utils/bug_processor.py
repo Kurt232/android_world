@@ -5,6 +5,7 @@ from android_world.script_utils import tools
 from android_world.script_utils.gen_dependency_tree import get_semantic_dependencies
 from android_world.script_utils.api_doc import ApiDoc
 from android_world.script_utils.ui_apis import CodeConfig
+from android_world.script_utils.err import ActionError, APIError
 
 from android_world.env import interface
 from android_world.agents import agent_utils
@@ -421,7 +422,7 @@ Your answer should follow this JSON format:
                   stuck_ui_apis=None):
     prompt = self.make_prompt(enable_dependency=enable_dependency,
                               stuck_ui_apis=stuck_ui_apis)
-    answer = tools.query_gpt(prompt=prompt, model=model_name)
+    answer, _ = tools.query_gpt(prompt=prompt, model=model_name)
     tools.dump_json_file(prompt_answer_path, {
         'prompt': prompt,
         'answer': answer
@@ -440,23 +441,20 @@ Your answer should follow this JSON format:
 
 class BugProcessorV3:
 
-  def __init__(self, app_name: str, task: str, doc: ApiDoc, log_path: str, error_path: str, code: str):
+  def __init__(self, app_name: str, task: str, doc: ApiDoc, error_info: dict, code: str, err: Exception):
     self.app_name = app_name
     self.task = task
     self.doc = doc
-    self.raw_log = tools.load_yaml_file(log_path)
-    self.error_log = tools.load_json_file(error_path)
+    self.error_log = error_info
     self.code = code
+    self.err = err
 
+  def _get_view_without_id(self, view):
+    modified_view = re.sub(r" id='\d+'", '', view)
+    return modified_view
+  
   def get_script_embedded_error(self):
-    if 'is not defined' in self.error_log['error']:
-      error_info = 'totally wrong API name or variable name'
-      return None
-    
-    if 'verifier' in self.error_log['error']:
-      error_info = 'The statement is not supported by the verifier, please find another way to implement the same functionality.'
-    else:
-      error_info = self.error_log['error']
+    error_info = self.err
     
     error_lineno = self.error_log['error_line_number_in_original_script']
     if error_lineno is None:
@@ -466,12 +464,22 @@ class BugProcessorV3:
     code_lines.insert(error_lineno + 1, error_line)
     return '\n'.join(code_lines)
 
+  def make_suggestion(self):
+    suggestion = ''
+    if isinstance(self.err, APIError):
+      suggestion += 'Suggestion: The panic may be caused by missed <element_selector> due to the inexact element name. Please check the API name in provided UI Elements.'
+    elif isinstance(self.err, ActionError):
+      suggestion += 'Suggestion: The panic may be caused by failed to invoke API statements because of the incorrect executing order or unexpected results. Please check the rule of the API invocation.'
+    else:
+      suggestion += 'Suggestion: The panic may be caused by the incorrect script logic and grammar. Please check the script logic and grammar.'
+    return suggestion
+      
   def make_prompt(self, env: interface.AsyncEnv):
     # all elements
     all_elements_desc = self.doc.get_all_element_desc(is_show_xpath=True)
     
     # current screen elements
-    current_screen_desc = self.doc.get_current_element_desc(env, is_show_xpath=True)
+    current_screen_desc = self.doc.get_current_element_desc(env, is_show_xpath=False)
     
     # original script with error
     original_script_with_error = self.get_script_embedded_error()
@@ -500,7 +508,9 @@ You can use len(<element_list>) to get the total number of items in an element l
 
 Each <element_selector> can refer to a single element or an element contained multiple elements, especially in the case of complex items within an <element_list>. The following APIs are supported to be invoked as member functions to limit their effect domain: `tap`, `long_tap`, `set_text`, `scroll`, `get_text`, `get_attributes`, and `back`. Note that these APIs still need to satisfy the required arguments. If the APIs are invoked as member functions, they will only affect the element selected by the <element_selector>, while the APIs invoked as global functions will affect all elements in the phone screen. For example, `$note_list[1].tap($note_title)` will tap the title of the second note in the note list, whereas `tap($note_title)` will always tap the first note title in the note list.'''
     original_script_prompt = f"""\
-Now, here is an unsuccessful script that you have executed before, where the bug possibly exists in missed <element_selector> due to the inexact element name or failed to invoke API statements because of the incorrect executing order or unexpected results. You should try to fix the bug and re-generate the script to complete the task.
+Now, here is an unsuccessful script that you have executed before.
+{self.make_suggestion()}
+You should try to fix the bug and re-generate the script to complete the task.
 
 The unsuccessful script with error information is as follows:
 ```python
