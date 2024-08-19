@@ -1,6 +1,6 @@
-import os
 import json
 import re
+import datetime
 
 from lxml import etree
 from android_world.agents.agent_utils import HTMLSkeleton
@@ -109,9 +109,10 @@ class ApiEle():
 
   def __init__(self, screen_name: str, raw: dict):
     # todo:: ignore "options" and "example"
+    self.id = raw['id']
     self.type: str = raw['type']
     self.options: list[str] = raw.get('options', None)
-    # self.element: str = raw['element']
+    self.element: str = raw['element']
     # self.element_type: str = raw['element_type']
     self.description: str = raw['description']
     self.effect: str = raw.get('effect', None)
@@ -121,32 +122,48 @@ class ApiEle():
 
     self.state_tag: str = raw['state_tag']
     self.xpath: str = raw.get('xpath', None) # todo:: maybe not exist, log this
-    self.dependency: list[list[str]] = raw.get('paths', [])
+    self.paths: list[list[str]] = raw.get('paths', [])
     self.dependency_action: list[list[DependentAction]] = []
 
-    for paths in self.dependency:
+    for path in self.paths:
       _path_actions = []
-      for action in paths:
+      for action in path:
         _path_actions.append(DependentAction(action))
       
       self.dependency_action.append(_path_actions)
+  
+  def __dict__(self):
+    return {
+        'id': self.id,
+        'type': self.type,
+        'options': self.options,
+        'name': self.api_name,
+        'element': self.element,
+        'description': self.description,
+        'effect': self.effect,
+        'state_tag': self.state_tag,
+        'xpath': self.xpath,
+        'paths': [action.raw_action for action in self.dependency_action]
+    }
 
 
 class ApiDoc():
 
-  def __init__(self, app_name: str, api_doc_dir: str = "tmp/docs"):
-    self.api_doc_path = os.path.join(api_doc_dir, app_name + '.json')
+  def __init__(self, doc_path: str):
+    self.doc_path = doc_path
     self.doc: dict[str, dict[str, ApiEle]] = {} # screen_name -> api_name -> ApiEle
     self.api_xpath: dict[str, str] = {}
     self.elements: list[ApiEle] = []
     self.skeleton_str2screen_name: dict[str, str] = {}
     self.screen_name2skeleton: dict[str, HTMLSkeleton] = {}
 
+    self.is_updated = False
+    
     self.main_screen: str = None
     self._load_api_doc()
 
   def _load_api_doc(self):
-    raw_api_doc = json.load(open(self.api_doc_path, 'r'))
+    raw_api_doc = json.load(open(self.doc_path, 'r'))
     len_screen = len(raw_api_doc)
 
     for k, v in raw_api_doc.items():
@@ -168,15 +185,18 @@ class ApiDoc():
 
   def get_api_xpath(self):
     return self.api_xpath
+  
+  def get_api_by_name(self, name: str):
+    _screen_name, _api_name = name.split('__')[0], name
+    return self.doc[_screen_name].get(_api_name, None)
 
   def get_dependency(self, api_name: str):
-    _screen_name, _api_name = api_name.split('__')[0], api_name
-
-    api = self.doc[_screen_name].get(_api_name, None)
+    api = self.get_api_by_name(api_name)
+    
     if not api:
       return None, None
     
-    return api.dependency, api.dependency_action 
+    return api.paths, api.dependency_action 
   
   def get_xpath_by_name(self, screen_name: str, api_name: str):
     screen = self.doc.get(screen_name, None)
@@ -223,7 +243,7 @@ class ApiDoc():
       elements_desc += f"\n\nelement: {ele.api_name} \n\tDescription: {description} \n\tType: {ele.type}"
       if ele.effect:
         elements_desc += f"\n\tEffect: {ele.effect}"
-      if is_show_xpath:
+      if is_show_xpath and ele.xpath:
         elements_desc += f"\n\tXPath: {ele.xpath}"
     
     return elements_desc
@@ -242,3 +262,19 @@ class ApiDoc():
     valid_element_list = self.get_valid_element_list(current_screen_name, element_tree.str)
     
     return self._get_element_description(valid_element_list, is_show_xpath)
+  
+  def save(self):
+    if self.is_updated:
+      doc_data = {}
+      for screen_name in self.doc:
+        doc_data[screen_name] = {
+            'skeleton': self.screen_name2skeleton[screen_name].str,
+            'elements': {k: v.__dict__ for k, v in self.doc[screen_name].items()}
+        }
+      old_doc = json.load(open(self.doc_path, 'r'))
+      # bak
+      timestamp = datetime.datetime.now().strftime('%m%d%H%M')
+      doc_path_bak = self.doc_path.replace('.json', f'_{timestamp}.json')
+      json.dump(old_doc, open(doc_path_bak, 'w'), indent=2)
+      
+      json.dump(doc_data, open(self.doc_path, 'w'), indent=2)
