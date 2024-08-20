@@ -13,7 +13,7 @@ from android_world.env import json_action
 
 from android_world.agents.agent_utils import ElementTree
 
-from android_world.script_utils.ui_apis import CodeConfig, Verifier, ElementList, regenerate_script, _save2log
+from android_world.script_utils.ui_apis import CodeConfig, CodeStatus, Verifier, ElementList, regenerate_script, _save2log
 from android_world.script_utils import tools
 from android_world.script_utils.bug_processor import BugProcessorV3
 from android_world.script_utils.solution_generator import SolutionGenerator
@@ -128,6 +128,7 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
     task = goal
     app_name = self.app_name
     self.save_path = os.path.join(self.save_dir, self.task_name)
+    code_status = CodeStatus()
     if not os.path.exists(self.save_path):
       os.makedirs(self.save_path)
     
@@ -193,11 +194,12 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
       
       env = self.env
       config = CodeConfig(app_name, app_doc, self.save_path, code, code_script, line_mappings)
+      code_status.reset()
       
       t1 = time.time()
       
       # execution
-      verifier = Verifier(env, config)
+      verifier = Verifier(env, config, code_status)
       
       try:
         exec(code_script)
