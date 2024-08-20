@@ -1,29 +1,24 @@
 """Agent for executing code script."""
 
-import datetime
-import sys
 import time
 import os
 import re
 import traceback
 
-from lxml import etree
 from absl import logging
 
 from android_world.agents import base_agent
-from android_world.agents import agent_utils
-from android_world.agents import infer
 from android_world.env import interface
 from android_world.env import json_action
 
 from android_world.agents.agent_utils import ElementTree
 
-from android_world.script_utils.ui_apis import CodeConfig, Verifier, ElementList, regenerate_script
+from android_world.script_utils.ui_apis import CodeConfig, Verifier, ElementList, regenerate_script, _save2log
 from android_world.script_utils import tools
 from android_world.script_utils.bug_processor import BugProcessorV3
 from android_world.script_utils.solution_generator import SolutionGenerator
 from android_world.script_utils.api_doc import ApiDoc
-from android_world.script_utils.err import XPathError
+from android_world.script_utils.err import XPathError, APIError, ActionError, NotFoundError
 
 
 def process_error_info(original_script, compiled_script, traceback, error,
@@ -92,7 +87,7 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
 
   FREEZED_CODE = False
   
-  APP_LIST = ['broccoli']
+  APP_LIST = ['broccoli', 'pro expense', 'clock', 'Simple SMS Messenger']
   def __init__(self,
                env: interface.AsyncEnv,
                task_names: str,
@@ -106,7 +101,7 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
     if app_name not in self.APP_LIST:
       raise ValueError(f'Unknown app name: {app_name} in\n\t{self.APP_LIST}')
     
-    doc_path = f'tmp/docs/{doc_name}.json'
+    doc_path = f'tmp/xdocs_0820/{doc_name}.json'
     if not os.path.exists(doc_path):
       raise ValueError(f'Unknown doc name: {doc_name}')
 
@@ -140,6 +135,7 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
     tools.write_txt_file(f'{self.save_path}/task.txt', task)
     app_doc = self.doc
     
+    err = None
     for retry_time in range(self.MAX_RETRY_TIMES):
       if retry_time == 0:
         # restart the app first in case the script couldn't run and the app has not been start
@@ -161,6 +157,30 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
               env=self.env,
               model_name='gpt-4o')
           code = solution_code
+      else: # retry
+        bug_processor = BugProcessorV3(
+            app_name=app_name,
+            task=task,
+            doc=app_doc,
+            error_info=error_info,
+            code=code,
+            err = err)
+        
+        # update the save_path for retry
+        self.save_path = os.path.join(self.save_dir, self.task_name, f'{retry_time}')
+        os.makedirs(self.save_path, exist_ok=True)
+        
+        if isinstance(err, XPathError):
+          bug_processor.fix_invalid_xpath(
+            env=env, 
+            api_name=err.name, 
+            prompt_answer_path=os.path.join(self.save_path, f'fix_xpath.json'), 
+            model_name='gpt-4o')
+        
+        code = bug_processor.get_fixed_solution(# re-generate code
+            prompt_answer_path=os.path.join(self.save_path, f'solution.json'),
+            env=env,
+            model_name='gpt-4o')
       
       tools.write_txt_file(f'{self.save_path}/code.txt', code)
       
@@ -175,49 +195,37 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
       config = CodeConfig(app_name, app_doc, self.save_path, code, code_script, line_mappings)
       
       t1 = time.time()
+      
       # execution
       verifier = Verifier(env, config)
       
       try:
         exec(code_script)
-        t2 = time.time()
-        runtime = t2 - t1
-        tools.write_txt_file(f'{self.save_path}/runtime.txt', runtime)
+        break
       except Exception as e:
-        t2 = time.time()
-        runtime = t2 - t1
-        tools.write_txt_file(f'{self.save_path}/runtime.txt', runtime)
-        
-        # save_current_ui_to_log(code_policy, api_name=None)
         tb_str = traceback.format_exc()
         error_info = process_error_info(code, code_script, tb_str, str(e),
                                         line_mappings)
 
         error_path = os.path.join(self.save_path, f'error.json')
         tools.dump_json_file(error_path, error_info)
-        
-        log_path = os.path.join(self.save_path, f'log.yaml')
+        err = e
       
-        bug_processor = BugProcessorV3(
-            app_name=app_name,
-            task=task,
-            doc=app_doc,
-            error_info=error_info,
-            code=code,
-            err = e)
-        
-        # update the save_path for retry
-        self.save_path = os.path.join(self.save_dir, self.task_name, f'{retry_time}')
-        os.makedirs(self.save_path, exist_ok=True)
-        
-        if isinstance(e, XPathError):
-          bug_processor.fix_invalid_xpath()
-        else:
-          code = bug_processor.get_fixed_solution(# re-generate code
-              prompt_answer_path=os.path.join(self.save_path, f'solution.json'),
-              env=self.env,
-              model_name='gpt-4o')
-      
+      _save2log(
+          save_path=self.save_path,
+          log_file='log.yaml',
+          element_tree=verifier.element_tree,
+          idx=None,
+          inputs=None,
+          action_type=None,
+          api_name=None,
+          xpath=None,
+          currently_executing_code=None,
+          comment='done',
+          screenshot=verifier.state.pixels.copy())
+      t2 = time.time()
+      runtime = t2 - t1
+      tools.write_txt_file(f'{self.save_path}/runtime.txt', "%f" % runtime)
     result = {}
     
     if retry_time == self.MAX_RETRY_TIMES:
