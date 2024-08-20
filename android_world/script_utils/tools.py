@@ -126,8 +126,8 @@ def query_gpt(prompt, model="gpt-3.5-turbo"):
       raise err
 
     usage = {
-      "prompt_tokens": response['usage']['prompt_tokens'],
-      "completion_tokens": response['usage']['completion_tokens']
+      "prompt_tokens": completion.usage.prompt_tokens,
+      "completion_tokens": completion.usage.completion_tokens
     }
     # "usage": {
     #   "prompt_tokens": 9,
