@@ -515,13 +515,21 @@ The unsuccessful script with error information is as follows:
     
     # current screen elements
     current_screen_desc = self.doc.get_current_element_desc(env, is_show_xpath=False)
-    
-    # original script with error
-    original_script_with_error = self.get_script_embedded_error()
 
+    # current screen
+    state = env.get_state(True)
+    element_tree = agent_utils.forest_to_element_tree(state.forest)
+    visible_html_view = element_tree.get_str_with_visible()
+    
     instruction = f'''You are a robot operating a smartphone to use the {self.app_name} app. Like how humans operate the smartphone, you can tap, long tap, input text, scroll, and get attributes of the UI elements in the {self.app_name} app. However, unlike humans, you cannot see the screen or interact with the physical buttons on the smartphone. Therefore, you need to write scripts to manipulate the UI elements in the app.'''
-    task = f'**Your ultimate task is: {self.task}**'
-    use_api = '''\
+    task_and_guidelines = f'''**Your ultimate task is: {self.task}**
+
+
+And here is the start screen of the app described by HTML:
+{visible_html_view}
+
+
+Now, you should follow the guidelines below to complete the task:
 In the script, except for the common python control flow (for, if-else, function def/calls, etc.), you can use the following APIs:
 - tap(<element_selector>) -> None: tap on the element. Almost all elements can be taped. If an element's attribute checked=false or selected=false, tapping it can make it checked or selected, vice versa.
 - long_tap(<element_selector>) -> None: long tap the element. 
@@ -561,7 +569,7 @@ You can use the following important UI elements:
 }
 
 **Note that you should only output the JSON content.**'''
-    prompt = instruction + '\n' + task + '\n' + original_script_prompt_with_err + '\n' + regenerate_script + '\n' + use_api + '\n' + output_format
+    prompt = instruction + '\n' + task_and_guidelines + '\n' + original_script_prompt_with_err + '\n' + regenerate_script + '\n' + output_format
     return prompt
 
   def get_fixed_solution(self,
