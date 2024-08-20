@@ -4,8 +4,7 @@ from lxml import etree
 from android_world.script_utils import tools
 from android_world.script_utils.gen_dependency_tree import get_semantic_dependencies
 from android_world.script_utils.api_doc import ApiDoc
-from android_world.script_utils.ui_apis import CodeConfig
-from android_world.script_utils.err import ActionError, APIError
+from android_world.script_utils.err import ActionError, APIError, XPathError, NotFoundError
 
 from android_world.env import interface
 from android_world.agents import agent_utils
@@ -453,8 +452,31 @@ class BugProcessorV3:
     modified_view = re.sub(r" id='\d+'", '', view)
     return modified_view
   
-  def get_script_embedded_error(self):
-    error_info = self.err
+  def get_script_err_prompt(self):
+    if isinstance(self.err, (XPathError, APIError, ActionError, NotFoundError)):
+      error_info = self.err.msg
+    else: # give the example script
+      prompt = """\
+An internal error happened, please check the script logic and grammar and strictly follow the guideline. And here is an example script for your reference:
+
+```python
+# task: Open a note or create a note titled 'note_test' if there is none.
+notes = $open_note_title_list
+
+for i in range(len(notes)):
+  note = notes[i]
+  title = note.get_text($note_title)
+  if title == 'note_test':
+    note.tap(title)
+    return
+
+back()
+tap($create_note)
+set_text($add_note_title, 'note_test')
+tap($text_note_type)
+tap($add_note_ok)
+```"""
+      return prompt
     
     error_lineno = self.error_log['error_line_number_in_original_script']
     if error_lineno is None:
@@ -462,7 +484,16 @@ class BugProcessorV3:
     code_lines = self.code.split('\n')
     error_line = tools.get_leading_tabs(code_lines[error_lineno]) + f'^^^^^^ {error_info}'
     code_lines.insert(error_lineno + 1, error_line)
-    return '\n'.join(code_lines)
+    code_with_err =  '\n'.join(code_lines)
+    return f"""\
+Now, here is an unsuccessful script that you have executed before.
+{self.make_suggestion()}
+You should try to fix the bug and re-generate the script to complete the task.
+
+The unsuccessful script with error information is as follows:
+```python
+{code_with_err}
+```"""
 
   def make_suggestion(self):
     suggestion = ''
@@ -470,13 +501,17 @@ class BugProcessorV3:
       suggestion += 'Suggestion: The panic may be caused by missed <element_selector> due to the inexact element name. Please check the API name in provided UI Elements.'
     elif isinstance(self.err, ActionError):
       suggestion += 'Suggestion: The panic may be caused by failed to invoke API statements because of the incorrect executing order or unexpected results. Please check the rule of the API invocation.'
+    elif isinstance(self.err, XPathError):
+      suggestion += 'Suggestion: The panic may be caused by missed the target element in of current screen. Please check the script logic.'
+    elif isinstance(self.err, NotFoundError):
+      suggestion += 'Suggestion: The panic may be caused by the missed element in the current screen. Please check the order of invoking APIs and the script logic.'
     else:
       suggestion += 'Suggestion: The panic may be caused by the incorrect script logic and grammar. Please check the script logic and grammar.'
     return suggestion
       
   def make_prompt(self, env: interface.AsyncEnv):
     # all elements
-    all_elements_desc = self.doc.get_all_element_desc(is_show_xpath=True)
+    all_elements_desc = self.doc.get_all_element_desc(is_show_xpath=False)
     
     # current screen elements
     current_screen_desc = self.doc.get_current_element_desc(env, is_show_xpath=False)
@@ -507,34 +542,7 @@ The <element_list> primitive is used to select a list of elements, possible ways
 You can use len(<element_list>) to get the total number of items in an element list.
 
 Each <element_selector> can refer to a single element or an element contained multiple elements, especially in the case of complex items within an <element_list>. The following APIs are supported to be invoked as member functions to limit their effect domain: `tap`, `long_tap`, `set_text`, `scroll`, `get_text`, `get_attributes`, and `back`. Note that these APIs still need to satisfy the required arguments. If the APIs are invoked as member functions, they will only affect the element selected by the <element_selector>, while the APIs invoked as global functions will affect all elements in the phone screen. For example, `$note_list[1].tap($note_title)` will tap the title of the second note in the note list, whereas `tap($note_title)` will always tap the first note title in the note list.'''
-    original_script_prompt = f"""\
-Now, here is an unsuccessful script that you have executed before.
-{self.make_suggestion()}
-You should try to fix the bug and re-generate the script to complete the task.
-
-The unsuccessful script with error information is as follows:
-```python
-{original_script_with_error}
-```""" if original_script_with_error else '''\
-Here is an example script to complete the task:
-
-```python
-# task: Open a note or create a note titled 'note_test' if there is none.
-notes = $open_note_title_list
-
-for i in range(len(notes)):
-  note = notes[i]
-  title = note.get_text($note_title)
-  if title == 'note_test':
-    note.tap(title)
-    return
-
-back()
-tap($create_note)
-set_text($add_note_title, 'note_test')
-tap($text_note_type)
-tap($add_note_ok)
-```'''
+    original_script_prompt_with_err = self.get_script_err_prompt()
     regenerate_script = f'''\
 The unsuccessful execution of the script has changed the screen of the {self.app_name} app. **Therefore, you should generate new script based on the current screen that has the following current UI elements:
 
@@ -553,7 +561,7 @@ You can use the following important UI elements:
 }
 
 **Note that you should only output the JSON content.**'''
-    prompt = instruction + '\n' + task + '\n' + original_script_prompt + '\n' + regenerate_script + '\n' + use_api + '\n' + output_format
+    prompt = instruction + '\n' + task + '\n' + original_script_prompt_with_err + '\n' + regenerate_script + '\n' + use_api + '\n' + output_format
     return prompt
 
   def get_fixed_solution(self,
@@ -586,10 +594,16 @@ You can use the following important UI elements:
                       model_name='gpt-3.5-turbo'):
     api = self.doc.get_api_by_name(api_name)
     if not api:
-      raise APIError(f'Not exist {api_name}', api_name)
+      return
     
     state = env.get_state(True)
     element_tree = agent_utils.forest_to_element_tree(state.forest)
+    
+    if self.doc.check_api_name_in_current_screen(api_name, element_tree.skeleton):
+      # navigating is already changed to another screen
+      # todo:: only first miss match to trigger the navigating
+      return False
+    
     element_tree_html_without_id = self._get_view_without_id(element_tree.str)
     
     element_html = api.element

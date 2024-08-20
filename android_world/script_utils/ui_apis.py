@@ -17,7 +17,7 @@ from android_world.env import json_action
 
 from android_world.script_utils import tools
 from android_world.script_utils.api_doc import ApiDoc
-from android_world.script_utils.err import XPathError, APIError, ActionError
+from android_world.script_utils.err import XPathError, APIError, ActionError, NotFoundError
 
 from . import WAIT_AFTER_ACTION_SECONDS, MAX_SCROLL_NUM, MAX_ACTION_COUNT, IS_LOG_SCREENSHOT, MAX_DEPENDENCE_DEPTH, MAX_DEPENDENCE_WIDTH
 
@@ -191,58 +191,6 @@ def _save2log(save_path,
   
   if IS_LOG_SCREENSHOT and screenshot is not None:
     agent_utils.save_screenshot(save_path, timestamp, screenshot)
-  
-def save_current_ui_to_log(env: interface.AsyncEnv,
-                           save_path: str,
-                           api_name: str,
-                           xpath: str,
-                           currently_executing_code=None):
-  log_path = os.path.join(save_path, f'log.yaml')
-  state = env.get_state(True)
-  element_tree = agent_utils.forest_to_element_tree(state.forest)
-  state_desc = element_tree.str
-
-  if os.path.exists(log_path):
-    output_log = tools.load_yaml_file(log_path)
-    if len(output_log['records']) == 0:
-      return
-
-    last_skeleton_str = output_log['records'][-1]['skeleton']
-
-    skeleton_str = element_tree.skeleton.str
-    if skeleton_str != last_skeleton_str:  # todo:: check
-      output_log['records'].append({
-          'Action': None,
-          'Choice': 'crashed',
-          'Input': None,
-          'api_name': api_name,
-          'xpath': xpath,
-          'State': state_desc,
-          'tag': "todo",  # todo:: initial a state for tag
-          'raw_prompt': None,
-          'raw_answer': None,
-          'currently_executing_code': currently_executing_code
-      })
-      tools.dump_yaml_file(log_path, output_log)
-
-  else:
-    output_log = {
-        'step_num':
-            0,
-        'records': [{
-            'Action': None,
-            'Choice': 'crashed',
-            'Input': None,
-            'api_name': api_name,
-            'xpath': xpath,
-            'State': state_desc,
-            'tag': "todo",
-            'raw_prompt': None,
-            'raw_answer': None,
-            'currently_executing_code': currently_executing_code
-        }]
-    }
-    tools.dump_yaml_file(log_path, output_log)
 
 
 # In the script, except for the common python control flow (for, if-else, function def/calls, etc.), you can use the following APIs:
@@ -448,13 +396,22 @@ class Verifier:
 
       # could not find a target element in the current UI, find in the dependencies
       if not target_ele:
-        ## dependency
-        # we have executed all the dependencies, but still not found the target element
         state = self.env.get_state(True)
         element_tree = agent_utils.forest_to_element_tree(state.forest)
         
         counter = 0
-        while target_ele is None and counter < MAX_DEPENDENCE_WIDTH:
+
+        if api_name:
+          is_in_current_screen = self.doc.check_api_name_in_current_screen(api_name, element_tree.skeleton)
+          if is_in_current_screen:
+            # assume the target element is in the current screen
+            # but we still can't find it, so raise an error
+            raise XPathError(f'Not Exist {api_name}[{xpath}]', api_name, xpath)
+          # else:
+          # not in screen, try to navigate to the screen
+        
+        ## navigating in dependency
+        # we have executed all the dependencies, but still not found the target element
           _, dependency_action = self.doc.get_dependency(api_name)
           
           if not dependency_action:
@@ -575,7 +532,9 @@ class Verifier:
           currently_executing_code=statement,
           comment='crashed',
           screenshot=state.pixels.copy())
-      raise XPathError(f'Not Found {api_name}[{xpath}]', api_name, xpath)
+      
+      if action_type: # only action can crash
+        raise NotFoundError(f'Not found {api_name}[{xpath}]', api_name, xpath)
     return
 
   # def check_output_crash(self, api_name):
@@ -622,63 +581,9 @@ class Verifier:
       element_tree = agent_utils.forest_to_element_tree(state.forest)
       target_ele = element_tree.get_ele_by_xpath(element_selector_xpath)
 
+      if not target_ele:
+        raise NotFoundError(f'Not found {element_selector_api_name}[{element_selector_xpath}]', element_selector_api_name, element_selector_xpath)
     return target_ele, element_tree
-
-  def get_ui_tree(self):
-    '''
-        return the current UI tree as a string.
-        '''
-    global ACTION_COUNT
-    if ACTION_COUNT == 0:
-      self.env.execute_action(  # maybe it's unnecessary
-          json_action.JSONAction(**{
-              "action_type": "open_app",
-              "app_name": self.app_name
-          }))
-      time.sleep(WAIT_AFTER_ACTION_SECONDS)
-
-    state = self.env.get_state(True)
-    element_tree = agent_utils.forest_to_element_tree(state.forest)
-    element_tree_str = element_tree.str
-    # ACTION_COUNT += 1  # to ensure the app do not restart after getting the ui tree
-    check_action_count()
-    return element_tree_str
-
-  def check_ele_exist(self, element_selector):
-    '''
-        check whether the element exists in the current UI
-        '''
-    global ACTION_COUNT
-    if ACTION_COUNT == 0:
-      self.env.execute_action(
-          json_action.JSONAction(**{
-              "action_type": "open_app",
-              "app_name": self.app_name
-          }))
-      time.sleep(WAIT_AFTER_ACTION_SECONDS)
-
-    state = self.env.get_state(True)
-    element_tree = agent_utils.forest_to_element_tree(state.forest)
-    if isinstance(element_selector, list):
-      element_selector = element_selector[0]
-    selector_xpath = element_selector.element_list_xpath
-    if element_tree.get_ele_by_xpath(selector_xpath):
-      return True
-    else:
-      return False
-
-  def check_last_screen_html_is_same(self):
-    state = self.env.get_state(True)
-    element_tree = agent_utils.forest_to_element_tree(state.forest)
-    current_screen_html_str = element_tree.str
-    is_same = False
-    if not self.last_screen_html_str:
-      self.last_screen_html_str = current_screen_html_str
-    else:
-      is_same = self.last_screen_html_str == current_screen_html_str
-      self.last_screen_html_str = current_screen_html_str
-
-    return is_same
 
   def tap(self, button_api):
     global ACTION_COUNT
@@ -925,10 +830,6 @@ class Verifier:
             'original_lineno': lineno_in_original_script,
             'original_code': original_code_line
         })
-
-    if not target_ele:
-      raise XPathError(
-          f'Not Found {element_selector_api_name}[{element_selector_xpath}]', element_selector_api_name, element_selector_xpath)
     
     check_action_count()
     
@@ -973,10 +874,6 @@ class Verifier:
             'original_lineno': lineno_in_original_script,
             'original_code': original_code_line
         })
-
-    if not target_ele:
-      raise XPathError(
-        f'Not Found {element_selector}[{element_selector_xpath}]', element_selector_api_name, element_selector_xpath)
     
     check_action_count()
     
@@ -1052,33 +949,10 @@ class ElementList:
     self.verifier = verifier
     self.index = 0
 
-  def _save_getting_info_action(self, action_type, api_name: str, xpath: str,
-                                current_code_line, lineno_in_original_script,
-                                original_code_line):
-    state = self.env.get_state(True)
-    element_tree = agent_utils.forest_to_element_tree(state.forest)
-
-    _save2log(
-        save_path=self.save_path,
-        log_file=self.config.log_file,
-        element_tree=element_tree,
-        idx=None,
-        inputs=None,
-        action_type=action_type,
-        api_name=api_name,
-        xpath=xpath,
-        currently_executing_code={
-            'current_code': current_code_line,
-            'original_lineno': lineno_in_original_script,
-            'original_code': original_code_line
-        },
-        effect_range=self.element_list_xpath,
-        screenshot=state.pixels.copy())
-
   def check_api_name(self, api_name):
     if api_name not in self.api_xpaths.keys():  # not found xpath
       # find the first line with the api_name in the original script (combined with the preparation, this is to stay the same with tap, set_text, etc.)
-      raise APIError(f'Not exist {api_name}', api_name)
+      raise APIError(f'Invalid {api_name}', api_name)
 
   def convert_ele_attr_to_elementlist(self, ele_attr):
     ele_xpath = f"//{ele_attr.type_}[@id='{ele_attr.id}']"
@@ -1089,14 +963,12 @@ class ElementList:
     return ele_xpath, elementlist
 
   def __getitem__(self, selector):
-    global ACTION_COUNT
-
     # get the currently executing code
     frame = inspect.currentframe()
     caller_frame = frame.f_back
     lineno = caller_frame.f_lineno
     current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, f'index[{selector}]', selector)
-
+    
     element_selector_api_name = self.api_name if self.api_name else self.element_list_xpath
     element_selector_xpath = self.element_list_xpath
     statement = {
@@ -1106,7 +978,7 @@ class ElementList:
         }
     
     target_ele_group, element_tree = self.verifier.navigate_and_get_target_element(element_selector_api_name, element_selector_xpath, f'index[{selector}]', statement)
-
+    
     # Default to integer index if not a custom selector
     if isinstance(selector, int):
       ele_attr = element_tree.get_children_by_idx(target_ele_group, selector)
@@ -1114,10 +986,9 @@ class ElementList:
           ele_attr)
       
       return matched_ele
-    # # Handle slice objects
-    # elif isinstance(selector, slice):
-    #     return self.data[selector.start:selector.stop:selector.step]
+    
     check_action_count()
+    # no change screen
     raise ActionError(f"Fail to __getitem__({selector}) in {self.api_name}[{self.element_list_xpath}]", self.api_name, self.element_list_xpath, '__getitem__', selector)
 
   def __iter__(self):
@@ -1128,20 +999,14 @@ class ElementList:
 
   def __next__(self):
     '''
-        return the next element in the current element's children to support iteration.
-        '''
-    global ACTION_COUNT
+    return the next element in the current element's children to support iteration.
+    '''
     # get the currently executing code
     frame = inspect.currentframe()
     caller_frame = frame.f_back
     lineno = caller_frame.f_lineno
-    
     current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, '__next__', self.api_name)
-    self._save_getting_info_action(f'[{self.index}]next', self.api_name,
-                                   self.element_list_xpath, current_code_line,
-                                   lineno_in_original_script,
-                                   original_code_line)
-
+    
     element_selector_api_name = self.api_name if self.api_name else self.element_list_xpath
     element_selector_xpath = self.element_list_xpath
     statement = {
@@ -1168,18 +1033,11 @@ class ElementList:
       raise StopIteration
 
   def match(self, match_data):
-    global ACTION_COUNT
-
     # get the currently executing code
     frame = inspect.currentframe()
     caller_frame = frame.f_back
     lineno = caller_frame.f_lineno
     current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, 'match', match_data)
-
-    self._save_getting_info_action(f'match[{match_data}]', self.api_name,
-                                   self.element_list_xpath, current_code_line,
-                                   lineno_in_original_script,
-                                   original_code_line)
 
     element_selector_api_name = self.api_name if self.api_name else self.element_list_xpath
     element_selector_xpath = self.element_list_xpath
@@ -1217,19 +1075,12 @@ class ElementList:
     return matched_elements[0]
 
   def __len__(self):
-    global ACTION_COUNT
-
     # get the currently executing code
     frame = inspect.currentframe()
     caller_frame = frame.f_back
     lineno = caller_frame.f_lineno
     current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, '__len__', self.api_name)
     
-    self._save_getting_info_action('len', self.api_name,
-                                   self.element_list_xpath, current_code_line,
-                                   lineno_in_original_script,
-                                   original_code_line)
-
     element_selector_api_name = self.api_name if self.api_name else self.element_list_xpath
     element_selector_xpath = self.element_list_xpath
     statement = {
@@ -1250,10 +1101,11 @@ class ElementList:
     return len(ele_list_children)
 
   def get_current_code_line(self, lineno: int, action: str, element_selector_name: str):
+    global ACTION_COUNT
     # get the currently executing code
     code_lines = self.config.compiled_code_lines
     print(
-        f"{action}: {element_selector_name} at line {lineno}, code is:{code_lines[lineno - 1]}"
+        f"{action}: {element_selector_name} at line {lineno}, code is:{code_lines[lineno - 1]}, action count: {ACTION_COUNT}"
     )
     current_code_line = code_lines[lineno - 1]
     lineno_in_original_script = self.config.line_mappings[lineno - 1]
@@ -1261,45 +1113,44 @@ class ElementList:
 
     return current_code_line, lineno_in_original_script, original_code_line
 
-  def find_target_element(self, element_selector_xpath: str):
+  def find_target_element_in_group(self, element_selector_api_name: str, element_selector_xpath: str, caller_type: str, statement: dict):
     
     target_ele = None
-    state = self.env.get_state(True)
-    element_tree = agent_utils.forest_to_element_tree(state.forest)
-    target_ele_group = element_tree.get_ele_by_xpath(self.element_list_xpath)
-    if target_ele_group:
-      subtree = element_tree.extract_subtree(target_ele_group.id)
-      if subtree:
-        target_ele = subtree.get_ele_by_xpath(element_selector_xpath)
+    target_ele_group, element_tree = self.verifier.navigate_and_get_target_element(self.api_name, self.element_list_xpath, caller_type, statement)
+    subtree = element_tree.extract_subtree(target_ele_group.id)
+    if subtree:
+      target_ele = subtree.get_ele_by_xpath(element_selector_xpath)
 
-    return target_ele
+    if not target_ele:
+      if self.doc.check_api_name_in_current_screen(element_selector_api_name, self.element_tree.skeleton):
+        raise XPathError(f'Not Exist {element_selector_api_name}[{element_selector_xpath}]', element_selector_api_name, element_selector_xpath)
+      else:
+        raise NotFoundError(f'Not Found {element_selector_api_name}[{element_selector_xpath}] in {self.api_name}[{self.element_list_xpath}]', element_selector_api_name, element_selector_xpath, self.api_name, self.element_list_xpath)
+    
+    return target_ele, element_tree
     
   def tap(self, button_api):
-    global ACTION_COUNT
-
+    frame = inspect.currentframe()
+    caller_frame = frame.f_back
+    lineno = caller_frame.f_lineno
+    
     if isinstance(button_api, str):
-      print(f'try to tap: {button_api}, current action account: {ACTION_COUNT}')
       button_api_name = button_api.split('$')[-1]
       button_api_xpath = self.api_xpaths[button_api_name]
     elif isinstance(button_api, ElementList):
       button_api_name = button_api.api_name if button_api.api_name else button_api.element_list_xpath
       button_api_xpath = button_api.element_list_xpath
     else:
-      raise APIError(f'Not exist {button_api}', button_api)
+      raise APIError(f'Invalid {button_api}', button_api)
 
-    frame = inspect.currentframe()
-    caller_frame = frame.f_back
-    lineno = caller_frame.f_lineno
     current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, 'touch', button_api_name)
-    self._save_getting_info_action('touch', button_api_name,
-                                   button_api_xpath, current_code_line,
-                                   lineno_in_original_script,
-                                   original_code_line)
+    statement = {
+            'current_code': current_code_line,
+            'original_lineno': lineno_in_original_script,
+            'original_code': original_code_line
+        }
     
-    target_ele = self.find_target_element(button_api_xpath)
-
-    if not target_ele:
-      raise XPathError(f'Not Found {button_api_name}[{button_api_xpath}] in {self.api_name}[{self.element_list_xpath}]', button_api_name, button_api_xpath, self.api_name, self.element_list_xpath)
+    target_ele, element_tree = self.find_target_element_in_group(button_api_name, button_api_xpath, 'touch', statement)
 
     converted_action = agent_utils.convert_action("touch", target_ele, "")
     if converted_action['action_type'] == 'wait':
@@ -1313,31 +1164,28 @@ class ElementList:
     check_action_count()
 
   def long_tap(self, button_api):
-    global ACTION_COUNT
+    frame = inspect.currentframe()
+    caller_frame = frame.f_back
+    lineno = caller_frame.f_lineno
     
     if isinstance(button_api, str):
-      print(f'try to long_tap: {button_api}, current action account: {ACTION_COUNT}')
       button_api_name = button_api.split('$')[-1]
       button_api_xpath = self.api_xpaths[button_api_name]
     elif isinstance(button_api, ElementList):
       button_api_name = button_api.api_name if button_api.api_name else button_api.element_list_xpath
       button_api_xpath = button_api.element_list_xpath
     else:
-      raise APIError(f'Not exist {button_api}', button_api)
-
-    frame = inspect.currentframe()
-    caller_frame = frame.f_back
-    lineno = caller_frame.f_lineno
-    current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, 'long_touch', button_api_name)
-    self._save_getting_info_action('long_touch', button_api_name,
-                                   button_api_xpath, current_code_line,
-                                   lineno_in_original_script,
-                                   original_code_line)
+      raise APIError(f'Invalid {button_api}', button_api)
     
-    target_ele = self.find_target_element(button_api_xpath)
-
-    if not target_ele:
-      raise XPathError(f'Not Found {button_api_name}[{button_api_xpath}] in {self.api_name}[{self.element_list_xpath}]', button_api_name, button_api_xpath, self.api_name, self.element_list_xpath)
+    
+    current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, 'long_touch', button_api_name)
+    statement = {
+            'current_code': current_code_line,
+            'original_lineno': lineno_in_original_script,
+            'original_code': original_code_line
+        }
+    
+    target_ele, element_tree = self.find_target_element_in_group(button_api_name, button_api_xpath, 'long_touch', statement)
 
     converted_action = agent_utils.convert_action("long_touch", target_ele, "")
     if converted_action['action_type'] == 'wait':
@@ -1351,8 +1199,10 @@ class ElementList:
     check_action_count()
 
   def set_text(self, input_api, text):
-    global ACTION_COUNT
-
+    frame = inspect.currentframe()
+    caller_frame = frame.f_back
+    lineno = caller_frame.f_lineno
+    
     if isinstance(input_api, str):
       input_api_name = input_api.split('$')[-1]
       input_api_xpath = self.api_xpaths[input_api_name] # todo:: if multiple, we can try step by step
@@ -1360,25 +1210,20 @@ class ElementList:
       input_api_name = input_api.api_name if input_api.api_name else input_api.element_list_xpath
       input_api_xpath = input_api.element_list_xpath
     else:
-      raise APIError(f'Not exist {input_api}', input_api)
+      raise APIError(f'Invalid {input_api}', input_api)
     
-    frame = inspect.currentframe()
-    caller_frame = frame.f_back
-    lineno = caller_frame.f_lineno
     current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, 'set_text', input_api_name)
-    self._save_getting_info_action('set_text', input_api_name,
-                                   input_api_xpath, current_code_line,
-                                   lineno_in_original_script,
-                                   original_code_line)
+    statement = {
+            'current_code': current_code_line,
+            'original_lineno': lineno_in_original_script,
+            'original_code': original_code_line
+        }
     
-    target_ele = self.find_target_element(input_api_xpath)
-
-    if not target_ele:
-      raise XPathError(f'Not Found {input_api_name}[{input_api_xpath}] in {self.api_name}[{self.element_list_xpath}]', input_api_name, input_api_xpath, self.api_name, self.element_list_xpath)
+    target_ele, element_tree = self.find_target_element_in_group(input_api_name, input_api_xpath, 'set_text', statement)
 
     converted_action = agent_utils.convert_action("set_text", target_ele, text)
     if converted_action['action_type'] == 'wait':
-      raise ActionError(f'Fail to set_text({input_api}) in {self.api_name}[{self.element_list_xpath}]', self.api_name, self.element_list_xpath, 'long_touch', input_api)
+      raise ActionError(f'Fail to set_text({input_api}) in {self.api_name}[{self.element_list_xpath}]', self.api_name, self.element_list_xpath, 'set_text', input_api)
     
     self.env.execute_action(json_action.JSONAction(**converted_action))
     time.sleep(WAIT_AFTER_ACTION_SECONDS)
@@ -1388,11 +1233,13 @@ class ElementList:
     check_action_count()
 
   def get_text(self, element_selector):
-    global ACTION_COUNT
     '''
     return the text of the element as a string.
     '''
-
+    frame = inspect.currentframe()
+    caller_frame = frame.f_back
+    lineno = caller_frame.f_lineno
+    
     if isinstance(element_selector, str):
       element_selector = element_selector.split('$')[-1]
       element_selector_xpath = self.api_xpaths[element_selector]
@@ -1401,24 +1248,19 @@ class ElementList:
       element_selector_xpath = element_selector.element_list_xpath
       element_selector_api_name = element_selector.api_name if element_selector.api_name else element_selector.element_list_xpath
     else:
-      raise APIError(f'Not exist {element_selector}', element_selector)
-
-    frame = inspect.currentframe()
-    caller_frame = frame.f_back
-    lineno = caller_frame.f_lineno
+      raise APIError(f'Invalid {element_selector}', element_selector)
+    
     current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, 'get_text', element_selector_api_name)
+    statement = {
+            'current_code': current_code_line,
+            'original_lineno': lineno_in_original_script,
+            'original_code': original_code_line
+        }
     
-    self._save_getting_info_action('get_text', element_selector_api_name,
-                                   element_selector_xpath, current_code_line,
-                                   lineno_in_original_script,
-                                   original_code_line)
-    
-    target_ele = self.find_target_element(element_selector_xpath)
-
-    if not target_ele:
-      raise XPathError(f'Not Found {element_selector_api_name}[{element_selector_xpath}] in {self.api_name}[{self.element_list_xpath}]', element_selector_api_name, element_selector_xpath, self.api_name, self.element_list_xpath)
+    target_ele, element_tree = self.find_target_element_in_group(element_selector_api_name, element_selector_xpath, 'get_text', statement)
     
     check_action_count()
+    # not change screen
     
     text = target_ele.text if target_ele.text else ''
     text = text.replace('--', ' ')
@@ -1429,6 +1271,10 @@ class ElementList:
     '''
     return the attributes of the element as a dict, dict keys include "selected", "checked", "scrollable", dict values are boolean. eg. get_attributes($files[3])["selected"].
     '''
+    frame = inspect.currentframe()
+    caller_frame = frame.f_back
+    lineno = caller_frame.f_lineno
+    
     if isinstance(element_selector, str):
       element_selector = element_selector.split('$')[-1]
       element_selector_xpath = self.api_xpaths[element_selector]
@@ -1437,21 +1283,16 @@ class ElementList:
       element_selector_xpath = element_selector.element_list_xpath
       element_selector_api_name = element_selector.api_name if element_selector.api_name else element_selector.element_list_xpath
     else:
-      raise APIError(f'Not Exist {element_selector}', element_selector)
-
-    frame = inspect.currentframe()
-    caller_frame = frame.f_back
-    lineno = caller_frame.f_lineno
-    current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, 'get_attributes', element_selector_api_name)
-    self._save_getting_info_action('get_attributes', element_selector_api_name,
-                                   element_selector_xpath, current_code_line,
-                                   lineno_in_original_script,
-                                   original_code_line)
+      raise APIError(f'Invalid {element_selector}', element_selector)
     
-    target_ele = self.find_target_element(element_selector_xpath)
-
-    if not target_ele:
-      raise XPathError(f'Not Found {element_selector_api_name}[{element_selector_xpath}] in {self.api_name}[{self.element_list_xpath}]', element_selector_api_name, element_selector_xpath, self.api_name, self.element_list_xpath)
+    current_code_line, lineno_in_original_script, original_code_line = self.get_current_code_line(lineno, 'get_attributes', element_selector_api_name)
+    statement = {
+            'current_code': current_code_line,
+            'original_lineno': lineno_in_original_script,
+            'original_code': original_code_line
+        }
+    
+    target_ele, element_tree = self.find_target_element_in_group(element_selector_api_name, element_selector_xpath, 'get_attributes', statement)
     
     check_action_count()
     target_ele_attrs = target_ele.get_attributes()

@@ -109,7 +109,7 @@ class ApiEle():
 
   def __init__(self, screen_name: str, raw: dict):
     # todo:: ignore "options" and "example"
-    self.id = raw['id']
+    self.id = raw.get('id', None)
     self.type: str = raw['type']
     self.options: list[str] = raw.get('options', None)
     self.element: str = raw['element']
@@ -220,6 +220,20 @@ class ApiDoc():
           screen_name = _screen_name
     
     return screen_name
+  
+  def check_api_name_in_current_screen(self, api_name: str, current_skeleton: HTMLSkeleton):
+    _screen_name = api_name.split('__')[0]
+    _skeleton = self.screen_name2skeleton.get(_screen_name, None)
+    if not _skeleton:
+      # it should exist, what should be returned? # todo
+      # raise ValueError(f'Unknown screen name: {_screen_name}')
+      return False
+    
+    if _skeleton == current_skeleton:
+      return True
+    
+    current_screen_name = self.get_screen_name_by_skeleton(current_skeleton)
+    return _screen_name == current_screen_name
 
   def get_valid_element_list(self, screen_name: str, html_view: str):
     elements = self.doc.get(screen_name, None)
