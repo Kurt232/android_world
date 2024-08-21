@@ -1,4 +1,32 @@
 # New doc
+## code agent
+### file structure
+```
+./android_world
+├── 📂 agents/
+│   ├── 📄 agent_utils.py # provide element_tree and element attr class
+│   └── 📄 code_agent.py # the main interface, there are many information
+├── 📂 script_utils/
+... ├── 📄 api_doc.py # the doc interface, load doc from json file
+    ├── 📄 bug_processor.py # process bug when fail to complete tasks
+    ├── 📄 err.py # special Err type
+    ├── 📄 solution_generator.py # generate code
+    └── 📄 ui_api.py # define verifier and ElementList to execute code
+```
+### start command
+See some examples in `./scripts/`.
+It can run multi tasks at same time, but we demand they are in the same app.
+The save_path will be created when running, and the main program will be scotched if the save_path exist, in order to protect our output.
+The docs exist in `./tmp/xdocs_0820/` temporally, and we should assign the file name.
+The available app name is write in the `code_agent.py`. If add new app, please modify code_agent.
+```bash
+python run.py --suite_family=android_world \ --agent_name=code \
+--tasks=ClockStopWatchPausedVerify,ClockStopWatchRunning \
+-v=-2 \
+--save_path=test_clock \
+--doc clock_0820 \
+--app "clock"
+```
 ## manual mode
 ### QuickStart
 arguments description:

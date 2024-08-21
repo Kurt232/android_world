@@ -137,6 +137,7 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
     app_doc = self.doc
     
     err = None
+    done = False
     for retry_time in range(self.MAX_RETRY_TIMES):
       if retry_time == 0:
         # restart the app first in case the script couldn't run and the app has not been start
@@ -203,7 +204,7 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
       
       try:
         exec(code_script)
-        break
+        done = True
       except Exception as e:
         tb_str = traceback.format_exc()
         error_info = process_error_info(code, code_script, tb_str, str(e),
@@ -228,12 +229,10 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
       t2 = time.time()
       runtime = t2 - t1
       tools.write_txt_file(f'{self.save_path}/runtime.txt', "%f" % runtime)
-    result = {}
+      if done:
+        break
     
-    if retry_time == self.MAX_RETRY_TIMES:
-      result['result'] = 'failed'
-    else:
-      result['result'] = 'succeed'
+    result = {'result': 'succeed' if done else 'failed'}
 
     return base_agent.AgentInteractionResult(True, result)
 
