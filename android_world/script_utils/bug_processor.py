@@ -656,10 +656,10 @@ Your answer should follow this JSON format:
     if xpath == None:
       return False
     
-    ele = element_tree.get_ele_by_xpath(xpath)
+    ele = element_tree.get_ele_by_xpath([xpath])
     if not ele:
       return False
     
-    api.xpath = xpath
+    api.xpath = [xpath]
     self.doc.is_updated = True
     return True

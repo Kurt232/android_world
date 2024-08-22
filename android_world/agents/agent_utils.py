@@ -486,7 +486,7 @@ class ElementTree(object):
     html_view = re.sub(r" id='\d+'", '', html_view)
     return html_view
   
-  def get_ele_by_xpath(self, xpath: str) -> EleAttr | None:
+  def _get_ele_by_xpath(self, xpath: str) -> EleAttr | None:
     html_view = self.str
     root = etree.fromstring(html_view)
     eles = root.xpath(xpath)
@@ -502,6 +502,15 @@ class ElementTree(object):
       raise e  # todo:: add a better way to handle this
     print('found element with id', id)
     return self.ele_map.get(id, None)
+  
+  def get_ele_by_xpath(self, xpath: list[str]):
+    target_ele = None
+    for xp in xpath:
+      target_ele = self._get_ele_by_xpath(xp)
+      if target_ele:
+        break
+    
+    return target_ele
 
   def match_str_in_children(self, ele: EleAttr, key: str):
     eles = self.get_children_by_ele(ele)

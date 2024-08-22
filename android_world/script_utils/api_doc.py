@@ -121,7 +121,7 @@ class ApiEle():
     self.api_name = raw['name']
 
     self.state_tag: str = raw['state_tag']
-    self.xpath: str = raw.get('xpath', None) # todo:: maybe not exist, log this
+    self.xpath: str = raw.get('xpath', None) # xpath is list[str]
     self.paths: list[list[str]] = raw.get('paths', [])
     self.dependency_action: list[list[DependentAction]] = []
 
@@ -198,10 +198,13 @@ class ApiDoc():
     
     return api.paths, api.dependency_action 
   
-  def get_xpath_by_name(self, screen_name: str, api_name: str):
+  def get_xpath_by_name(self, api_name: str, current_skeleton: HTMLSkeleton | str):
+    screen_name = api_name.split('__')[0]
     screen = self.doc.get(screen_name, None)
     if not screen:
-      return None
+      screen_name = self.get_screen_name_by_skeleton(current_skeleton)
+      screen = self.doc[screen_name]
+
     api = screen.get(api_name, None)
     if not api:
       return None
@@ -243,9 +246,11 @@ class ApiDoc():
     
     root = etree.fromstring(html_view)
     for _, v in elements.items():
-      eles = root.xpath(v.xpath)
-      if eles:
-        valid_elements.append(v)
+      for xpath in v.xpath:
+        eles = root.xpath(xpath)
+        if eles:
+          valid_elements.append(v)
+          break
     
     return valid_elements
   
