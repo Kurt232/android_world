@@ -85,12 +85,10 @@ while not done:
     params['seed'] = 30
   task = task_obj(params)
   
-  open('tmp/code.txt', 'w').write(code)
-  open('tmp/app_name.txt', 'w').write('broccoli')
-  
-  agent = code_agent.CodeAgent(env, save_dir, [task.name])
+  agent = code_agent.CodeAgent(env, 'Broccoli', 'broccoli', save_dir)
   agent.FREEZED_CODE = True
-  agent.MAX_RETRY_TIMES = 1 # only execute once for code script
+  agent.MAX_RETRY_TIMES = 0 # only execute once for code script
+  agent.code_config.code = code
   
   def run_episode(task):
     return episode_runner.run_episode(
@@ -181,12 +179,10 @@ for recipe in recipes:
   params = {'row_objects': [Recipe(title='Chicken Caesar Salad Wrap', description='A quick and easy meal, perfect for busy weekdays.', servings='8 servings', preparationTime='20 mins', source='', ingredients='subject to change', directions='Toss chopped romaine lettuce with Caesar dressing, grilled chicken strips, and Parmesan cheese. Wrap in a large tortilla. Garnish with fresh herbs for a more vibrant taste.', favorite=0, imageName='', recipeId=-1), Recipe(title='Quinoa Salad with Vegetables', description='A delicious and healthy choice for any time of the day.', servings='1 serving', preparationTime='1 hrs', source='', ingredients='flexible ingredients', directions='Mix cooked quinoa with diced vegetables, feta cheese, and a lemon olive oil dressing. Feel free to substitute with ingredients you have on hand.', favorite=0, imageName='', recipeId=-1), Recipe(title='Beef Stir Fry', description='A quick and easy meal, perfect for busy weekdays.', servings='2 servings', preparationTime='30 mins', source='', ingredients='various amounts', directions='Stir-fry beef slices with broccoli, bell peppers, and onions in soy sauce and garlic. Serve over rice or noodles. Feel free to substitute with ingredients you have on hand.', favorite=0, imageName='', recipeId=-1)], 'noise_row_objects': [Recipe(title='Greek Salad Pita Pockets', description='A delicious and healthy choice for any time of the day.', servings='6 servings', preparationTime='20 mins', source='', ingredients='adjustable', directions='Fill pita pockets with lettuce, cucumber, tomato, feta, olives, and Greek dressing. Feel free to substitute with ingredients you have on hand.', favorite=0, imageName='', recipeId=-1), Recipe(title='Raspberry Almond Smoothie', description='A quick and easy meal, perfect for busy weekdays.', servings='8 servings', preparationTime='10 mins', source='', ingredients='see directions', directions='Blend together raspberries, almond milk, banana, and a scoop of almond butter until smooth. Feel free to substitute with ingredients you have on hand.', favorite=0, imageName='', recipeId=-1), Recipe(title='Baked Cod with Lemon and Dill', description='A delicious and healthy choice for any time of the day.', servings='1 serving', preparationTime='20 mins', source='', ingredients='to preference', directions='Place cod fillets in a baking dish, season with lemon juice, dill, salt, and pepper. Bake until fish flakes easily. Garnish with fresh herbs for a more vibrant taste.', favorite=0, imageName='', recipeId=-1), Recipe(title='Chickpea Vegetable Soup', description='A quick and easy meal, perfect for busy weekdays.', servings='6 servings', preparationTime='45 mins', source='', ingredients='n/a', directions='Sauté onions, carrots, and celery, add broth, canned tomatoes, and chickpeas. Simmer with spinach and seasonings. Try adding a pinch of your favorite spices for extra flavor.', favorite=0, imageName='', recipeId=-1), Recipe(title='Sweet Potato and Black Bean Tacos', description='An ideal recipe for experimenting with different flavors and ingredients.', servings='6 servings', preparationTime='20 mins', source='', ingredients='to your liking', directions='Roast sweet potato cubes, mix with black beans, and use as filling for tacos. Top with avocado and cilantro lime sauce. Feel free to substitute with ingredients you have on hand.', favorite=0, imageName='', recipeId=-1), Recipe(title='Avocado Toast with Egg', description='An ideal recipe for experimenting with different flavors and ingredients.', servings='8 servings', preparationTime='1 hrs', source='', ingredients='various amounts', directions='Toast bread, top with mashed avocado, a fried egg, salt, pepper, and chili flakes. Garnish with fresh herbs for a more vibrant taste.', favorite=0, imageName='', recipeId=-1), Recipe(title='Raspberry Almond Smoothie', description='An ideal recipe for experimenting with different flavors and ingredients.', servings='3-4 servings', preparationTime='10 mins', source='', ingredients='quantities to taste', directions='Blend together raspberries, almond milk, banana, and a scoop of almond butter until smooth. Try adding a pinch of your favorite spices for extra flavor.', favorite=0, imageName='', recipeId=-1), Recipe(title='Thai Peanut Noodle Salad', description='A quick and easy meal, perfect for busy weekdays.', servings='2 servings', preparationTime='30 mins', source='', ingredients='as desired', directions='Toss cooked noodles with a Thai peanut sauce, sliced red bell peppers, cabbage, carrots, and cilantro. Try adding a pinch of your favorite spices for extra flavor.', favorite=0, imageName='', recipeId=-1), Recipe(title='Classic Margherita Pizza', description='A quick and easy meal, perfect for busy weekdays.', servings='3-4 servings', preparationTime='30 mins', source='', ingredients='n/a', directions='Spread pizza dough with tomato sauce, top with slices of mozzarella cheese and fresh basil leaves. Bake until crust is golden. Garnish with fresh herbs for a more vibrant taste.', favorite=0, imageName='', recipeId=-1), Recipe(title='BBQ Chicken Quesadillas', description='An ideal recipe for experimenting with different flavors and ingredients.', servings='6 servings', preparationTime='2 hrs', source='', ingredients='see directions', directions='Mix shredded cooked chicken with BBQ sauce. Place on tortillas with cheese, fold and cook until crispy. Garnish with fresh herbs for a more vibrant taste.', favorite=0, imageName='', recipeId=-1)], 'text_representation_type': 'csv', 'seed': 30}
   task = task_obj(params)
   
-  open('tmp/code.txt', 'w').write(code)
-  open('tmp/app_name.txt', 'w').write('broccoli')
-  
-  agent = code_agent.CodeAgent(env, save_dir, [task.name])
+  agent = code_agent.CodeAgent(env, 'Broccoli', 'broccoli', save_dir)
   agent.FREEZED_CODE = True
-  agent.MAX_RETRY_TIMES = 1 # only execute once for code script
+  agent.MAX_RETRY_TIMES = 0 # only execute once for code script
+  agent.code_config.code = code
   
   def run_episode(task):
     return episode_runner.run_episode(
@@ -265,12 +261,10 @@ while not done:
     params['seed'] = 30
   task = task_obj(params)
   
-  open('tmp/code.txt', 'w').write(code)
-  open('tmp/app_name.txt', 'w').write('broccoli')
-  
-  agent = code_agent.CodeAgent(env, save_dir, [task.name])
+  agent = code_agent.CodeAgent(env, 'Broccoli', 'broccoli', save_dir)
   agent.FREEZED_CODE = True
-  agent.MAX_RETRY_TIMES = 1 # only execute once for code script
+  agent.MAX_RETRY_TIMES = 0 # only execute once for code script
+  agent.code_config.code = code
   
   def run_episode(task):
     return episode_runner.run_episode(
@@ -348,12 +342,10 @@ for recipe in target_recipes:
   params = {'row_objects': [Recipe(title='Chicken Alfredo Pasta', description='A delicious and healthy choice for any time of the day.', servings='3-4 servings', preparationTime='45 mins', source='', ingredients='adjustable', directions='Cook fettuccine pasta, toss with Alfredo sauce and grilled chicken strips. Serve with a sprinkle of Parmesan cheese. Garnish with fresh herbs for a more vibrant taste.', favorite=0, imageName='', recipeId=-1), Recipe(title='Chicken Alfredo Pasta', description='A delicious and healthy choice for any time of the day.', servings='3-4 servings', preparationTime='45 mins', source='', ingredients='adjustable', directions='Cook fettuccine pasta, toss with Alfredo sauce and grilled chicken strips. Serve with a sprinkle of Parmesan cheese. Garnish with fresh herbs for a more vibrant taste.', favorite=0, imageName='', recipeId=-1)], 'noise_row_objects': [Recipe(title='Chicken Caesar Salad Wrap', description='A delicious and healthy choice for any time of the day.', servings='1 serving', preparationTime='1 hrs', source='', ingredients='to your liking', directions='Toss chopped romaine lettuce with Caesar dressing, grilled chicken strips, and Parmesan cheese. Wrap in a large tortilla. Try adding a pinch of your favorite spices for extra flavor.', favorite=0, imageName='', recipeId=-1), Recipe(title='Butternut Squash Soup', description='An ideal recipe for experimenting with different flavors and ingredients.', servings='1 serving', preparationTime='45 mins', source='', ingredients='see directions', directions='Sauté onions and garlic, add cubed butternut squash and broth. Puree until smooth and season with nutmeg, salt, and pepper. Garnish with fresh herbs for a more vibrant taste.', favorite=0, imageName='', recipeId=-1), Recipe(title='Caprese Salad Skewers', description='A delicious and healthy choice for any time of the day.', servings='3-4 servings', preparationTime='3 hrs', source='', ingredients='as per recipe', directions='Thread cherry tomatoes, basil leaves, and mozzarella balls onto skewers. Drizzle with balsamic glaze. Feel free to substitute with ingredients you have on hand.', favorite=0, imageName='', recipeId=-1), Recipe(title='Beef Stir Fry', description='A quick and easy meal, perfect for busy weekdays.', servings='8 servings', preparationTime='20 mins', source='', ingredients='optional ingredients', directions='Stir-fry beef slices with broccoli, bell peppers, and onions in soy sauce and garlic. Serve over rice or noodles. Try adding a pinch of your favorite spices for extra flavor.', favorite=0, imageName='', recipeId=-1), Recipe(title='Chickpea Vegetable Soup', description='A delicious and healthy choice for any time of the day.', servings='2 servings', preparationTime='30 mins', source='', ingredients='as desired', directions='Sauté onions, carrots, and celery, add broth, canned tomatoes, and chickpeas. Simmer with spinach and seasonings. Feel free to substitute with ingredients you have on hand.', favorite=0, imageName='', recipeId=-1)], 'seed': 30}
   task = task_obj(params)
   
-  open('tmp/code.txt', 'w').write(code)
-  open('tmp/app_name.txt', 'w').write('broccoli')
-  
-  agent = code_agent.CodeAgent(env, save_dir, [task.name])
+  agent = code_agent.CodeAgent(env, 'Broccoli', 'broccoli', save_dir)
   agent.FREEZED_CODE = True
-  agent.MAX_RETRY_TIMES = 2
+  agent.MAX_RETRY_TIMES = 1 # only execute once for code script
+  agent.code_config.code = code
   
   def run_episode(task):
     return episode_runner.run_episode(

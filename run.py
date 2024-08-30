@@ -127,6 +127,16 @@ _SAVE_PATH = flags.DEFINE_string(
   None,
   'The path to save marked information',
 )
+_DOC = flags.DEFINE_string(
+  'doc',
+  None,
+  'The path to the api doc',
+)
+_APP = flags.DEFINE_string(
+  'app',
+  None,
+  'The app name',
+)
 
 # Agent specific.
 _AGENT_NAME = flags.DEFINE_string('agent_name', 'm3a_gpt4v', help='Agent name.')
@@ -181,7 +191,7 @@ def _get_agent(
     agent = seeact.SeeAct(env)
   # CodeScript.
   elif _AGENT_NAME.value == 'code':
-    agent = code_agent.CodeAgent(env, save_path=_SAVE_PATH.value, task_names=_TASKS.value)
+    agent = code_agent.CodeAgent(env, app_name=_APP.value, doc_name=_DOC.value, save_path=_SAVE_PATH.value)
   
   if not agent:
     raise ValueError(f'Unknown agent: {_AGENT_NAME.value}')
