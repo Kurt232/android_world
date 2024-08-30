@@ -1,6 +1,6 @@
-import os
 import json
 import re
+import datetime
 
 from lxml import etree
 from android_world.agents.agent_utils import HTMLSkeleton
@@ -22,7 +22,7 @@ class DependentAction():
     self.text: str = None
 
     # screen_name
-    m = re.search(r'(\w+)__', action)
+    m = re.search(r'(\w+)__', action) # only first is screen name
     assert m is not None
     self.screen_name = m.group(1)
     _action = action[:m.start()] + action[m.end():]
@@ -48,7 +48,7 @@ class DependentAction():
       self.action_type = 'scroll'
       assert len(self.argv) == 2
       direction = self.argv[1].strip("\'\"").lower()
-      assert direction in ['up', 'down', 'lift', 'right']
+      assert direction in ['up', 'down', 'left', 'right']
       self.action_type = 'scroll' + ' ' + direction
     elif _action.startswith('get_text'):
       '''
@@ -105,18 +105,18 @@ class DependentAction():
     return []
 
 
-
 class ApiEle():
 
   def __init__(self, screen_name: str, raw: dict):
+    self.id = raw.get('id', 0)
     self.element: str = raw['element']
     self.element_type: str = raw['element_type']
     self.description: str = raw['description']
     self.effect: str = raw.get('effect', None)
 
     self.screen_name = screen_name
-    self.api_name = raw['api_name']
-
+    self.raw_name = raw['api_name']
+    self.api_name = screen_name + '__' + self.raw_name
     self.state_tag: str = raw['state_tag']
     self.xpath: str = raw.get('xpath', None) # todo:: maybe not exist, log this
     self.dependency: list[list[str]] = raw.get('paths', [])
@@ -128,23 +128,38 @@ class ApiEle():
         _path_actions.append(DependentAction(action))
       
       self.dependency_action.append(_path_actions)
+  
+  def __dict__(self):
+    return {
+        'id': self.id,
+        'element_type': self.element_type,
+        'api_name': self.raw_name,
+        'element': self.element,
+        'description': self.description,
+        'effect': self.effect,
+        'state_tag': self.state_tag,
+        'xpath': self.xpath,
+        'paths': [action.raw_action for action in self.dependency_action]
+    }
 
 
 class ApiDoc():
 
-  def __init__(self, app_name: str, api_doc_dir: str = "tmp/docs"):
-    self.api_doc_path = os.path.join(api_doc_dir, app_name + '.json')
-    self.doc: dict[str, dict[str, ApiEle]] = {}
+  def __init__(self, doc_path: str):
+    self.doc_path = doc_path
+    self.doc: dict[str, dict[str, ApiEle]] = {} # screen_name -> api_name -> ApiEle
     self.api_xpath: dict[str, str] = {}
     self.elements: list[ApiEle] = []
     self.skeleton_str2screen_name: dict[str, str] = {}
     self.screen_name2skeleton: dict[str, HTMLSkeleton] = {}
 
+    self.is_updated = False
+    
     self.main_screen: str = None
     self._load_api_doc()
 
   def _load_api_doc(self):
-    raw_api_doc = json.load(open(self.api_doc_path, 'r'))
+    raw_api_doc = json.load(open(self.doc_path, 'r'))
     len_screen = len(raw_api_doc)
 
     for k, v in raw_api_doc.items():
@@ -156,9 +171,10 @@ class ApiDoc():
       _elements = {}
       for k_ele, v_ele in v['elements'].items():
         ele = ApiEle(k, v_ele)
-        _elements[k_ele] = ele
+        api_name = k + '__' + k_ele
+        _elements[api_name] = ele
         self.elements.append(ele)
-        self.api_xpath[k + '__' + k_ele] = ele.xpath
+        self.api_xpath[api_name] = ele.xpath
       self.doc[k] = _elements
 
     # ! screen and skeleton should be unique (but it's not)
@@ -166,22 +182,30 @@ class ApiDoc():
 
   def get_api_xpath(self):
     return self.api_xpath
+  
+  def get_api_by_name(self, name: str):
+    if not name:
+      return None
+    _screen_name, _api_name = name.split('__')[0], name
+    return self.doc[_screen_name].get(_api_name, None)
 
   def get_dependency(self, api_name: str):
-    temp = api_name.split('__')
-    assert len(temp) == 2
-    _screen_name, _api_name = temp[0:2]
-
-    api = self.doc[_screen_name].get(_api_name, None)
+    api = self.get_api_by_name(api_name)
+    
     if not api:
       return None, None
     
-    return api.dependency, api.dependency_action 
+    return api.paths, api.dependency_action 
   
-  def get_xpath_by_name(self, screen_name: str, api_name: str):
+  def get_xpath_by_name(self, api_name: str, current_skeleton: HTMLSkeleton | str):
+    screen_name = api_name.split('__')[0]
     screen = self.doc.get(screen_name, None)
     if not screen:
-      return None
+      screen_name = self.get_screen_name_by_skeleton(current_skeleton)
+      if not screen_name:
+        return None
+      screen = self.doc[screen_name]
+
     api = screen.get(api_name, None)
     if not api:
       return None
@@ -191,7 +215,7 @@ class ApiDoc():
     skeleton_str = skeleton if isinstance(skeleton, str) else skeleton.str
     screen_name = self.skeleton_str2screen_name.get(skeleton_str, None)
     if not screen_name:
-      count = -1
+      count = 3 # todo::
       for _screen_name, screen_skeleton in self.screen_name2skeleton.items():
         common = screen_skeleton.extract_common_skeleton(skeleton)
         _count = common.count()
@@ -199,19 +223,37 @@ class ApiDoc():
           count = _count
           screen_name = _screen_name
     
+    # count is 0, screen_name is None
     return screen_name
+  
+  def check_api_name_in_current_screen(self, api_name: str, current_skeleton: HTMLSkeleton):
+    _screen_name = api_name.split('__')[0]
+    _skeleton = self.screen_name2skeleton.get(_screen_name, None)
+    if not _skeleton:
+      # it should exist, what should be returned? # todo
+      # raise ValueError(f'Unknown screen name: {_screen_name}')
+      return False
+    
+    if _skeleton == current_skeleton:
+      return True
+    
+    current_screen_name = self.get_screen_name_by_skeleton(current_skeleton)
+    return _screen_name == current_screen_name
 
-  def get_valid_element_list(self, screen_name: str, html_view: str):
+  def get_valid_element_list(self, screen_name: str, element_tree: agent_utils.ElementTree):
     elements = self.doc.get(screen_name, None)
     valid_elements: list[ApiEle] = []
     if not elements:
       return valid_elements
     
-    root = etree.fromstring(html_view)
-    for _, v in elements.items():
-      eles = root.xpath(v.xpath)
-      if eles:
-        valid_elements.append(v)
+    for ele in elements.values():
+      try:
+        target = element_tree.get_ele_by_xpath(ele.xpath)
+        if target:
+          valid_elements.append(ele)
+      except:
+        print(ele.xpath)
+        raise Exception('internal error: Not Get Current Element, and Retry')
     
     return valid_elements
   
@@ -223,7 +265,7 @@ class ApiDoc():
       elements_desc += f"\n\nelement: {ele.api_name} \n\tDescription: {description} \n\tType: {ele.element_type}"
       if ele.effect:
         elements_desc += f"\n\tEffect: {ele.effect}"
-      if is_show_xpath:
+      if is_show_xpath and ele.xpath:
         elements_desc += f"\n\tXPath: {ele.xpath}"
     
     return elements_desc
@@ -239,6 +281,22 @@ class ApiDoc():
       current_screen_name = self.main_screen
     
     # valid_elements
-    valid_element_list = self.get_valid_element_list(current_screen_name, element_tree.str)
+    valid_element_list = self.get_valid_element_list(current_screen_name, element_tree)
     
     return self._get_element_description(valid_element_list, is_show_xpath)
+  
+  def save(self):
+    if self.is_updated:
+      doc_data = {}
+      for screen_name in self.doc:
+        doc_data[screen_name] = {
+            'skeleton': self.screen_name2skeleton[screen_name].str,
+            'elements': {k: v.__dict__ for k, v in self.doc[screen_name].items()}
+        }
+      old_doc = json.load(open(self.doc_path, 'r'))
+      # bak
+      timestamp = datetime.datetime.now().strftime('%m%d%H%M')
+      doc_path_bak = self.doc_path.replace('.json', f'_{timestamp}.json')
+      json.dump(old_doc, open(doc_path_bak, 'w'), indent=2)
+      
+      json.dump(doc_data, open(self.doc_path, 'w'), indent=2)

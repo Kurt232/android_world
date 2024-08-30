@@ -240,7 +240,7 @@ class EleAttr(object):
     if typ in ['button', 'checkbox', 'input', 'scrollbar', 'p']:
       self.type_ = self.type
 
-  def is_match(self, value: str):
+  def is_match(self, value: str): # todo::
     if value == self.alt:
       return True
     if value == self.content:
@@ -429,8 +429,8 @@ class ElementTree(object):
 
   def get_str(self, is_color=False) -> str:
     '''
-        use to print the tree in terminal with color
-        '''
+    use to print the tree in terminal with color
+    '''
 
     # output like the command of pstree to show all attribute of every node
     def _str(node, depth=0):
@@ -453,7 +453,40 @@ class ElementTree(object):
 
     return _str(self.root)
 
-  def get_ele_by_xpath(self, xpath: str) -> EleAttr | None:
+  def get_str_with_visible(self, is_color=False) -> str:
+    '''
+    use to print the tree in terminal with color
+    '''
+
+    # output like the command of pstree to show all attribute of every node
+    def _str(node, depth=0):
+      attr = self.ele_map[node.id]
+      end_color = '\033[0m'
+      if attr.type != 'div':
+        color = '\033[0;32m'
+      else:
+        color = '\033[0;30m'
+      if not is_color:
+        end_color = ''
+        color = ''
+      if (len(node.children) == 0 or attr.content_description or attr.scrollable) and attr.ele.is_visible:
+        if len(node.children) == 0:
+          return color + f'{"  "*depth}{attr.desc_html_start}{attr.desc_html_end}\n' + end_color
+        ret = color + f'{"  "*depth}{attr.desc_html_start}\n' + end_color
+        for child in node.children:
+          ret += _str(child, depth + 1)
+        ret += color + f'{"  "*depth}{attr.desc_html_end}\n' + end_color
+      else:
+        ret = ''
+        for child in node.children:
+          ret += _str(child, depth)
+      return ret
+
+    html_view = _str(self.root)
+    html_view = re.sub(r" id='\d+'", '', html_view)
+    return html_view
+  
+  def _get_ele_by_xpath(self, xpath: str) -> EleAttr | None:
     html_view = self.str
     root = etree.fromstring(html_view)
     eles = root.xpath(xpath)
@@ -469,6 +502,18 @@ class ElementTree(object):
       raise e  # todo:: add a better way to handle this
     print('found element with id', id)
     return self.ele_map.get(id, None)
+  
+  def get_ele_by_xpath(self, xpath: list[str] | str):
+    target_ele = None
+    if isinstance(xpath, list):
+      for xp in xpath:
+        target_ele = self._get_ele_by_xpath(xp)
+        if target_ele:
+          break
+    else:
+      target_ele = self._get_ele_by_xpath(xpath)
+    
+    return target_ele
 
   def match_str_in_children(self, ele: EleAttr, key: str):
     eles = self.get_children_by_ele(ele)
@@ -875,6 +920,8 @@ class HTMLSkeleton():
 
     common_structure = compare_and_extract_common(soup1.contents[0],
                                                   soup2.contents[0])
+    if not common_structure:
+      return HTMLSkeleton('', is_formatted=False)
     return HTMLSkeleton(common_structure, is_formatted=True)
   
   def __eq__(self, value: object) -> bool:

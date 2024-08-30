@@ -20,6 +20,7 @@ import os
 import random
 import time
 import traceback
+import json
 from typing import Any, Callable, Type
 
 from android_env import env_interface
@@ -262,6 +263,15 @@ def _run_task(
             constants.EpisodeConstants.SEED
         ],
     }
+    
+    save_path = interaction_results.step_data['save_path'][0]
+    task_result = {
+        'is_completed': interaction_results.step_data['is_completed'][0],
+        constants.EpisodeConstants.IS_SUCCESSFUL: agent_successful,
+        constants.EpisodeConstants.RUN_TIME: time.time() - start
+    }
+    json.dump(task_result, open(os.path.join(save_path, 'task_result.json'), 'w'))  
+    
     task.tear_down(env)
     return result
 
@@ -356,6 +366,9 @@ def run(
   def run_episode(task: task_eval.TaskEval) -> episode_runner.EpisodeResult:
     if demo_mode:
       _display_goal(agent.env, task)
+    if agent.name == 'code':
+      agent.task_params = task.params
+      agent.task_name = task.name
     return episode_runner.run_episode(
         goal=task.goal,
         agent=agent,

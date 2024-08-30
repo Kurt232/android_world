@@ -3,6 +3,7 @@ import json
 import os
 
 from android_world.env import interface
+from android_world.agents import agent_utils
 from android_world.script_utils import tools
 from android_world.script_utils.api_doc import ApiDoc
 
@@ -20,9 +21,14 @@ class SolutionGenerator:
     # current screen elements
     current_screen_elements = self.doc.get_current_element_desc(env)
 
-    return f'''Imagine that you are a robot operating a smartphone to use the {self.app_name} app. Like how humans operate the smartphone, you can tap, long tap, input text, scroll, and get attributes of the UI elements in the {app_name} app. However, unlike humans, you cannot see the screen or interact with the physical buttons on the smartphone. Therefore, you need to write scripts to manipulate the UI elements (buttons, text fields, scrollers, element_lists, etc) in the app. 
+    # current screen
+    state = env.get_state(True)
+    element_tree = agent_utils.forest_to_element_tree(state.forest)
+    visible_html_view = element_tree.get_str_with_visible()
+    
+    return f'''Imagine that you are a robot operating a smartphone to use the {self.app_name} app. Like how humans operate the smartphone, you can tap, long tap, input text, scroll, and get attributes of the UI elements in the {self.app_name} app. However, unlike humans, you cannot see the screen or interact with the physical buttons on the smartphone. Therefore, you need to write scripts to manipulate the UI elements (buttons, text fields, scrollers, element_lists, etc) in the app. 
 
-Here is an example script to complete the task:
+Here is an example script for your reference:
 
 ```python
 # task: Open a note or create a note titled 'note_test' if there is none.
@@ -45,6 +51,12 @@ tap($add_note_ok)
 Above is an example. 
 **Your ultimate task is: {self.task}**
 
+
+And here is the start screen of the app described by HTML:
+{visible_html_view}
+
+
+Now, you should follow the guidelines below to complete the task:
 In the script, except for the common python control flow (for, if-else, function def/calls, etc.), you can use the following APIs:
 - tap(<element_selector>) -> None: tap on the element. Almost all elements can be taped. If an element's attribute checked=false or selected=false, tapping it can make it checked or selected, vice versa.
 - long_tap(<element_selector>) -> None: long tap the element. 
@@ -75,10 +87,11 @@ You can use the following important UI elements:
 
 Your answer should follow this JSON format:
 
-{{
-    "plan": "<a high level plan to complete the task>",
-    "elements": "<analyze the elements that could be used to complete the task>", 
-    "script": "<the python script to complete the task>"
+{{  
+    "goal": "<string, please repeat the goal of the task>",
+    "plan": "<string, a high level plan to complete the task>",
+    "elements": "<string, analyze the elements that could be used to complete the task>", 
+    "script": "<string, the python script to complete the task>"
 }}
 
 **Note that you should only output the JSON content.**'''
@@ -88,16 +101,18 @@ Your answer should follow this JSON format:
                    env: interface.AsyncEnv,
                    model_name='gpt-4o'):
     prompt = self.make_prompt(env)
-    answer = tools.query_gpt(prompt=prompt, model=model_name)
-    tools.dump_json_file(prompt_answer_path, {
-        'prompt': prompt,
-        'answer': answer
-    })
-    answer = tools.convert_gpt_answer_to_json(
+    answer, tokens = tools.query_gpt(prompt=prompt, model=model_name)
+    answer, tokens1 = tools.convert_gpt_answer_to_json(
         answer, model_name=model_name, default_value={
             'Plan': '',
             'Script': ''
         })
+    tools.dump_json_file(prompt_answer_path, {
+        'prompt': prompt,
+        'answer': answer,
+        'tokens': tokens,
+        'convert_tokens': tokens1
+    })
     if 'Script' in answer.keys():
       return answer['Script']
     else:

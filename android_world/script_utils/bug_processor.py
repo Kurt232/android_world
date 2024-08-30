@@ -4,7 +4,7 @@ from lxml import etree
 from android_world.script_utils import tools
 from android_world.script_utils.gen_dependency_tree import get_semantic_dependencies
 from android_world.script_utils.api_doc import ApiDoc
-from android_world.script_utils.ui_apis import CodeConfig
+from android_world.script_utils.err import ActionError, APIError, XPathError, NotFoundError
 
 from android_world.env import interface
 from android_world.agents import agent_utils
@@ -550,7 +550,7 @@ You can use the following important UI elements:
                   prompt_answer_path,
                   model_name='gpt-3.5-turbo'):
     prompt = self.make_prompt(env)
-    answer = tools.query_gpt(prompt=prompt, model=model_name)
+    answer, _ = tools.query_gpt(prompt=prompt, model=model_name)
     tools.dump_json_file(prompt_answer_path, {
         'prompt': prompt,
         'answer': answer
@@ -565,3 +565,228 @@ You can use the following important UI elements:
       return answer['Script']
     else:
       return answer['script']
+
+class BugProcessorV3:
+
+  def __init__(self, app_name: str, task: str, doc: ApiDoc, error_info: dict, code: str, err: Exception):
+    self.app_name = app_name
+    self.task = task
+    self.doc = doc
+    self.error_log = error_info
+    self.code = code
+    self.err = err
+
+  def _get_view_without_id(self, view):
+    modified_view = re.sub(r" id='\d+'", '', view)
+    return modified_view
+  
+  def get_script_err_prompt(self):
+    if isinstance(self.err, (XPathError, APIError, ActionError, NotFoundError)):
+      error_info = self.err.msg
+    else: # give the example script
+      prompt = """\
+An internal error happened, please check the script logic and grammar and strictly follow the guideline. And here is an example script for your reference:
+
+```python
+# task: Open a note or create a note titled 'note_test' if there is none.
+notes = $open_note_title_list
+
+for i in range(len(notes)):
+  note = notes[i]
+  title = note.get_text($note_title)
+  if title == 'note_test':
+    note.tap(title)
+    return
+
+back()
+tap($create_note)
+set_text($add_note_title, 'note_test')
+tap($text_note_type)
+tap($add_note_ok)
+```"""
+      return prompt
+    
+    error_lineno = self.error_log['error_line_number_in_original_script']
+    if error_lineno is None:
+      error_lineno = -1
+    code_lines = self.code.split('\n')
+    error_line = tools.get_leading_tabs(code_lines[error_lineno]) + f'^^^^^^ {error_info}'
+    code_lines.insert(error_lineno + 1, error_line)
+    code_with_err =  '\n'.join(code_lines)
+    return f"""\
+Now, here is an unsuccessful script that you have executed before.
+{self.make_suggestion()}
+You should try to fix the bug and re-generate the script to complete the task.
+
+The unsuccessful script with error information is as follows:
+```python
+{code_with_err}
+```"""
+
+  def make_suggestion(self):
+    suggestion = ''
+    if isinstance(self.err, APIError):
+      suggestion += 'Suggestion: The panic may be caused by missed <element_selector> due to the inexact element name. Please check the API name in provided UI Elements.'
+    elif isinstance(self.err, ActionError):
+      suggestion += 'Suggestion: The panic may be caused by failed to invoke API statements because of the incorrect executing order or unexpected results. Please check the rule of the API invocation.'
+    elif isinstance(self.err, XPathError):
+      suggestion += 'Suggestion: The panic may be caused by missed the target element in of current screen. Please check the script logic.'
+    elif isinstance(self.err, NotFoundError):
+      suggestion += 'Suggestion: The panic may be caused by the missed element in the current screen. Please check the order of invoking APIs and the script logic.'
+    else:
+      suggestion += 'Suggestion: The panic may be caused by the incorrect script logic and grammar. Please check the script logic and grammar.'
+    return suggestion
+      
+  def make_prompt(self, env: interface.AsyncEnv):
+    # all elements
+    all_elements_desc = self.doc.get_all_element_desc(is_show_xpath=False)
+    
+    # current screen elements
+    current_screen_desc = self.doc.get_current_element_desc(env, is_show_xpath=False)
+
+    # current screen
+    state = env.get_state(True)
+    element_tree = agent_utils.forest_to_element_tree(state.forest)
+    visible_html_view = element_tree.get_str_with_visible()
+    
+    instruction = f'''You are a robot operating a smartphone to use the {self.app_name} app. Like how humans operate the smartphone, you can tap, long tap, input text, scroll, and get attributes of the UI elements in the {self.app_name} app. However, unlike humans, you cannot see the screen or interact with the physical buttons on the smartphone. Therefore, you need to write scripts to manipulate the UI elements in the app.'''
+    guidelines = '''Now, you should follow the guidelines below to complete the task:
+In the script, except for the common python control flow (for, if-else, function def/calls, etc.), you can use the following APIs:
+- tap(<element_selector>) -> None: tap on the element. Almost all elements can be taped. If an element's attribute checked=false or selected=false, tapping it can make it checked or selected, vice versa.
+- long_tap(<element_selector>) -> None: long tap the element. 
+- set_text(<element_selector>, <text>) -> None: set the text of the element to <text>. Only editable text fields can be set text.
+- scroll(<element_selector>, <direction>) -> bool: scroll the UI element in the specified direction, and direction is a str from "up", 'down", "left", "right". e.g. scroll($scroll_settings_page, "down")
+- get_text(<element_selector>) -> str: return the text of the element as a string.
+- get_attributes(<element_selector>) -> dict[str, str]: return the attributes of the element as a dict, dict keys include "selected", "checked", "scrollable", dict values are boolean. eg. get_attributes($files[3])["selected"].
+- back(): close the current window
+
+
+The <element_selector> primitive is used to select an element, possible ways of selection include:
+- $<element id>, eg. $settings_button
+- <element_list>[<idx>]: the idx-th in the element list. eg. $my_items[1]
+
+The <element_list> primitive is used to select a list of elements, possible ways of selection include:
+- <element_selector>: the items in the list element identified by <element_selector>. eg. $my_items
+- <element_list>.match(<text or attribute dict>): the elements in the element list that match the given text or attribute dict. eg. $my_items.match("key words") or $my_items.match({{"selected": true}})
+You can use len(<element_list>) to get the total number of items in an element list.
+
+Each <element_selector> can refer to a single element or an element contained multiple elements, especially in the case of complex items within an <element_list>. The following APIs are supported to be invoked as member functions to limit their effect domain: `tap`, `long_tap`, `set_text`, `scroll`, `get_text`, `get_attributes`, and `back`. Note that these APIs still need to satisfy the required arguments. If the APIs are invoked as member functions, they will only affect the element selected by the <element_selector>, while the APIs invoked as global functions will affect all elements in the phone screen. For example, `$note_list[1].tap($note_title)` will tap the title of the second note in the note list, whereas `tap($note_title)` will always tap the first note title in the note list.'''
+    task_and_current_screen = f'''**Your ultimate task is: {self.task}**
+
+Note that the task may have completed partially or not at all due to the unsuccessful execution of the script. You should think about the solution script based on the current screen of the app. The current screen of the app is described by the following HTML:
+{visible_html_view}
+'''
+    original_script_prompt_with_err = self.get_script_err_prompt()
+    regenerate_script = f'''\
+The unsuccessful execution of the script has changed the screen of the {self.app_name} app. **Therefore, you should generate new script based on the current screen that has the following current UI elements:
+
+{current_screen_desc}
+
+You can use the following important UI elements:
+
+{all_elements_desc}
+'''
+    output_format = '''Your answer should follow this JSON format:
+
+{
+    "goal": "<string, please repeat the goal of the task>",
+    "plan": "<string, a high level plan to complete the task>",
+    "elements": "<string, analyze the elements that could be used to complete the task>", 
+    "script": "<string, the python script to complete the task>"
+}
+
+**Note that you should only output the JSON content.**'''
+    prompt = instruction + '\n' + guidelines+ '\n' + task_and_current_screen + '\n' + original_script_prompt_with_err + '\n' + regenerate_script + '\n' + output_format
+    return prompt
+
+  def get_fixed_solution(self,
+                  env: interface.AsyncEnv,
+                  prompt_answer_path,
+                  model_name='gpt-3.5-turbo'):
+    prompt = self.make_prompt(env)
+    answer, tokens = tools.query_gpt(prompt=prompt, model=model_name)
+    answer, tokens1 = tools.convert_gpt_answer_to_json(answer,
+                                              model_name=model_name,
+                                              default_value={
+                                                  'Plan': '',
+                                                  'Script': ''
+                                              })
+    tools.dump_json_file(prompt_answer_path, {
+        'prompt': prompt,
+        'answer': answer,
+        'tokens': tokens,
+        'convert_tokens': tokens1
+    })
+    if 'Script' in answer.keys():
+      return answer['Script']
+    else:
+      return answer['script']
+    
+  def fix_invalid_xpath(self,
+                      env: interface.AsyncEnv, 
+                      api_name: str,
+                      prompt_answer_path,
+                      model_name='gpt-3.5-turbo'):
+    api = self.doc.get_api_by_name(api_name)
+    if not api:
+      return
+    
+    state = env.get_state(True)
+    element_tree = agent_utils.forest_to_element_tree(state.forest)
+    
+    if self.doc.check_api_name_in_current_screen(api_name, element_tree.skeleton):
+      # navigating is already changed to another screen
+      # todo:: only first miss match to trigger the navigating
+      return False
+    
+    element_tree_html_without_id = self._get_view_without_id(element_tree.str)
+    
+    element_html = api.element
+    element_html_without_id = self._get_view_without_id(element_html)
+    prompt = f'''\
+Given the current UI state, you should find the valid XPath for the UI element that is represented by the following HTML code:
+
+{element_html_without_id}
+
+The current UI state is described by the following HTML code:
+
+{element_tree_html_without_id}
+
+Your answer should follow this JSON format:
+
+{{
+  "flag": <bool, whether the target element exists in the current UI state>,
+  "xpath": <string, the unique xpath of the target element>
+}}
+
+**Note that you should only output the JSON content.**'''
+    answer, tokens = tools.query_gpt(prompt=prompt, model=model_name)
+    answer, tokens1 = tools.convert_gpt_answer_to_json(answer,
+                                              model_name=model_name,
+                                              default_value={
+                                                  'flag': False,
+                                                  'xpath': ''
+                                              })
+    
+    tools.dump_jsonl_file(prompt_answer_path, {
+        'prompt': prompt,
+        'answer': answer,
+        'tokens': tokens,
+        'convert_tokens': tokens1
+    })
+    
+    flag = answer.get('flag', None)
+    if flag == False:
+      return False
+    
+    xpath = answer.get('xpath', None)
+    if xpath == None:
+      return False
+    
+    ele = element_tree.get_ele_by_xpath([xpath])
+    if not ele:
+      return False
+    
+    api.xpath = [xpath]
+    self.doc.is_updated = True
+    return True

@@ -1,28 +1,24 @@
 """Agent for executing code script."""
 
-import datetime
-import sys
 import time
 import os
 import re
 import traceback
 
-from lxml import etree
 from absl import logging
 
 from android_world.agents import base_agent
-from android_world.agents import agent_utils
-from android_world.agents import infer
 from android_world.env import interface
 from android_world.env import json_action
 
 from android_world.agents.agent_utils import ElementTree
 
-from android_world.script_utils.ui_apis import CodeConfig, Verifier, ElementList, regenerate_script
+from android_world.script_utils.ui_apis import CodeConfig, CodeStatus, Verifier, ElementList, regenerate_script, _save2log
 from android_world.script_utils import tools
 from android_world.script_utils.bug_processor import BugProcessorV3
 from android_world.script_utils.solution_generator import SolutionGenerator
 from android_world.script_utils.api_doc import ApiDoc
+from android_world.script_utils.err import XPathError, APIError, ActionError, NotFoundError
 
 
 def process_error_info(original_script, compiled_script, traceback, error,
@@ -87,43 +83,70 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
 
   # Wait a few seconds for the screen to stabilize after executing an action.
   WAIT_AFTER_ACTION_SECONDS = 2.0
-  MAX_RETRY_TIMES = 1
+  MAX_RETRY_TIMES = 3
 
   FREEZED_CODE = False
+  
+  APP_LIST = ['Audio Recorder', 'Camera', 'Clock', 'Contacts', 'arduia pro expense', 'Markor', 'Joplin', 'OsmAnd maps', 'Broccoli', 'Retro Music', 'Simple Calendar Pro', 'Simple Draw Pro', 'Simple SMS Messenger', 'OpenTracks', 'settings', 'Tasks', 'VLC']
   def __init__(self,
                env: interface.AsyncEnv,
+               app_name: str,
+               doc_name: str,
                save_path: str,
-               task_names: str,
                name: str = 'CodeAgent'):
 
     super().__init__(env, name)
-    self.save_dir = save_path
-    self.app_name = tools.load_txt_file(f'tmp/app_name.txt').strip()
-    self.task_names = task_names
+    app_name = app_name.strip()
+    if app_name not in self.APP_LIST:
+      raise ValueError(f'Unknown app name: {app_name} in\n\t{self.APP_LIST}')
     
-    self.goal_set = set()
+    doc_path = f'tmp/docs/{doc_name}.json'
+    if not os.path.exists(doc_path):
+      raise ValueError(f'Unknown doc name: {doc_name}')
+
+    self.app_name = app_name
+    self.doc = ApiDoc(doc_path)
+    self.save_dir = save_path
+    
+    self.task_params = None
+    self.task_name = None
     self.save_path = None
     
-  @property
-  def task_name(self):
-    return self.task_names[len(self.goal_set) - 1]
+    self.code_config = CodeConfig(app_name, self.doc)
+    self.code_status = CodeStatus()
+  
+  # def __del__(self):
+  #   self.doc.save()
 
   def step(self, goal: str) -> base_agent.AgentInteractionResult:
     """
     only execute once for code script
     """
-    self.goal_set.add(goal)
-    task = goal
+    task_goal = goal
     app_name = self.app_name
     self.save_path = os.path.join(self.save_dir, self.task_name)
+    
+    tools.dump_json_file(os.path.join(self.save_dir, 'app.json'), 
+                         {
+                              'app_name': app_name,
+                              'doc_path': self.doc.doc_path
+                         })
+    
     if not os.path.exists(self.save_path):
       os.makedirs(self.save_path)
     
-    logging.info(f'Executing task: {task}')
-    tools.write_txt_file(f'{self.save_path}/task.txt', task)
-    app_doc = ApiDoc(app_name)
+    logging.info(f'Executing task: {task_goal}')
+    task_info = {
+      'goal': task_goal,
+      'params': str(self.task_params),
+      'name': self.task_name,
+    }
     
-    for retry_time in range(self.MAX_RETRY_TIMES):
+    app_doc = self.doc
+    
+    err = None
+    done = False
+    for retry_time in range(self.MAX_RETRY_TIMES + 1):
       if retry_time == 0:
         # restart the app first in case the script couldn't run and the app has not been start
         self.env.execute_action(
@@ -136,35 +159,40 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
       if retry_time == 0: # first time
         # generate code
         if self.FREEZED_CODE:
-          code = tools.load_txt_file(f'tmp/code.txt')
+          code = self.code_config.code
         else:
-          solution_generator = SolutionGenerator(app_name, task, app_doc)
+          solution_generator = SolutionGenerator(app_name, task_goal, app_doc)
           solution_code = solution_generator.get_solution(
               prompt_answer_path=os.path.join(self.save_path, f'solution.json'),
               env=self.env,
               model_name='gpt-4o')
           code = solution_code
-      else: # debug
-        log_path = os.path.join(self.save_path, f'log.yaml')
-        error_path = os.path.join(self.save_path, f'error.json')
-      
+      else: # retry
         bug_processor = BugProcessorV3(
             app_name=app_name,
-            task=task,
+            task=task_goal,
             doc=app_doc,
-            log_path=log_path,
-            error_path=error_path,
-            code=code)
+            error_info=error_info,
+            code=code,
+            err = err)
         
         # update the save_path for retry
         self.save_path = os.path.join(self.save_dir, self.task_name, f'{retry_time}')
         os.makedirs(self.save_path, exist_ok=True)
         
-        code = bug_processor.get_solution(# re-generate code
+        if isinstance(err, XPathError):
+          bug_processor.fix_invalid_xpath(
+            env=env, 
+            api_name=err.name, 
+            prompt_answer_path=os.path.join(self.save_path, f'fix_xpath.json'), 
+            model_name='gpt-4o')
+        
+        code = bug_processor.get_fixed_solution(# re-generate code
             prompt_answer_path=os.path.join(self.save_path, f'solution.json'),
-            env=self.env,
+            env=env,
             model_name='gpt-4o')
       
+      tools.dump_json_file(f'{self.save_path}/task.json', task_info)
       tools.write_txt_file(f'{self.save_path}/code.txt', code)
       
       code_script, line_mappings = regenerate_script(code, 'verifier')
@@ -175,28 +203,48 @@ class CodeAgent(base_agent.EnvironmentInteractingAgent):
       tools.dump_yaml_file(os.path.join(self.save_path, f'log.yaml'), {'records': [], 'step_num': 0})
       
       env = self.env
-      config = CodeConfig(app_name, app_doc, self.save_path, code, code_script, line_mappings)
+      self.code_config.set(self.save_path, code, code_script, line_mappings)
+      self.code_status.reset()
+      
+      t1 = time.time()
       
       # execution
-      verifier = Verifier(env, config)
+      verifier = Verifier(env, self.code_config, self.code_status)
       
       try:
         exec(code_script)
+        done = True
       except Exception as e:
-        # save_current_ui_to_log(code_policy, api_name=None)
         tb_str = traceback.format_exc()
         error_info = process_error_info(code, code_script, tb_str, str(e),
                                         line_mappings)
 
         error_path = os.path.join(self.save_path, f'error.json')
         tools.dump_json_file(error_path, error_info)
-
-    result = {}
+        err = e
+      
+      _save2log(
+          save_path=self.save_path,
+          log_file='log.yaml',
+          element_tree=verifier.element_tree,
+          idx=None,
+          inputs=None,
+          action_type=None,
+          api_name=None,
+          xpath=None,
+          currently_executing_code=None,
+          comment='done',
+          screenshot=verifier.state.pixels.copy())
+      t2 = time.time()
+      runtime = t2 - t1
+      tools.write_txt_file(f'{self.save_path}/runtime.txt', "%f" % runtime)
+      if done:
+        break
     
-    if retry_time == self.MAX_RETRY_TIMES:
-      result['result'] = 'failed'
-    else:
-      result['result'] = 'succeed'
+    result = {
+        'is_completed': done,
+        'save_path': self.save_path
+      }
 
     return base_agent.AgentInteractionResult(True, result)
 
